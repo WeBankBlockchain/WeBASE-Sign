@@ -1,0 +1,9 @@
+server: 
+  port: 8085
+  context-path: /webase-sign
+
+constant: 
+  privateKey: edf02a4a69b14ee6b1650a95de71d5f50496ef62ae4213026bd8d6651d030995
+  
+logging: 
+  config: classpath:log4j2.xml

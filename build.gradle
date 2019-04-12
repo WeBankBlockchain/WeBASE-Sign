@@ -1,0 +1,97 @@
+version '1.0'
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+    maven { url 'https://dl.bintray.com/ethereum/maven/'}
+    mavenLocal()
+    mavenCentral()
+}
+
+def spring_version="4.3.16.RELEASE"
+List spring =[ 
+	"org.springframework:spring-core:$spring_version", 
+	"org.springframework:spring-beans:$spring_version", 
+	"org.springframework:spring-context:$spring_version", 
+	"org.springframework:spring-tx:$spring_version", 
+	"org.springframework:spring-jdbc:$spring_version", 
+	"org.springframework:spring-web:$spring_version",
+	"org.springframework:spring-webmvc:$spring_version"
+]
+
+def spring_boot_version="1.5.9.RELEASE"
+List spring_boot =[ 
+	"org.springframework.boot:spring-boot-starter-web:$spring_boot_version",
+	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
+	"org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version",
+	"org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version"
+]
+
+List swagger = [
+    'io.springfox:springfox-swagger2:2.8.0',
+    'io.springfox:springfox-swagger-ui:2.8.0'
+]
+
+dependencies {
+    compile spring,spring_boot,swagger
+    compile "org.apache.commons:commons-lang3:3.6"
+    compile "com.alibaba:fastjson:1.2.29"
+    compile 'org.fisco-bcos:web3sdk:2.0.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+}
+
+configurations {
+    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    all*.exclude group: 'log4j', module: 'log4j'
+    all*.exclude group: 'com.mchange', module: '*'
+}
+
+sourceSets {
+	main {
+		java {
+	        srcDir 'src/main/java'
+		}
+        resources  {
+            srcDir 'src/main/resources'
+        }
+	}
+}
+
+clean {
+    delete 'dist'
+    delete 'build'
+}
+
+jar {
+	destinationDir file('dist/apps')
+	archiveName project.name + '.jar'
+	exclude '**/*.xml'
+	exclude '**/*.properties'
+
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/conf'
+        }
+		copy {
+			from configurations.runtime
+			into 'dist/lib'
+		}
+		copy {
+			from file('.').listFiles().findAll{File f -> (f.name.endsWith('.bat') || f.name.endsWith('.sh') || f.name.endsWith('.env'))}
+			into 'dist'
+		}
+	}
+}
