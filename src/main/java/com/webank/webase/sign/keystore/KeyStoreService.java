@@ -18,12 +18,12 @@ package com.webank.webase.sign.keystore;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
 import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.utils.Numeric;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.base.ConstantCode;
 import com.webank.webase.sign.base.exception.BaseException;
-
+import com.webank.webase.sign.util.AesUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class KeyStoreService {
+    @Autowired
+    private AesUtils aesUtils;
+    
     static final int PUBLIC_KEY_LENGTH_IN_HEX = 128;
 
     /**
@@ -51,7 +54,7 @@ public class KeyStoreService {
 
             KeyStoreInfo keyStoreInfo = new KeyStoreInfo();
             keyStoreInfo.setPublicKey(publicKey);
-            keyStoreInfo.setPrivateKey(privateKey);
+            keyStoreInfo.setPrivateKey(aesUtils.aesEncrypt(privateKey));
             keyStoreInfo.setAddress(address);
 
             log.info("getKey finish. keyStoreInfo[{}]", JSON.toJSONString(keyStoreInfo));

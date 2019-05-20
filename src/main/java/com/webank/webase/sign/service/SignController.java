@@ -15,22 +15,22 @@
  */
 package com.webank.webase.sign.service;
 
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.base.BaseController;
 import com.webank.webase.sign.base.BaseResponse;
 import com.webank.webase.sign.base.exception.BaseException;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller.
@@ -39,11 +39,42 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "/sign", tags = "sign interface")
 @Slf4j
 @RestController
-@RequestMapping(value = "/sign")
 public class SignController extends BaseController {
     @Autowired
     SignService signService;
 
+    /**
+     * add user.
+     * 
+     * @param req parameter
+     * @param result checkResult
+     * @return
+     */
+    @ApiOperation(value = "add user", notes = "add user")
+    @ApiImplicitParam(name = "req", value = "user info", required = true, dataType = "ReqAddUser")
+    @PostMapping("/addUser")
+    public BaseResponse addUser(@Valid @RequestBody ReqAddUser req,
+            BindingResult result) throws BaseException {
+        log.info("addUser start. req:{}", JSON.toJSONString(req));
+        checkParamResult(result);
+        return signService.addUser(req);
+    }
+    
+    /**
+     * get user.
+     * 
+     * @param req parameter
+     * @param result checkResult
+     * @return
+     */
+    @ApiOperation(value = "get user info", notes = "get user info by name")
+    @ApiImplicitParam(name = "userName", value = "userName", required = true, dataType = "String", paramType = "path")
+    @GetMapping("/userInfo/{userName}")
+    public BaseResponse getUserInfo(@PathVariable("userName") String userName) throws BaseException {
+        log.info("getUserInfo start. userName:{}", userName);
+        return signService.getUserInfo(userName);
+    }
+    
     /**
      * add sign.
      * 
@@ -53,12 +84,12 @@ public class SignController extends BaseController {
      * @throws BaseException 
      */
     @ApiOperation(value = "add sign", notes = "add sign")
-    @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "EncodeInfo")
-    @PostMapping()
-    public BaseResponse add(@Valid @RequestBody EncodeInfo req,
+    @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfo")
+    @PostMapping("/addSign")
+    public BaseResponse addSign(@Valid @RequestBody ReqEncodeInfo req,
             BindingResult result) throws BaseException {
-        log.info("add start. req:{}", JSON.toJSONString(req));
+        log.info("addSign start. req:{}", JSON.toJSONString(req));
         checkParamResult(result);
-        return signService.add(req);
+        return signService.addSign(req);
     }
 }
