@@ -20,12 +20,14 @@ import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.webank.webase.sign.base.BaseResponse;
 import com.webank.webase.sign.base.ConstantCode;
 import com.webank.webase.sign.base.ConstantProperties;
+import com.webank.webase.sign.base.exception.BaseException;
+import com.webank.webase.sign.keystore.KeyStoreInfo;
+import com.webank.webase.sign.keystore.KeyStoreService;
+import com.webank.webase.sign.util.AesUtils;
 import com.webank.webase.sign.util.CommonUtils;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,20 +37,94 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class SignService {
+    @Autowired
+    private KeyStoreService keyStoreService;
+    @Autowired
+    private SignMapper signMapper;
 	@Autowired
 	ConstantProperties properties;
+	@Autowired
+    private AesUtils aesUtils;
+	
+	/**
+	 * add user.
+	 * 
+	 * @param req parameter
+	 * @return
+	 */
+	public BaseResponse addUser(ReqAddUser req) throws BaseException {
+	    BaseResponse baseRsp = new BaseResponse(ConstantCode.RET_SUCCEED);
+	    
+	    // check user name
+	    String userName = req.getUserName();
+	    UserInfoDto userRow =  signMapper.selectUser(userName);
+	    if (userRow != null) {
+            log.warn("fail addUser. user name:{} is already exists", userName);
+            throw new BaseException(ConstantCode.USER_NAME_IS_EXISTS);
+        }
+	    
+	    // get keyStoreInfo
+	    KeyStoreInfo keyStoreInfo = keyStoreService.getKey();
+	    
+	    // add user
+	    UserInfoDto userInfoDto = new UserInfoDto();
+	    userInfoDto.setUserName(userName);
+	    userInfoDto.setAddress(keyStoreInfo.getAddress());
+	    userInfoDto.setPublicKey(keyStoreInfo.getPublicKey());
+	    userInfoDto.setPrivateKey(keyStoreInfo.getPrivateKey());
+	    userInfoDto.setDescription(req.getDescription());
+	    signMapper.insertUserInfo(userInfoDto);
+	    
+	    // return
+	    baseRsp.setData(userInfoDto);
+	    log.info("addUser end baseRsp:{}", baseRsp);
+	    return baseRsp;
+	}
+	
+	/**
+	 * get user info.
+	 * 
+	 * @param userName userName
+	 * @return
+	 */
+	public BaseResponse getUserInfo(String userName) throws BaseException {
+	    BaseResponse baseRsp = new BaseResponse(ConstantCode.RET_SUCCEED);
+	    
+	    // select user
+	    UserInfoDto userRow =  signMapper.selectUser(userName);
+        if (userRow == null) {
+            log.warn("fail getUserInfo. user name:{} does not exist", userName);
+            throw new BaseException(ConstantCode.USER_IS_NOT_EXISTS);
+        }
+	    
+	    // return
+	    baseRsp.setData(userRow);
+	    log.info("getUserInfo end baseRsp:{}", baseRsp);
+	    return baseRsp;
+	}
+	
+	
 	
     /**
      * add sign.
      * 
      * @param req parameter
      * @return
+     * @throws BaseException 
      */
-    public BaseResponse add(EncodeInfo req) {
+    public BaseResponse addSign(ReqEncodeInfo req) throws BaseException {
         BaseResponse baseRsp = new BaseResponse(ConstantCode.RET_SUCCEED);
         
-        // add signature,privateKey is your own privateKey
-        String privateKey = properties.getPrivateKey();
+        // select user
+        String userName = req.getUserName();
+        UserInfoDto userRow =  signMapper.selectUser(userName);
+        if (userRow == null) {
+            log.warn("fail addSign. user name:{} does not exist", userName);
+            throw new BaseException(ConstantCode.USER_IS_NOT_EXISTS);
+        }
+        
+        // add signature
+        String privateKey = aesUtils.aesDecrypt(userRow.getPrivateKey());
         Credentials credentials = Credentials.create(privateKey);
         byte[] encodedData = req.getEncodedDataStr().getBytes();
         SignatureData signatureData = Sign.getSignInterface().signMessage(
@@ -56,11 +132,11 @@ public class SignService {
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         
         // return
-        SignInfo signInfo = new SignInfo();
-        signInfo.setSignDataStr(signDataStr);
-        signInfo.setDesc(req.getDesc());
-        baseRsp.setData(signInfo);;
-        log.info("add end baseRsp:{}", baseRsp);
+        RspSignInfo rspSignInfo = new RspSignInfo();
+        rspSignInfo.setSignDataStr(signDataStr);
+        rspSignInfo.setDesc(req.getDesc());
+        baseRsp.setData(rspSignInfo);;
+        log.info("addSign end baseRsp:{}", baseRsp);
         return baseRsp;
     }
 }
