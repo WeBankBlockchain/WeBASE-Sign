@@ -63,7 +63,7 @@ dependencies {
     compile "com.alibaba:fastjson:1.2.29"
     compile 'org.fisco-bcos:web3sdk:2.0.2'
     compile 'org.projectlombok:lombok:1.18.2'
-    //annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
 
 configurations {
