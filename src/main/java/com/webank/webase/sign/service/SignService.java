@@ -18,6 +18,7 @@ package com.webank.webase.sign.service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.webank.webase.sign.base.BaseResponse;
@@ -76,7 +77,9 @@ public class SignService {
 	    signMapper.insertUserInfo(userInfoDto);
 	    
 	    // return
-	    baseRsp.setData(userInfoDto);
+	    RspUserInfo rspUserInfo = new RspUserInfo();
+	    BeanUtils.copyProperties(userInfoDto, rspUserInfo);
+	    baseRsp.setData(rspUserInfo);
 	    log.info("addUser end baseRsp:{}", baseRsp);
 	    return baseRsp;
 	}
@@ -98,7 +101,9 @@ public class SignService {
         }
 	    
 	    // return
-	    baseRsp.setData(userRow);
+        RspUserInfo rspUserInfo = new RspUserInfo();
+        BeanUtils.copyProperties(userRow, rspUserInfo);
+        baseRsp.setData(rspUserInfo);
 	    log.info("getUserInfo end baseRsp:{}", baseRsp);
 	    return baseRsp;
 	}
@@ -114,7 +119,7 @@ public class SignService {
      */
     public BaseResponse addSign(ReqEncodeInfo req) throws BaseException {
         BaseResponse baseRsp = new BaseResponse(ConstantCode.RET_SUCCEED);
-        
+        log.info("addSign length:{}", req.getEncodedDataStr().length());
         // select user
         String userName = req.getUserName();
         UserInfoDto userRow =  signMapper.selectUser(userName);

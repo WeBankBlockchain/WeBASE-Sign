@@ -25,8 +25,8 @@ HTTP POST
 
 | **序号** | **中文** | **参数名**  | **类型** | **最大长度** | **必填** | **说明** |
 | -------- | -------- | ----------- | -------- | ------------ | -------- | -------- |
-| 1        | 用户名   | userName    | string   | 32           | 是       |          |
-| 2        | 描述     | description | string   | 128          | 否       |          |
+| 1        | 用户名   | userName    | String   | 32           | 是       |          |
+| 2        | 描述     | description | String   | 128          | 否       |          |
 
 **2）数据格式**
 
@@ -50,8 +50,7 @@ HTTP POST
 | 3.2 | 用户名 | userName | String |  | 是 | |
 | 3.3 | 账户地址 | address | String | | 是 | |
 | 3.4 | 公钥 | publicKey | String | | 是 | |
-| 3.5 | 私钥 | privateKey | String | | 是 | 这里是经AES加密后的私钥 |
-| 3.6 | 描述 | description | String | | 是 | |
+| 3.5 | 描述 | description | String | | 是 | |
 
 **2）数据格式**
 
@@ -65,7 +64,6 @@ a.请求正常返回结果
     "userName": "jack",
     "address": "0x3ba79c2cfdd1c5519c7b24722b8b32c5f6c78e1d",
     "publicKey": "0x58b358bd09d1b2da7eeefee32e6569f5d36b1b986d19a0333cb2475471e21652646d61a70b561b7e8a61162bd5bdbc0d7627686fadf24148022f9fdd532d2749",
-    "privateKey": "AC99Vg5eqakTUyPcNbthp7rOTtpmXKSC+s8e2sXY9TH1aU6j4/g/HKBQzEPeQxJr2v+STnAXCbI1DfjxdAXw3IAmH2NVpp2CUrrd6h3/6Js=",
     "description": "test"
   }
 }
@@ -100,7 +98,7 @@ HTTP GET
 
 | **序号** | **中文**   | **参数名** | **类型** | **最大长度** | **必填** | **说明** |
 |----------|------------|------------|----------|--------------|----------|----------|
-| 1        | 用户名   | userName   | string   | 32           | 是       |          |
+| 1        | 用户名   | userName   | String | 32           | 是       |          |
 
 **2）数据格式**
 
@@ -110,17 +108,16 @@ http://localhost:8082/webase-sign/userInfo/jack
 
 **1）参数表**
 
-| **序号** | **中文** | **参数名**  | **类型** | **最大长度** | **必填** | **说明**                |
-| -------- | -------- | ----------- | -------- | ------------ | -------- | ----------------------- |
-| 1        | 返回码   | code        | String   |              | 是       | 返回码信息请附录1       |
-| 2        | 提示信息 | message     | String   |              | 是       |                         |
-| 3        | 返回数据 | data        | Object   |              | 是       |                         |
-| 3.1      | 用户编号 | userId      | Integer  |              | 是       |                         |
-| 3.2      | 用户名   | userName    | String   |              | 是       |                         |
-| 3.3      | 账户地址 | address     | String   |              | 是       | 链上地址                |
-| 3.4      | 公钥     | publicKey   | String   |              | 是       |                         |
-| 3.5      | 私钥     | privateKey  | String   |              | 是       | 这里是经AES加密后的私钥 |
-| 3.6      | 描述     | description | String   |              | 是       |                         |
+| **序号** | **中文** | **参数名**  | **类型** | **最大长度** | **必填** | **说明**          |
+| -------- | -------- | ----------- | -------- | ------------ | -------- | ----------------- |
+| 1        | 返回码   | code        | String   |              | 是       | 返回码信息请附录1 |
+| 2        | 提示信息 | message     | String   |              | 是       |                   |
+| 3        | 返回数据 | data        | Object   |              | 是       |                   |
+| 3.1      | 用户编号 | userId      | Integer  |              | 是       |                   |
+| 3.2      | 用户名   | userName    | String   |              | 是       |                   |
+| 3.3      | 账户地址 | address     | String   |              | 是       | 链上地址          |
+| 3.4      | 公钥     | publicKey   | String   |              | 是       |                   |
+| 3.5      | 描述     | description | String   |              | 是       |                   |
 
 **2）数据格式**
 
@@ -134,7 +131,6 @@ a.请求正常返回结果
     "userName": "jack",
     "address": "0x3ba79c2cfdd1c5519c7b24722b8b32c5f6c78e1d",
     "publicKey": "0x58b358bd09d1b2da7eeefee32e6569f5d36b1b986d19a0333cb2475471e21652646d61a70b561b7e8a61162bd5bdbc0d7627686fadf24148022f9fdd532d2749",
-    "privateKey": "AC99Vg5eqakTUyPcNbthp7rOTtpmXKSC+s8e2sXY9TH1aU6j4/g/HKBQzEPeQxJr2v+STnAXCbI1DfjxdAXw3IAmH2NVpp2CUrrd6h3/6Js=",
     "description": "test"
   }
 }
@@ -170,8 +166,8 @@ HTTP POST
 
 | **序号** | **中文**   | **参数名**      | **类型**       | **最大长度** | **必填** | **说明**                                           |
 |----------|------------|-----------------|----------------|--------------|----------|----------------------------------------------------|
-| 1        | 用户名   | userName       | string   | 32           | 是       |                                                    |
-| 2        | 编码数据 | encodedDataStr | String         | 1024       | 是       |                                                    |
+| 1        | 用户名   | userName       | String | 32           | 是       |                                                    |
+| 2        | 编码数据 | encodedDataStr | String         |              | 是       |                                                    |
 | 3        | 数据描述 | desc    | String         | 64           | 否       |                                                    |
 
 **2）数据格式**
