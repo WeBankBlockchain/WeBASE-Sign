@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.base;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+package com.webank.webase.sign.service;
 
 import lombok.Data;
 
+/**
+ * RspUserInfo.
+ * 
+ */
 @Data
-@Configuration
-@ConfigurationProperties(prefix = ConstantProperties.CONSTANT_PREFIX)
-public class ConstantProperties {
-    // constant configuration from file
-    public static final String CONSTANT_PREFIX = "constant";
-    private String aesKey;
+public class RspUserInfo {
+    private Integer userId;
+	private String userName;
+	private String address;
+	private String publicKey;
+    private String description;
 }

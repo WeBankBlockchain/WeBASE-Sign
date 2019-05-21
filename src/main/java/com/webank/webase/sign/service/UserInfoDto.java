@@ -18,11 +18,15 @@ package com.webank.webase.sign.service;
 import lombok.Data;
 
 /**
- * SignInfo.
+ * UserInfoDto.
  * 
  */
 @Data
-public class SignInfo {
-	private String signDataStr;
-    private String desc;
+public class UserInfoDto {
+    private Integer userId;
+	private String userName;
+	private String address;
+	private String publicKey;
+	private String privateKey;
+    private String description;
 }
