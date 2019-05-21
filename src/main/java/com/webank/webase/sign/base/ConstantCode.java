@@ -21,7 +21,12 @@ public interface ConstantCode {
     RetCode RET_SUCCEED = RetCode.mark(0, "success");
 
     // paramaters check
-    String ENCODED_DATA_IS_EMPTY = "{\"code\":203001,\"msg\":\"encoded data cannot be empty\"}";
+    String USER_NAME_IS_EMPTY = "{\"code\":203001,\"msg\":\"user name cannot be empty\"}";
+    String ENCODED_DATA_IS_EMPTY = "{\"code\":203002,\"msg\":\"encoded data cannot be empty\"}";
+    
+    // general error
+    RetCode USER_NAME_IS_EXISTS = RetCode.mark(303001, "user is already exists");
+    RetCode USER_IS_NOT_EXISTS = RetCode.mark(303002, "user does not exist");
 
     // system error
     RetCode SYSTEM_ERROR = RetCode.mark(103001, "system error");

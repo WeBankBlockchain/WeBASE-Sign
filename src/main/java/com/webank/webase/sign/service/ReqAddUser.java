@@ -26,8 +26,8 @@ import lombok.Data;
  * 
  */
 @Data
-public class EncodeInfo {
+public class ReqAddUser {
 	@NotBlank(message = ConstantCode.ENCODED_DATA_IS_EMPTY)
-	private String encodedDataStr;
-    private String desc;
+	private String userName;
+    private String description;
 }

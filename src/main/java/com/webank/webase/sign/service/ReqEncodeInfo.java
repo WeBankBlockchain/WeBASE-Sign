@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.base;
+package com.webank.webase.sign.service;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
+import org.hibernate.validator.constraints.NotBlank;
+import com.webank.webase.sign.base.ConstantCode;
 import lombok.Data;
 
+/**
+ * ReqEncodeInfo.
+ * 
+ */
 @Data
-@Configuration
-@ConfigurationProperties(prefix = ConstantProperties.CONSTANT_PREFIX)
-public class ConstantProperties {
-    // constant configuration from file
-    public static final String CONSTANT_PREFIX = "constant";
-    private String aesKey;
+public class ReqEncodeInfo {
+    @NotBlank(message = ConstantCode.USER_NAME_IS_EMPTY)
+    private String userName;
+	@NotBlank(message = ConstantCode.ENCODED_DATA_IS_EMPTY)
+	private String encodedDataStr;
+    private String desc;
 }
