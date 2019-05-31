@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.service;
+package com.webank.webase.sign.pojo.vo;
 
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * SignInfo.
- * 
+ * ReqEncodeInfoVo.
  */
 @Data
-public class RspSignInfo {
-	private String signDataStr;
-    private String desc;
+public class ReqEncodeInfoVo {
+
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9_]{3,25}")
+    private String userName;
+    @NotBlank
+    private String encodedDataStr;
 }

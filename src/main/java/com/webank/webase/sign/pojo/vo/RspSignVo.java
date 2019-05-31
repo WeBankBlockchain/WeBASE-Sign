@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.service;
+package com.webank.webase.sign.pojo.vo;
 
-import org.hibernate.validator.constraints.NotBlank;
-import com.webank.webase.sign.base.ConstantCode;
 import lombok.Data;
 
 /**
- * ReqEncodeInfo.
+ * SignInfo.
  * 
  */
 @Data
-public class ReqEncodeInfo {
-    @NotBlank(message = ConstantCode.USER_NAME_IS_EMPTY)
-    private String userName;
-	@NotBlank(message = ConstantCode.ENCODED_DATA_IS_EMPTY)
-	private String encodedDataStr;
-    private String desc;
+public class RspSignVo {
+	private String signDataStr;
 }

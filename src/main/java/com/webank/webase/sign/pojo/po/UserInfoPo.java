@@ -13,32 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.base;
+package com.webank.webase.sign.pojo.po;
 
 import lombok.Data;
 
+/**
+ * UserInfoPo.
+ * 
+ */
 @Data
-public class RetCode {
-    private Integer code;
-    private String msg;
-
-    public RetCode() {}
-
-    public RetCode(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-
-    public static RetCode mark(int code, String msg) {
-        return new RetCode(code, msg);
-    }
-
-    public static RetCode mark(Integer code) {
-        return new RetCode(code, null);
-    }
-
-    @Override
-    public String toString() {
-        return "RetCode [code=" + code + ", msg=" + msg + "]";
-    }
+public class UserInfoPo {
+    private Integer userId;
+	private String userName;
+	private String address;
+	private String publicKey;
+	private String privateKey;
+    private String description;
 }

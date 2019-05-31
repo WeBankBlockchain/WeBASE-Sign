@@ -23,7 +23,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Startup class.
- *
  */
 @Slf4j
 @EnableSwagger2

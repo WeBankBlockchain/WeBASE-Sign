@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.service;
+package com.webank.webase.sign.pojo.vo;
 
+import javax.validation.constraints.Pattern;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.webank.webase.sign.base.ConstantCode;
-
-import lombok.Data;
-
 /**
- * EncodeInfo.
- * 
+ * new user info.
  */
 @Data
-public class ReqAddUser {
-	@NotBlank(message = ConstantCode.ENCODED_DATA_IS_EMPTY)
-	private String userName;
+public class ReqNewUserVo {
+
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9_]{3,25}")
+    private String userName;
     private String description;
 }
