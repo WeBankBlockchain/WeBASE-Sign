@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.service;
+package com.webank.webase.sign.pojo.bo;
 
 import lombok.Data;
 
-/**
- * UserInfoDto.
- * 
- */
 @Data
-public class UserInfoDto {
-    private Integer userId;
-	private String userName;
-	private String address;
-	private String publicKey;
-	private String privateKey;
-    private String description;
+public class KeyStoreInfo {
+    private String publicKey;
+    private String privateKey;
+    private String address;
 }

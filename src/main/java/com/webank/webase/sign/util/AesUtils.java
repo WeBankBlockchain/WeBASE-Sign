@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.webank.webase.sign.base.ConstantProperties;
+import com.webank.webase.sign.constant.ConstantProperties;
 
 @Log4j2
 @Component
