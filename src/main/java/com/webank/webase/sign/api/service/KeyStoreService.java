@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.keystore;
+package com.webank.webase.sign.api.service;
 
+import com.webank.webase.sign.enums.CodeMessageEnums;
+import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
 import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
-import com.webank.webase.sign.base.ConstantCode;
-import com.webank.webase.sign.base.exception.BaseException;
+import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.util.AesUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,12 +57,10 @@ public class KeyStoreService {
             keyStoreInfo.setPublicKey(publicKey);
             keyStoreInfo.setPrivateKey(aesUtils.aesEncrypt(privateKey));
             keyStoreInfo.setAddress(address);
-
-            log.info("getKey finish. keyStoreInfo[{}]", JSON.toJSONString(keyStoreInfo));
             return keyStoreInfo;
         } catch (Exception e) {
             log.error("createEcKeyPair fail.");
-            throw new BaseException(ConstantCode.SYSTEM_ERROR);
+            throw new BaseException(CodeMessageEnums.SYSTEM_ERROR);
         }
     }
 }

@@ -18,23 +18,14 @@ repositories {
     mavenCentral()
 }
 
-def spring_version="4.3.16.RELEASE"
-List spring =[ 
-	"org.springframework:spring-core:$spring_version", 
-	"org.springframework:spring-beans:$spring_version", 
-	"org.springframework:spring-context:$spring_version", 
-	"org.springframework:spring-tx:$spring_version", 
-	"org.springframework:spring-jdbc:$spring_version", 
-	"org.springframework:spring-web:$spring_version",
-	"org.springframework:spring-webmvc:$spring_version"
-]
 
 def spring_boot_version="1.5.9.RELEASE"
-List spring_boot =[ 
+List springboot =[ 
 	"org.springframework.boot:spring-boot-starter-web:$spring_boot_version",
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
 	"org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version",
-	"org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version"
+	"org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version",
+	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
 ]
 
 List swagger = [
@@ -58,7 +49,7 @@ List logger = [
 ]
 
 dependencies {
-    compile spring,spring_boot,swagger,mysql,logger
+    compile springboot,swagger,mysql,logger
     compile "org.apache.commons:commons-lang3:3.6"
     compile "com.alibaba:fastjson:1.2.29"
     compile 'org.fisco-bcos:web3sdk:2.0.2'

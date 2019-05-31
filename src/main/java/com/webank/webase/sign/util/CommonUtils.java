@@ -15,19 +15,25 @@
  */
 package com.webank.webase.sign.util;
 
+import com.alibaba.fastjson.JSON;
+import com.webank.webase.sign.enums.CodeMessageEnums;
+import com.webank.webase.sign.exception.ParamException;
+import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
+import org.springframework.validation.BindingResult;
 
 /**
  * CommonUtils.
- * 
  */
 public class CommonUtils {
+
     /**
      * stringToSignatureData.
-     * 
+     *
      * @param signatureData signatureData
-     * @return
      */
     public static SignatureData stringToSignatureData(String signatureData) {
         byte[] byteArr = Numeric.hexStringToByteArray(signatureData);
@@ -40,16 +46,45 @@ public class CommonUtils {
 
     /**
      * signatureDataToString.
-     * 
+     *
      * @param signatureData signatureData
-     * @return
      */
     public static String signatureDataToString(SignatureData signatureData) {
         byte[] byteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length];
         byteArr[0] = signatureData.getV();
         System.arraycopy(signatureData.getR(), 0, byteArr, 1, signatureData.getR().length);
         System.arraycopy(signatureData.getS(), 0, byteArr, signatureData.getR().length + 1,
-                signatureData.getS().length);
+            signatureData.getS().length);
         return Numeric.toHexString(byteArr, 0, byteArr.length, false);
+    }
+
+
+    /**
+     * check param valid result.
+     */
+    public static void checkParamBindResult(BindingResult result) {
+        if (result.hasErrors()) {
+            String errFieldStr = result.getAllErrors().stream()
+                .map(obj -> JSON.parseObject(JSON.toJSONString(obj)))
+                .map(err -> err.getString("field"))
+                .collect(Collectors.joining(","));
+            StringUtils.removeEnd(errFieldStr, ",");
+            String message = "These fields do not match:" + errFieldStr;
+
+            ParamException paramException = new ParamException(CodeMessageEnums.PARAM_EXCEPTION);
+            paramException.setMessage(message);
+            throw paramException;
+        }
+    }
+
+    /**
+     *
+     * @param data
+     * @return
+     */
+    public static BaseRspVo buildSuccessRspVo(Object data){
+        BaseRspVo baseRspVo = new BaseRspVo(CodeMessageEnums.SUCCEED);
+        baseRspVo.setData(data);
+        return baseRspVo;
     }
 }
