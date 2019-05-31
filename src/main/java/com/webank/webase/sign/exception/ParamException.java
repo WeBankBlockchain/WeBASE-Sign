@@ -1,5 +1,5 @@
-/*
- * Copyright 2012-2019 the original author or authors.
+/**
+ * Copyright 2014-2019  the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,30 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.base.exception;
+package com.webank.webase.sign.exception;
 
-import com.webank.webase.sign.base.RetCode;
+
+import com.webank.webase.sign.enums.CodeMessageEnums;
 
 /**
- * BaseException.
- * 
+ * param Exception
  */
-public class BaseException extends Exception {
+public class ParamException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
-    private RetCode retCode;
+    private CodeMessageEnums cme;
 
-    public BaseException(RetCode retCode) {
-        super(retCode.getMsg());
-        this.retCode = retCode;
+
+    public ParamException(CodeMessageEnums cme) {
+        super(cme.getMessage());
+        this.cme = cme;
     }
 
-    public BaseException(int code, String msg) {
+    public void setMessage(String msg) {
+        this.cme.setMessage(msg);
+    }
+    public ParamException(String msg) {
         super(msg);
-        this.retCode = new RetCode(code, msg);
+        this.cme.setMessage(msg);
     }
 
-    public RetCode getRetCode() {
-        return retCode;
+    public CodeMessageEnums getCodeMessageEnums() {
+        return cme;
     }
 }

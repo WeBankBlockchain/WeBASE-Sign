@@ -13,13 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.keystore;
+package com.webank.webase.sign.exception;
 
-import lombok.Data;
+import com.webank.webase.sign.enums.CodeMessageEnums;
 
-@Data
-public class KeyStoreInfo {
-    private String publicKey;
-    private String privateKey;
-    private String address;
+/**
+ * BaseException.
+ * 
+ */
+public class BaseException extends Exception {
+
+    private static final long serialVersionUID = 1L;
+    private CodeMessageEnums cme;
+
+    public BaseException(CodeMessageEnums cme) {
+        super(cme.getMessage());
+        this.cme = cme;
+    }
+
+    public BaseException(String msg) {
+        super(msg);
+        this.cme.setMessage(msg);
+    }
+
+    public CodeMessageEnums getCodeMessageEnums() {
+        return cme;
+    }
 }

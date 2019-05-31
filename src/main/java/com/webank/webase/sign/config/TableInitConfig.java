@@ -14,20 +14,21 @@
 
 package com.webank.webase.sign.config;
 
+import com.webank.webase.sign.api.dao.UserDao;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import com.webank.webase.sign.service.SignMapper;
 import lombok.Data;
 
 @Data
 @Configuration
 public class TableInitConfig implements InitializingBean {
+
     @Autowired
-    private SignMapper signMapper;
+    private UserDao userDao;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        signMapper.createTbUser();;
+    public void afterPropertiesSet() {
+        userDao.createTable();
     }
 }

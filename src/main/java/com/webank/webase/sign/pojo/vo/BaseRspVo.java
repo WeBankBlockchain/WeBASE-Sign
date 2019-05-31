@@ -13,47 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.base;
+package com.webank.webase.sign.pojo.vo;
 
+import com.webank.webase.sign.enums.CodeMessageEnums;
 import lombok.Data;
 
 @Data
-public class BaseResponse {
+public class BaseRspVo {
+
     private int code;
     private String message;
     private Object data;
 
-    public BaseResponse() {}
+    public BaseRspVo() {
+    }
 
-    public BaseResponse(int code) {
+    public BaseRspVo(int code) {
         this.code = code;
     }
 
-    public BaseResponse(RetCode rsc) {
-        this.code = rsc.getCode();
-        this.message = rsc.getMsg();
+    public BaseRspVo(CodeMessageEnums cme) {
+        this.code = cme.getCode();
+        this.message = cme.getMessage();
     }
 
     /**
      * constructor.
-     * 
-     * @param rsc not null
+     *
+     * @param cme not null
      * @param obj result
      */
-    public BaseResponse(RetCode rsc, Object obj) {
-        this.code = rsc.getCode();
-        this.message = rsc.getMsg();
+    public BaseRspVo(CodeMessageEnums cme, Object obj) {
+        this.code = cme.getCode();
+        this.message = cme.getMessage();
         this.data = obj;
     }
 
     /**
      * constructor.
-     * 
+     *
      * @param code not null
      * @param message not null
      * @param obj result
      */
-    public BaseResponse(int code, String message, Object obj) {
+    public BaseRspVo(int code, String message, Object obj) {
         this.code = code;
         this.message = message;
         this.data = obj;

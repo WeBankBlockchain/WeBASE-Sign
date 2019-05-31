@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.service;
+package com.webank.webase.sign.pojo.vo;
 
 import lombok.Data;
 
 /**
- * RspUserInfo.
+ * RspUserInfoVo.
  * 
  */
 @Data
-public class RspUserInfo {
+public class RspUserInfoVo {
     private Integer userId;
 	private String userName;
 	private String address;
