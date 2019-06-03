@@ -29,6 +29,6 @@ public class TableInitConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        userDao.createTable();
+        userDao.createTbUser();
     }
 }

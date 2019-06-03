@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao {
 
-    void createTable();
+    void createTbUser();
 
     void insertUserInfo(UserInfoPo userInfoPo);
 
