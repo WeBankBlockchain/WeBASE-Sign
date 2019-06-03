@@ -26,7 +26,7 @@ import lombok.Data;
 public class ReqEncodeInfoVo {
 
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9_]{3,25}")
+    @Pattern(regexp = "[a-zA-Z0-9_]{3,32}")
     private String userName;
     @NotBlank
     private String encodedDataStr;

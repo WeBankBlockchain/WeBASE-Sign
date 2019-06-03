@@ -71,7 +71,7 @@ public class UserController {
      */
     @ApiOperation(value = "get user info", notes = "get user info by name")
     @ApiImplicitParam(name = "userName", value = "userName", required = true, dataType = "String", paramType = "path")
-    @GetMapping("/userInfo/{userName:[a-zA-Z0-9_]{3,25}}")
+    @GetMapping("/userInfo/{userName:[a-zA-Z0-9_]{3,32}}")
     public BaseRspVo getUserInfo(@PathVariable("userName") String userName) {
         //new user
         UserInfoPo userInfo = userService.getUserInfo(userName);
