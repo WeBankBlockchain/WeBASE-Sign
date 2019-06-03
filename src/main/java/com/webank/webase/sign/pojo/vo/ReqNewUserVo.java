@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class ReqNewUserVo {
 
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9_]{3,25}")
+    @Pattern(regexp = "[a-zA-Z0-9_]{3,32}")
     private String userName;
     private String description;
 }

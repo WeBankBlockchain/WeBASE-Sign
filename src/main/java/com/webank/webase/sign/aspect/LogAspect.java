@@ -16,7 +16,9 @@ package com.webank.webase.sign.aspect;
 import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.manager.LoggerManager;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LogAspect {
+
     private final String POINT_CUT = "execution(public * com.webank.webase.sign.api.controller.*.*(..))";
 
     @Pointcut(POINT_CUT)
@@ -39,19 +42,24 @@ public class LogAspect {
     public Object methodAround(ProceedingJoinPoint point) throws Throwable {
         Instant startTime = Instant.now();
         Class targetClass = point.getTarget().getClass();
-        MethodSignature methodSignature = (MethodSignature)point.getSignature();
-        Method method = methodSignature.getMethod();
-        methodSignature.getName();
+        MethodSignature methodSignature = (MethodSignature) point.getSignature();
         String methodName = methodSignature.getName();
         Object[] args = point.getArgs();
         Logger logger = LoggerManager.getLogger(targetClass);
-        logger.info("start time:{} class:{}", startTime);
-        logger.info("start class:{}", targetClass);
-        logger.info("start methodName:{}", methodName);
-        logger.info("start args:{}", JSON.toJSONString(args));
-        point.proceed();
+        logger.debug("startTime:{} methodName:{} args:{}", startTime, methodName,
+            JSON.toJSONString(args));
+        Object result = null;
+        try {
+            result = point.proceed();
+        } catch (Throwable throwable) {
+            logger.warn("fail request. methodName:{} ", methodName, throwable);
+            throw throwable;
+        }
 
-        return null;
+        String resultStr = Optional.ofNullable(result).map(r -> JSON.toJSONString(r)).orElse(null);
+        logger.debug("methodName:{} userTime:{} result:{}", methodName,
+            Duration.between(startTime, Instant.now()), resultStr);
+        return result;
     }
 
 }
