@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "sign", tags = "sign interface")
 @Slf4j
 @RestController
-@RequestMapping("sign")
 public class SignController {
 
     @Autowired

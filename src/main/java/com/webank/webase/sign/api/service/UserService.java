@@ -13,7 +13,6 @@
  */
 package com.webank.webase.sign.api.service;
 
-import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.api.dao.UserDao;
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
@@ -21,7 +20,10 @@ import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqNewUserVo;
 import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
+import com.webank.webase.sign.util.AesUtils;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,8 @@ public class UserService {
     @Autowired
     private UserDao userDao;
     @Autowired
+    private AesUtils aesUtils;
+    @Autowired
     private KeyStoreService keyStoreService;
 
     /**
@@ -40,27 +44,66 @@ public class UserService {
      *
      * @param req parameter
      */
-    public RspUserInfoVo addUser(ReqNewUserVo req) throws BaseException {
-        log.info("start addUser. reqNewUserVo:{}", JSON.toJSONString(req));
-
+    public RspUserInfoVo newUser(ReqNewUserVo req) throws BaseException {
+        log.info("start addUser");
         // check user name not exist.
         userNameNotExistOrThrow(req.getUserName());
         // get keyStoreInfo
-        KeyStoreInfo keyStoreInfo = keyStoreService.getKey();
+        KeyStoreInfo keyStoreInfo = keyStoreService.newKey();
 
-        // save user
+        //save user.
         UserInfoPo userInfoPo = new UserInfoPo();
         BeanUtils.copyProperties(keyStoreInfo, userInfoPo);
-        BeanUtils.copyProperties(req, userInfoPo);
+        userInfoPo.setUserName(aesUtils.aesEncrypt(req.getUserName()));
+
+        RspUserInfoVo rspUserInfoVo = saveUser(userInfoPo);
+        log.info("end addUser");
+        return rspUserInfoVo;
+    }
+
+    /**
+     * import user.
+     */
+    public RspUserInfoVo importUser(String privateKey, String userName) throws BaseException {
+        log.info("start importUser");
+        if (StringUtils.isBlank(privateKey)) {
+            log.warn("fail importUser. privateKey is blank");
+            throw new BaseException(CodeMessageEnums.PRIVATEKEY_IS_NULL);
+        }
+        // check user name not exist.
+        userNameNotExistOrThrow(userName);
+
+        // get keyStoreInfo
+        KeyStoreInfo keyStoreInfo = keyStoreService.getKeyStoreFromPrivateKey(privateKey);
+
+        //save user.
+        UserInfoPo userInfoPo = new UserInfoPo();
+        BeanUtils.copyProperties(keyStoreInfo, userInfoPo);
+        userInfoPo.setUserName(aesUtils.aesEncrypt(userName));
+
+        RspUserInfoVo rspUserInfoVo = saveUser(userInfoPo);
+        log.info("end importUser");
+        return rspUserInfoVo;
+    }
+
+
+    /**
+     * save user.
+     */
+    private RspUserInfoVo saveUser(UserInfoPo userInfoPo) {
+        // save user
         userDao.insertUserInfo(userInfoPo);
 
         // return
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         BeanUtils.copyProperties(userInfoPo, rspUserInfoVo);
 
-        log.info("end addUser. baseRsp:{}", JSON.toJSONString(rspUserInfoVo));
+        rspUserInfoVo.setUserName(aesUtils.aesDecrypt(userInfoPo.getUserName()));
+        rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(userInfoPo.getPrivateKey()));
+
         return rspUserInfoVo;
     }
+
 
     /**
      * get user info.
@@ -68,7 +111,15 @@ public class UserService {
      * @param userName userName
      */
     public UserInfoPo getUserInfo(String userName) {
-        return userDao.findUser(userName);
+        userName = aesUtils.aesEncrypt(userName);
+        UserInfoPo user = userDao.findUser(userName);
+        if (Objects.isNull(user)) {
+            log.info("not found  user info by username:{}", userName);
+            return user;
+        }
+        user.setUserName(userName);
+        user.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
+        return user;
     }
 
 
@@ -76,11 +127,34 @@ public class UserService {
      * check userName not exist.
      */
     public void userNameNotExistOrThrow(String userName) throws BaseException {
+        userName = aesUtils.aesEncrypt(userName);
+        if (StringUtils.isBlank(userName)) {
+            log.warn("fail userNameNotExistOrThrow. userName is blank");
+            throw new BaseException(CodeMessageEnums.USERNAME_IS_NULL);
+        }
         // check user name
         UserInfoPo userRow = userDao.findUser(userName);
         if (userRow != null) {
-            log.warn("fail addUser. user name:{} is already exists", userName);
+            log.warn("fail userNameNotExistOrThrow. user name:{} is already exists", userName);
             throw new BaseException(CodeMessageEnums.USER_NAME_IS_EXISTS);
         }
+    }
+
+    /**
+     * check userName  exist.
+     */
+    public UserInfoPo userNameExistOrThrow(String userName) throws BaseException {
+        userName = aesUtils.aesEncrypt(userName);
+        if (StringUtils.isBlank(userName)) {
+            log.warn("fail userNameExistOrThrow. userName is blank");
+            throw new BaseException(CodeMessageEnums.USERNAME_IS_NULL);
+        }
+        // check user name
+        UserInfoPo userRow = userDao.findUser(userName);
+        if (Objects.isNull(userRow)) {
+            log.warn("fail userNameExistOrThrow. user name:{} is not exists", userName);
+            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+        }
+        return userRow;
     }
 }
