@@ -16,8 +16,8 @@
 package com.webank.webase.sign.pojo.vo;
 
 import javax.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.NotBlank;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * ReqEncodeInfoVo.

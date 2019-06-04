@@ -5,7 +5,7 @@
     <update id="createTbUser">
         CREATE TABLE IF NOT EXISTS tb_user (
           user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
-          user_name varchar(32) NOT NULL COMMENT '用户名',
+          user_name varchar(100) NOT NULL COMMENT '用户名',
           address varchar(64) NOT NULL COMMENT '在链上位置的hash',
           public_key varchar(256) NOT NULL COMMENT '公钥',
           private_key varchar(256) NOT NULL COMMENT '私钥',

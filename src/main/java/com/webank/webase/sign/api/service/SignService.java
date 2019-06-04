@@ -31,44 +31,34 @@ import org.springframework.stereotype.Service;
 
 /**
  * SignService.
- * 
  */
 @Slf4j
 @Service
 public class SignService {
+
     @Autowired
     private UserService userService;
-	@Autowired
-	ConstantProperties properties;
-	@Autowired
+    @Autowired
+    ConstantProperties properties;
+    @Autowired
     private AesUtils aesUtils;
-	
 
-	
-	
+
     /**
      * add sign.
-     * 
+     *
      * @param req parameter
-     * @return
-     * @throws BaseException 
      */
     public String sign(ReqEncodeInfoVo req) throws BaseException {
         // select user
-        String userName = req.getUserName();
-        UserInfoPo userRow =  userService.getUserInfo(userName);
+        UserInfoPo userRow = userService.userNameExistOrThrow(req.getUserName());
 
-        if (userRow == null) {
-            log.warn("fail addSign. user name:{} does not exist", userName);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
-        }
-        
         // signature
         String privateKey = aesUtils.aesDecrypt(userRow.getPrivateKey());
         Credentials credentials = Credentials.create(privateKey);
         byte[] encodedData = req.getEncodedDataStr().getBytes();
         SignatureData signatureData = Sign.getSignInterface().signMessage(
-                encodedData, credentials.getEcKeyPair());
+            encodedData, credentials.getEcKeyPair());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         return signDataStr;
     }
