@@ -34,6 +34,8 @@ public enum CodeMessageEnums {
     PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
     USERNAME_IS_NULL(303005, "userName is null"),
+    INVALID_GROUP_ID(303006, "groupId is invalid"),
+    ADDRESS_IS_NULL(303006, "address is null"),
 
 
     //system error
