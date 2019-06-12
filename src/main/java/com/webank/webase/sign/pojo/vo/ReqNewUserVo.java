@@ -15,6 +15,7 @@
  */
 package com.webank.webase.sign.pojo.vo;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,5 +29,7 @@ public class ReqNewUserVo {
     @NotBlank
     @Pattern(regexp = "[a-zA-Z0-9_]{3,32}")
     private String userName;
+    @NotNull
+    private Integer groupId;
     private String description;
 }

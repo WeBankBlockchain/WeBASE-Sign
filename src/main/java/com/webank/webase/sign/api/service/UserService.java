@@ -21,7 +21,7 @@ import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqNewUserVo;
 import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
 import com.webank.webase.sign.util.AesUtils;
-import java.util.Objects;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -46,15 +46,21 @@ public class UserService {
      */
     public RspUserInfoVo newUser(ReqNewUserVo req) throws BaseException {
         log.info("start addUser");
+        String userName = req.getUserName();
+        int groupId = req.getGroupId();
         // check user name not exist.
-        userNameNotExistOrThrow(req.getUserName());
+        UserInfoPo userRow = findByNameAndGroupId(groupId, userName);
+        if (userRow != null) {
+            log.warn("fail newUser,already exists. group:{} user:{}", groupId, userName);
+            throw new BaseException(CodeMessageEnums.USER_NAME_IS_EXISTS);
+        }
         // get keyStoreInfo
         KeyStoreInfo keyStoreInfo = keyStoreService.newKey();
 
         //save user.
         UserInfoPo userInfoPo = new UserInfoPo();
         BeanUtils.copyProperties(keyStoreInfo, userInfoPo);
-        userInfoPo.setUserName(aesUtils.aesEncrypt(req.getUserName()));
+        BeanUtils.copyProperties(req, userInfoPo);
 
         RspUserInfoVo rspUserInfoVo = saveUser(userInfoPo);
         log.info("end addUser");
@@ -64,14 +70,18 @@ public class UserService {
     /**
      * import user.
      */
-    public RspUserInfoVo importUser(String privateKey, String userName) throws BaseException {
+   /* public RspUserInfoVo importUser(String privateKey, String userName) throws BaseException {
         log.info("start importUser");
         if (StringUtils.isBlank(privateKey)) {
             log.warn("fail importUser. privateKey is blank");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_IS_NULL);
         }
         // check user name not exist.
-        userNameNotExistOrThrow(userName);
+        UserInfoPo userRow = findByNameAndGroupId(groupId, userName);
+        if (userRow != null) {
+            log.warn("fail importUser,already exists. group:{} user:{}", groupId, userName);
+            throw new BaseException(CodeMessageEnums.USER_NAME_IS_EXISTS);
+        }
 
         // get keyStoreInfo
         KeyStoreInfo keyStoreInfo = keyStoreService.getKeyStoreFromPrivateKey(privateKey);
@@ -84,7 +94,7 @@ public class UserService {
         RspUserInfoVo rspUserInfoVo = saveUser(userInfoPo);
         log.info("end importUser");
         return rspUserInfoVo;
-    }
+    }*/
 
 
     /**
@@ -98,19 +108,18 @@ public class UserService {
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         BeanUtils.copyProperties(userInfoPo, rspUserInfoVo);
 
-        rspUserInfoVo.setUserName(aesUtils.aesDecrypt(userInfoPo.getUserName()));
+        rspUserInfoVo.setUserName(userInfoPo.getUserName());
         rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(userInfoPo.getPrivateKey()));
 
         return rspUserInfoVo;
     }
-
 
     /**
      * get user info.
      *
      * @param userName userName
      */
-    public UserInfoPo getUserInfo(String userName) {
+   /* public UserInfoPo getUserInfo(String userName) {
         userName = aesUtils.aesEncrypt(userName);
         UserInfoPo user = userDao.findUser(userName);
         if (Objects.isNull(user)) {
@@ -120,41 +129,45 @@ public class UserService {
         user.setUserName(userName);
         user.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
         return user;
-    }
+    }*/
 
 
     /**
-     * check userName not exist.
+     * query user by groupId and name.
      */
-    public void userNameNotExistOrThrow(String userName) throws BaseException {
-        userName = aesUtils.aesEncrypt(userName);
+    private UserInfoPo findByNameAndGroupId(int groupId, String userName) throws BaseException {
+        if (groupId <= 0) {
+            log.error("fail findByNameAndGroupId, groupId:{}", groupId);
+            throw new BaseException(CodeMessageEnums.INVALID_GROUP_ID);
+        }
         if (StringUtils.isBlank(userName)) {
-            log.warn("fail userNameNotExistOrThrow. userName is blank");
+            log.error("fail findByNameAndGroupId, userName is null");
             throw new BaseException(CodeMessageEnums.USERNAME_IS_NULL);
         }
-        // check user name
-        UserInfoPo userRow = userDao.findUser(userName);
-        if (userRow != null) {
-            log.warn("fail userNameNotExistOrThrow. user name:{} is already exists", userName);
-            throw new BaseException(CodeMessageEnums.USER_NAME_IS_EXISTS);
-        }
+
+        UserInfoPo user = userDao.findUser(null, userName, groupId);
+        Optional.ofNullable(user)
+            .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
+
+        return user;
     }
 
     /**
-     * check userName  exist.
+     * query user by groupId and address.
      */
-    public UserInfoPo userNameExistOrThrow(String userName) throws BaseException {
-        userName = aesUtils.aesEncrypt(userName);
-        if (StringUtils.isBlank(userName)) {
-            log.warn("fail userNameExistOrThrow. userName is blank");
-            throw new BaseException(CodeMessageEnums.USERNAME_IS_NULL);
+    public UserInfoPo findByAddressAndGroupId(int groupId, String address) throws BaseException {
+        if (groupId <= 0) {
+            log.error("fail findByAddressAndGroupId, groupId:{}", groupId);
+            throw new BaseException(CodeMessageEnums.INVALID_GROUP_ID);
         }
-        // check user name
-        UserInfoPo userRow = userDao.findUser(userName);
-        if (Objects.isNull(userRow)) {
-            log.warn("fail userNameExistOrThrow. user name:{} is not exists", userName);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+        if (StringUtils.isBlank(address)) {
+            log.error("fail findByAddressAndGroupId, address is null");
+            throw new BaseException(CodeMessageEnums.ADDRESS_IS_NULL);
         }
-        return userRow;
+
+        UserInfoPo user = userDao.findUser(address, null, groupId);
+        Optional.ofNullable(user)
+            .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
+        return user;
     }
 }

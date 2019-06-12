@@ -28,7 +28,8 @@ public interface UserDao {
 
     void insertUserInfo(UserInfoPo userInfoPo);
 
-    UserInfoPo findUser(@Param("userName") String userName);
+    UserInfoPo findUser(@Param("address") String address, @Param("userName") String userName,
+        @Param("groupId") int groupId);
 
     void updateRequestCount(@Param("id") Long id, @Param("requestCount") int requestCount);
 
