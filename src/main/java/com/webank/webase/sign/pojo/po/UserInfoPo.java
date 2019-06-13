@@ -24,6 +24,7 @@ import lombok.Data;
 @Data
 public class UserInfoPo {
     private Integer userId;
+	private Integer groupId;
 	private String userName;
 	private String address;
 	private String publicKey;

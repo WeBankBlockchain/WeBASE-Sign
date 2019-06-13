@@ -13,7 +13,6 @@
  */
 package com.webank.webase.sign.api.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
@@ -23,6 +22,7 @@ import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -55,28 +55,44 @@ public class UserController {
      * @param req parameter
      * @param result checkResult
      */
-    @ApiOperation(value = "add user", notes = "add user")
+    @ApiOperation(value = "new user", notes = "new user")
     @ApiImplicitParam(name = "req", value = "user info", required = true, dataType = "ReqNewUserVo")
     @PostMapping("/newUser")
     public BaseRspVo newUser(@Valid @RequestBody ReqNewUserVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
         //new user
-        RspUserInfoVo userInfo = userService.addUser(req);
+        RspUserInfoVo userInfo = userService.newUser(req);
         return CommonUtils.buildSuccessRspVo(userInfo);
     }
 
     /**
      * get user.
      */
-    @ApiOperation(value = "get user info", notes = "get user info by name")
-    @ApiImplicitParam(name = "userName", value = "userName", required = true, dataType = "String", paramType = "path")
-    @GetMapping("/userInfo/{userName:[a-zA-Z0-9_]{3,32}}")
-    public BaseRspVo getUserInfo(@PathVariable("userName") String userName) {
+    @ApiOperation(value = "get user info", notes = "get user by groupId and address")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "groupId", value = "user groupId", required = true, dataType = "Long"),
+        @ApiImplicitParam(name = "address", value = "user address", required = true, dataType = "String"),
+    })
+    @GetMapping("/{groupId}/{address}/userInfo")
+    public BaseRspVo getUserInfo(@PathVariable("groupId") Integer groupId,
+        @PathVariable("address") String address) throws BaseException {
         //new user
-        UserInfoPo userInfo = userService.getUserInfo(userName);
+        UserInfoPo userInfo = userService.findByAddressAndGroupId(groupId,address);
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
-        Optional.ofNullable(userInfo).ifPresent(u ->  BeanUtils.copyProperties(u, rspUserInfoVo));
+        Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
         return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
     }
+
+
+   /* @ApiOperation(value = "import PrivateKey", notes = "import PrivateKey")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "privateKey", value = "private key", required = true, dataType = "String"),
+        @ApiImplicitParam(name = "userName", value = "user name", required = true, dataType = "String"),
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/import")
+    public BaseRspVo importPrivateKey(String privateKey, String userName) throws BaseException {
+        RspUserInfoVo storeInfo = userService.importUser(privateKey, userName);
+        return CommonUtils.buildSuccessRspVo(storeInfo);
+    }*/
 }
