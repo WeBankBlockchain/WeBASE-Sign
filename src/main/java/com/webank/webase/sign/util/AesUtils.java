@@ -26,15 +26,15 @@ import com.webank.webase.sign.constant.ConstantProperties;
 @Log4j2
 @Component
 public class AesUtils {
+
     @Autowired
     ConstantProperties properties;
 
     /**
      * Encrypt by aes.
-     * 
+     *
      * @param content info
      * @param key key
-     * @return
      */
     public String aesEncrypt(String content, String key) {
         if (StringUtils.isBlank(key) || key.length() != 16) {
@@ -59,15 +59,18 @@ public class AesUtils {
      * Encrypt by aes.
      */
     public String aesEncrypt(String content) {
+        if (StringUtils.isBlank(content)) {
+            log.warn("fail aesEncrypt,content is null");
+            return null;
+        }
         return aesEncrypt(content, properties.getAesKey());
     }
 
     /**
      * Decrypt by aes.
-     * 
+     *
      * @param content info
      * @param key key
-     * @return
      */
     public String aesDecrypt(String content, String key) {
         if (StringUtils.isBlank(key) || key.length() != 16) {

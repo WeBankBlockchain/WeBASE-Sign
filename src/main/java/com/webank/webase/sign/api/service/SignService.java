@@ -20,8 +20,8 @@ import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
-import com.webank.webase.sign.util.AesUtils;
 import com.webank.webase.sign.util.CommonUtils;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
@@ -31,44 +31,37 @@ import org.springframework.stereotype.Service;
 
 /**
  * SignService.
- * 
  */
 @Slf4j
 @Service
 public class SignService {
+
     @Autowired
     private UserService userService;
-	@Autowired
-	ConstantProperties properties;
-	@Autowired
-    private AesUtils aesUtils;
-	
+    @Autowired
+    ConstantProperties properties;
 
-	
-	
+
     /**
      * add sign.
-     * 
+     *
      * @param req parameter
-     * @return
-     * @throws BaseException 
      */
     public String sign(ReqEncodeInfoVo req) throws BaseException {
-        // select user
-        String userName = req.getUserName();
-        UserInfoPo userRow =  userService.getUserInfo(userName);
-
-        if (userRow == null) {
-            log.warn("fail addSign. user name:{} does not exist", userName);
+        String address = req.getAddress();
+        int groupId = req.getGroupId();
+        // check user name not exist.
+        UserInfoPo userRow = userService.findByAddressAndGroupId(groupId, address);
+        if (Objects.isNull(userRow)) {
+            log.warn("fail sign, user not exists. group:{} userAddress:{}", groupId, address);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
         }
-        
+
         // signature
-        String privateKey = aesUtils.aesDecrypt(userRow.getPrivateKey());
-        Credentials credentials = Credentials.create(privateKey);
+        Credentials credentials = Credentials.create(userRow.getPrivateKey());
         byte[] encodedData = req.getEncodedDataStr().getBytes();
         SignatureData signatureData = Sign.getSignInterface().signMessage(
-                encodedData, credentials.getEcKeyPair());
+            encodedData, credentials.getEcKeyPair());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         return signDataStr;
     }

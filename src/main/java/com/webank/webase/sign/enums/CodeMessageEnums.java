@@ -31,6 +31,12 @@ public enum CodeMessageEnums {
     //business exception
     USER_NAME_IS_EXISTS(303001, "user is already exists"),
     USER_IS_NOT_EXISTS(303002, "user does not exist"),
+    PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
+    PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
+    USERNAME_IS_NULL(303005, "userName is null"),
+    INVALID_GROUP_ID(303006, "groupId is invalid"),
+    ADDRESS_IS_NULL(303006, "address is null"),
+
 
     //system error
     SYSTEM_ERROR(103001, "system error"),
