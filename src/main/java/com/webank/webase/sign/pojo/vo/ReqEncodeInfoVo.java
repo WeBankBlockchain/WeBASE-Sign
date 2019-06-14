@@ -15,7 +15,6 @@
  */
 package com.webank.webase.sign.pojo.vo;
 
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -25,8 +24,6 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 public class ReqEncodeInfoVo {
 
-    @NotNull
-    private Integer groupId;
     @NotBlank
     private String address;
     @NotBlank
