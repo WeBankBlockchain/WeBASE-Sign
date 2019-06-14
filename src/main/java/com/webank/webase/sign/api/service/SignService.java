@@ -49,11 +49,10 @@ public class SignService {
      */
     public String sign(ReqEncodeInfoVo req) throws BaseException {
         String address = req.getAddress();
-        int groupId = req.getGroupId();
         // check user name not exist.
-        UserInfoPo userRow = userService.findByAddressAndGroupId(groupId, address);
+        UserInfoPo userRow = userService.findByAddress(address);
         if (Objects.isNull(userRow)) {
-            log.warn("fail sign, user not exists. group:{} userAddress:{}", groupId, address);
+            log.warn("fail sign, user not exists. userAddress:{}", address);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
         }
 
