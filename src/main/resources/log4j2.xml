@@ -9,8 +9,8 @@
                 pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c{1}(%F:%L) - %m%n" />
         </Console>
 
-        <RollingFile name="sign" fileName="${logPath}/webase-sign.log"
-            filePattern="${logPath}/webase-sign.log.%d{yyyy-MM-dd}.%i.log.gz">
+        <RollingFile name="sign" fileName="${logPath}/WeBASE-Sign.log"
+            filePattern="${logPath}/WeBASE-Sign.log.%d{yyyy-MM-dd}.%i.log.gz">
             <PatternLayout
                 pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c{1}(%L) - %m%n" />
             <Policies>
