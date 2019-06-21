@@ -24,7 +24,6 @@ import lombok.Data;
 @Data
 public class RspUserInfoVo {
     private Integer userId;
-	private String userName;
 	private String address;
 	private String publicKey;
 	private String privateKey;
