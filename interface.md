@@ -13,7 +13,7 @@
 
 ## 接口URL
 
-http://localhost:8085/webase-sign/addUser
+http://localhost:8085/WeBASE-Sign/addUser
 
 ## 调用方法
 
@@ -86,7 +86,7 @@ b.异常返回结果示例（信息详情请参看附录1）
 
 ## 接口URL
 
-http://localhost:8085/webase-sign/userInfo/{userName}
+http://localhost:8085/WeBASE-Sign/userInfo/{userName}
 
 ## 调用方法
 
@@ -102,7 +102,7 @@ HTTP GET
 
 **2）数据格式**
 
-http://localhost:8082/webase-sign/userInfo/jack
+http://localhost:8082/WeBASE-Sign/userInfo/jack
 
 ## 响应参数
 
@@ -154,7 +154,7 @@ b.异常返回结果示例（信息详情请参看附录1）
 
 ## 接口URL
 
-http://localhost:8085/webase-sign/addSign
+http://localhost:8085/WeBASE-Sign/addSign
 
 ## 调用方法
 

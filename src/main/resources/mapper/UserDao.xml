@@ -5,8 +5,6 @@
   <update id="createTbUser">
         CREATE TABLE IF NOT EXISTS tb_user (
           user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
-          group_id int(11) DEFAULT NULL COMMENT '所属群组编号',
-          user_name varchar(100) NOT NULL COMMENT '用户名',
           address varchar(64) NOT NULL COMMENT '用户地址',
           public_key varchar(256) NOT NULL COMMENT '公钥',
           private_key varchar(256) NOT NULL COMMENT '私钥',
@@ -14,15 +12,12 @@
           gmt_create datetime DEFAULT NULL COMMENT '创建时间',
           gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
           PRIMARY KEY (user_id),
-          UNIQUE KEY unique_name (group_id,user_name),
-          UNIQUE KEY unique_address (group_id,address)
+          UNIQUE KEY unique_address (address)
         ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
     </update>
 
   <sql id="USER_COLUMN">
         user_id as userId,
-        group_id as groupId,
-        user_name as userName,
         address,
         public_key as publicKey,
         private_key as privateKey,
@@ -34,8 +29,6 @@
       select LAST_INSERT_ID()
     </selectKey>
     insert into tb_user(
-    `user_name`,
-    `group_id`,
     `address`,
     `public_key`,
     `private_key`,
@@ -43,8 +36,6 @@
     `gmt_create`,
     `gmt_modify`
     ) values (
-    #{userName},
-    #{groupId},
     #{address},
     #{publicKey},
     #{privateKey},
@@ -58,12 +49,6 @@
     select
     <include refid="USER_COLUMN"/>
     from tb_user where 1=1
-    <if test="groupId != null and groupId != ''">
-      and group_id = #{groupId}
-    </if>
-    <if test="userName != null and userName != ''">
-      and user_name = #{userName}
-    </if>
     <if test="address != null and address != ''">
       and address = #{address}
     </if>
