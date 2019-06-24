@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webank.webase.sign.api.dao.UserDao">
+  <update id="createTbUser">
+        CREATE TABLE IF NOT EXISTS tb_user (
+          user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
+          address varchar(64) NOT NULL COMMENT '用户地址',
+          public_key varchar(256) NOT NULL COMMENT '公钥',
+          private_key varchar(256) NOT NULL COMMENT '私钥',
+          description varchar(128) DEFAULT NULL COMMENT '描述',
+          gmt_create datetime DEFAULT NULL COMMENT '创建时间',
+          gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
+          PRIMARY KEY (user_id),
+          UNIQUE KEY unique_address (address)
+        ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+    </update>
+
+  <sql id="USER_COLUMN">
+        user_id as userId,
+        address,
+        public_key as publicKey,
+        private_key as privateKey,
+        description
+    </sql>
+
+  <insert id="insertUserInfo" parameterType="com.webank.webase.sign.pojo.po.UserInfoPo">
+    <selectKey keyProperty="userId" resultType="java.lang.Integer">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_user(
+    `address`,
+    `public_key`,
+    `private_key`,
+    `description`,
+    `gmt_create`,
+    `gmt_modify`
+    ) values (
+    #{address},
+    #{publicKey},
+    #{privateKey},
+    #{description},
+    NOW(),
+    NOW()
+    )
+  </insert>
+
+  <select id="findUser" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+    select
+    <include refid="USER_COLUMN"/>
+    from tb_user where 1=1
+    <if test="address != null and address != ''">
+      and address = #{address}
+    </if>
+  </select>
+</mapper>
