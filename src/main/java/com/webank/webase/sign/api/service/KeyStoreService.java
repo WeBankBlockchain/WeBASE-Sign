@@ -17,15 +17,12 @@ package com.webank.webase.sign.api.service;
 
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
-import java.io.UnsupportedEncodingException;
-import java.util.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
 import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.util.AesUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +37,7 @@ public class KeyStoreService {
     private AesUtils aesUtils;
 
     static final int PUBLIC_KEY_LENGTH_IN_HEX = 128;
+    static final int PRIVATE_KEY_LENGTH_IN_HEX = 16;
 
     /**
      * get KeyStoreInfo by privateKey.
@@ -49,15 +47,13 @@ public class KeyStoreService {
             log.error("fail getKeyStoreFromPrivateKey. private key is null");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_IS_NULL);
         }
-        byte[] base64decodedBytes = Base64.getDecoder().decode(privateKey);
-        String decodeKey = null;
-        try {
-            decodeKey = new String(base64decodedBytes, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            log.error("fail getKeyStoreFromPrivateKey", e);
-            throw new BaseException(CodeMessageEnums.PRIVATE_KEY_DECODE_FAIL);
+        
+        if(!isValidPrivateKey(privateKey)){
+            log.error("fail getKeyStoreFromPrivateKey. private key format error");
+            throw new BaseException(CodeMessageEnums.PRIVATEKEY_FORMAT_ERROR);
         }
-        ECKeyPair keyPair = ECKeyPair.create(Numeric.toBigInt(decodeKey));
+        
+        ECKeyPair keyPair = ECKeyPair.create(Numeric.toBigInt(privateKey));
         return keyPair2KeyStoreInfo(keyPair);
     }
 
@@ -90,6 +86,11 @@ public class KeyStoreService {
         keyStoreInfo.setPrivateKey(aesUtils.aesEncrypt(privateKey));
         keyStoreInfo.setAddress(address);
         return keyStoreInfo;
+    }
+    
+    private static boolean isValidPrivateKey(String privateKey) {
+        String cleanPrivateKey = Numeric.cleanHexPrefix(privateKey);
+        return cleanPrivateKey.length() == PRIVATE_KEY_LENGTH_IN_HEX;
     }
 
 }
