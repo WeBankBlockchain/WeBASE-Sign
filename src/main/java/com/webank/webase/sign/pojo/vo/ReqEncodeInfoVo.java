@@ -15,17 +15,17 @@
  */
 package com.webank.webase.sign.pojo.vo;
 
-import lombok.Data;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * ReqEncodeInfoVo.
  */
 @Data
 public class ReqEncodeInfoVo {
-
-    @NotBlank
-    private String address;
+    @NotNull
+    private Integer userId;
     @NotBlank
     private String encodedDataStr;
 }
