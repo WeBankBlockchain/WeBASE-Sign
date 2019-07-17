@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry output="bin/main" kind="src" path="src/main/java">
+		<attributes>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry output="bin/main" kind="src" path="src/main/resources">
+		<attributes>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/1.5.9.RELEASE/638bbbf7be0aad219154fb153d82edb5a5328eb/spring-boot-starter-web-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/1.5.9.RELEASE/bda9733d5e6ba6d1a97deead1738713dc0631b3e/spring-boot-starter-web-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-aop/1.5.9.RELEASE/dd291089c5b562170989d0b2e0f8c712ce96ae23/spring-boot-starter-aop-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-aop/1.5.9.RELEASE/fab419df8d7a13968a51ebfcbcad7ef320d66184/spring-boot-starter-aop-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis.spring.boot/mybatis-spring-boot-starter/1.3.1/b9b3f071860f7baddebf447bfc3634b3b4f1a625/mybatis-spring-boot-starter-1.3.1-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis.spring.boot/mybatis-spring-boot-starter/1.3.1/f67bd22f518df4b56e6647c90692529af4715a10/mybatis-spring-boot-starter-1.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-jdbc/1.5.6.RELEASE/bb4dba9284f65777807ed63d4884d16329c63af7/spring-boot-starter-jdbc-1.5.6.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-jdbc/1.5.6.RELEASE/a2628fded329869fcdb812d7524d03376f4f64ed/spring-boot-starter-jdbc-1.5.6.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter/1.5.9.RELEASE/b62c0eb70f1860dcf9ecdadb53d086d8927fe916/spring-boot-starter-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter/1.5.9.RELEASE/6bfb34db2715ee86c6e2337fa145650588b4b1b3/spring-boot-starter-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis.spring.boot/mybatis-spring-boot-autoconfigure/1.3.1/45592ec727666ef13ce62c8b724a1a35e0bb1837/mybatis-spring-boot-autoconfigure-1.3.1-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis.spring.boot/mybatis-spring-boot-autoconfigure/1.3.1/af4ba7d4594459cbad87cb5561c271da26df3aa/mybatis-spring-boot-autoconfigure-1.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure/1.5.9.RELEASE/e8ec0872402f7a3d5c39c92009bd0d5fcb6783f6/spring-boot-autoconfigure-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure/1.5.9.RELEASE/88dd18bdaf317ae40971573a051fd47265f2ed39/spring-boot-autoconfigure-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/1.5.9.RELEASE/cdce9f52cf74b7e1abf0562c68777867c037ccec/spring-boot-configuration-processor-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/1.5.9.RELEASE/480eb0b35e9eda73c70da249f5d20430f672635a/spring-boot-configuration-processor-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-log4j2/1.5.9.RELEASE/decb63a03fb36ea3e0f7fe24919bf885132561fa/spring-boot-starter-log4j2-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-log4j2/1.5.9.RELEASE/15492bf03683ed8c7282f1aec7d3245826aeb8de/spring-boot-starter-log4j2-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger2/2.8.0/475ad2c1faacf90d40ebc550e9c2918cf901c245/springfox-swagger2-2.8.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger2/2.8.0/27fbca30912258ce0e31cd56361f732f6c27d5ff/springfox-swagger2-2.8.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-ui/2.8.0/34bf098a80997597323e4906184d70a868668d2b/springfox-swagger-ui-2.8.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-ui/2.8.0/2b895560df9cd70a2e93119188981b004b4e2ad5/springfox-swagger-ui-2.8.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.30/e55bc1888d3703d9af36139b09561c1c1551448f/mysql-connector-java-5.1.30-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.30/203cca178350b60899be36d0e56029eca7430d8/mysql-connector-java-5.1.30.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis/mybatis/3.4.5/e762c2c3d81be2ecaf5655613853d645c7b8c9b7/mybatis-3.4.5-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis/mybatis/3.4.5/5200759b13f70652995fd206a52fdc98b01c65cd/mybatis-3.4.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j-impl/2.9.0/6ed151ca03d52ee60bed67c1bcd3ada8458818ba/log4j-slf4j-impl-2.9.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j-impl/2.9.0/1bd7f6b6ddbaf8a21d6c2b288d0cc5bc5b791cc0/log4j-slf4j-impl-2.9.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-web/2.9.0/910a33bb3ef66d3e5690683a2f5b0acf3ff0ee04/log4j-web-2.9.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-web/2.9.0/2eb17e314b4f43d5db5ed4732f0ec621733c9d0a/log4j-web-2.9.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.9.0/fcfa73b299b5fa4e726124746fc2a4e6441aa49d/log4j-core-2.9.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.9.0/52f6548ae1688e126c29b5dc400929dc0128615/log4j-core-2.9.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.9.0/a64868637fbebbfa24a2c84bb461c6d063ba47bf/log4j-api-2.9.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.9.0/e0dcd508dfc4864a2f5a1963d6ffad170d970375/log4j-api-2.9.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.25/ffd0827a7c67d5915b7dc611afbda56a1f247191/jcl-over-slf4j-1.7.25-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.25/f8c32b13ff142a513eeb5b6330b1588dcb2c0461/jcl-over-slf4j-1.7.25.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.fisco-bcos/web3sdk/2.0.2/2ff72ca1458c2946ddc11c873896e2da83dfdae3/web3sdk-2.0.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.fisco-bcos/web3sdk/2.0.2/717723ea56dd53df86e5d955c73576c080400e43/web3sdk-2.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.6/4765e418c9084c4e01233cb5f09bdd6b5f311ccc/commons-lang3-3.6-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.6/9d28a6b23650e8a7e9063c04588ace6cf7012c17/commons-lang3-3.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.29/e0d92bca2f0bd8f0e9b21bb089edb499c7c9176d/fastjson-1.2.29-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.29/2878958d7631337dcfe3bb4e541aa34478367e66/fastjson-1.2.29.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.2/777a74656e7999ef50a01b57be835bfddeb30e4c/lombok-1.18.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.2/524e0a697e9d62950b2f763d88d35cd8dc82a9a1/lombok-1.18.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-tomcat/1.5.9.RELEASE/a03655d4a524035ec9d189ef5d318e0d1562458c/spring-boot-starter-tomcat-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-tomcat/1.5.9.RELEASE/4615056f8a2bcad03ba8cdf410419ee3d101c5bb/spring-boot-starter-tomcat-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.3.6.Final/3186793fdb68b63a39f6974c525f552dcdbacca3/hibernate-validator-5.3.6.Final-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.3.6.Final/4c730be8bf55a8e9a61e79a2f2c079abf48b718/hibernate-validator-5.3.6.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.6/dad3a9fbbedf8781dfd138539cd82638ebad5678/jackson-databind-2.9.6-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.6/cfa4f316351a91bfd95cb0644c6a2c95f52db1fc/jackson-databind-2.9.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.3.13.RELEASE/96a55ea7ae6fed76d6ab594b0820d75f53eaa203/spring-webmvc-4.3.13.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.3.13.RELEASE/87a095c7a1d13fe433ae6712787238c1dbaa6919/spring-webmvc-4.3.13.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.13.RELEASE/d225d6480b69dc70a04e332a348b448bf276f7f3/spring-web-4.3.13.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.13.RELEASE/7cd084992d546165ede3e99bc31ee49c937f0ce7/spring-web-4.3.13.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/1.5.9.RELEASE/dceed75443f662ced8d679fd368f314d584faa83/spring-boot-1.5.9.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/1.5.9.RELEASE/f472cdf948288796fb31e0bb03f6e7b022b763a0/spring-boot-1.5.9.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.vaadin.external.google/android-json/0.0.20131108.vaadin1/bf42d7e47a3228513b626dd7d37ac6f072aeca4f/android-json-0.0.20131108.vaadin1-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.vaadin.external.google/android-json/0.0.20131108.vaadin1/fa26d351fe62a6a17f5cda1287c1c6110dec413f/android-json-0.0.20131108.vaadin1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.25/bcea1530927f59b5128841d3571f879ce3af2e86/jul-to-slf4j-1.7.25-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.25/af5364cd6679bfffb114f0dec8a157aaa283b76/jul-to-slf4j-1.7.25.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-common/2.8.0/5e9589f79505e0c8149abf8814bdacb063f45fa/springfox-swagger-common-2.8.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-common/2.8.0/e0fc6a0096eb8d40fac7cc8206ddbb2fe73051d2/springfox-swagger-common-2.8.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-spring-web/2.8.0/218708228b9497b3663abe94eca05c0a7aa2d1f1/springfox-spring-web-2.8.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-spring-web/2.8.0/cb2ce464b07919158dde1ad40f72cca9c364559b/springfox-spring-web-2.8.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-schema/2.8.0/b844e70435ef8722ad2b12041483f3f348ee2e3f/springfox-schema-2.8.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-schema/2.8.0/70ed8275e2277bffe269c8dbd688f54464bf1222/springfox-schema-2.8.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-spi/2.8.0/e3ae929657c0d46a7674c6726a260b8f9cfc5bb1/springfox-spi-2.8.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-spi/2.8.0/efe49b45357dd9f6c27799a5f7f5ba1ce6bdc05f/springfox-spi-2.8.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-core/2.8.0/43cfe7deef85f93db212d3f7ada969d4eefb142e/springfox-core-2.8.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-core/2.8.0/5f0fbaa34cc01dfca7089000c4943629d7e1c9dc/springfox-core-2.8.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.plugin/spring-plugin-metadata/1.2.0.RELEASE/6551604dd9c0619bae2f5a244580fa9a0dc646bf/spring-plugin-metadata-1.2.0.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.plugin/spring-plugin-metadata/1.2.0.RELEASE/97223fc496b6cab31602eedbd4202aa4fff0d44f/spring-plugin-metadata-1.2.0.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.plugin/spring-plugin-core/1.2.0.RELEASE/112d82259202fa909d51cf7ccefae0c5523f1373/spring-plugin-core-1.2.0.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework.plugin/spring-plugin-core/1.2.0.RELEASE/f380e7760032e7d929184f8ad8a33716b75c0657/spring-plugin-core-1.2.0.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.18.RELEASE/6cf1f5915d2db41c55992ddcea5f3361b8fcbc11/spring-context-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.18.RELEASE/d302953b509e6d380856e245bf80c29770c08c98/spring-context-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.18.RELEASE/a46658c148c8e9c89a80c08535283189d7d5912d/spring-aop-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.18.RELEASE/dd930265a504563d76de79864ae3196f6e9035e0/spring-aop-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.13/4bba65cfdaa38e16e40ab5134651ac751e384c5f/aspectjweaver-1.8.13-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.13/ad94df2a28d658a40dc27bbaff6a1ce5fbf04e9b/aspectjweaver-1.8.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-models/1.5.14/62070feb330d93fb83256a54061b30c2d87e6c2f/swagger-models-1.5.14-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-models/1.5.14/581d784b65e82cee5bf3e91d193d3f9c0c702453/swagger-models-1.5.14.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-annotations/1.5.14/13cdf98433e53e10fcdf7e557bcad353cdfb2d8/swagger-annotations-1.5.14-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-annotations/1.5.14/989c19cd0a90768885532318ca5fd7ea16290cc8/swagger-annotations-1.5.14.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.9.11/2398090ad4dcba954285f97acef10e92e0260044/reflections-0.9.11-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.9.11/4c686033d918ec1727e329b7222fcb020152e32b/reflections-0.9.11.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/20.0/9c8493c7991464839b612d7547d6c263adf08f75/guava-20.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/20.0/89507701249388e1ed5ddcf8c41f4ce1be7831ef/guava-20.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.4/d5aa53c93626884209c1e82fdf44d2ccdaf8e9c2/classmate-1.3.4-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.4/3d5f48f10bbe4eb7bd862f10c0583be2e0053c6/classmate-1.3.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/962153db4a9ea71b79d047dfd1b2a0d80d8f4739/slf4j-api-1.7.25-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/da76ca59f6a57ee3102f8f9bd9cee742973efa8a/slf4j-api-1.7.25.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct/1.2.0.Final/e7558cc36061a3a7d189c44b1ab146c9bb585b65/mapstruct-1.2.0.Final-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct/1.2.0.Final/8609d6eb044e9f6c73cb24c8f2f4ed5c72a249c7/mapstruct-1.2.0.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis/mybatis-spring/1.3.1/59b2a888105b7c90c382f1fc5d3d4c4c7c65c8f0/mybatis-spring-1.3.1-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.mybatis/mybatis-spring/1.3.1/5197169e15a43066f177a1cd12a098e1283fdc76/mybatis-spring-1.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ethereum/solcJ-all/0.4.25/3307726cf6c468fe35cd4b40f6c46697cb081f45/solcJ-all-0.4.25.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.3.18.RELEASE/e2319dc9eb4f3d370ec69ea5a2b18ac8cf079364/spring-jdbc-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.3.18.RELEASE/816bc40759cd07ec50b86b1472aa021813387114/spring-jdbc-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.3.18.RELEASE/6ee16178cb0f8692ffaa35684a86c68b7f7f27d1/spring-tx-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.3.18.RELEASE/b6b7938f7d8ba412b6663a8b950592557c2d996e/spring-tx-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.18.RELEASE/bb309de7acfeb3e4d89095b3e7a19809252e804e/spring-beans-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.18.RELEASE/27460686b16b3ffee60bb3365cd56bba6ed860ff/spring-beans-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.3.18.RELEASE/48451b2253130126b87ef9237fa1b580661ed459/spring-test-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.3.18.RELEASE/1995997f20dcb66d44c252bb6d1a06eff00b465e/spring-test-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.3.18.RELEASE/d486e8421316cb392e7f9e595e59d0fc459e0048/spring-expression-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.3.18.RELEASE/64f2270bfd9d615c8c3b9d94995867f39391ed30/spring-expression-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.18.RELEASE/6ce871ab6fbcc92da74aaa53861a33828b20e346/spring-core-4.3.18.RELEASE-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.18.RELEASE/4acbce682c3dfe38181d57b7e0792e2cc21e4f77/spring-core-4.3.18.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.alibaba/druid/1.0.29/fd544952195fa15a21737b97b30f0852e87261ad/druid-1.0.29-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.alibaba/druid/1.0.29/4acf3e5be445b9a6970a5497592e5f69b22c41e3/druid-1.0.29.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.32.Final/96a458beeb830f2da8baa6a482b6f01f0f8f9a2a/netty-all-4.1.32.Final-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.32.Final/4bdf6727530e7eb14c597056730724533ad96648/netty-all-4.1.32.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.netty/netty-tcnative/2.0.20.Final/1d7905615ed8682aebcbbc63c42775ff47282a66/netty-tcnative-2.0.20.Final-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.netty/netty-tcnative/2.0.20.Final/672e11e4cbea79f96953991f885f63776a1357b/netty-tcnative-2.0.20.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.netty/netty-tcnative-boringssl-static/2.0.20.Final/e16e918891c92b63ecb4b0dc90be9032594c7e0d/netty-tcnative-boringssl-static-2.0.20.Final-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.netty/netty-tcnative-boringssl-static/2.0.20.Final/71141fca3e805d9d248cb43e1909cf6a50ad92c/netty-tcnative-boringssl-static-2.0.20.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.5/9fd59f6f22326a4241f9524fdfd66a1f34824054/httpclient-4.5.5-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.5/1603dfd56ebcd583ccdf337b6c3984ac55d89e58/httpclient-4.5.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcprov-jdk15on/1.54/27cf7631a904e6b98d9842db13e09a22e524eee4/bcprov-jdk15on-1.54-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcprov-jdk15on/1.54/1acdedeb89f1d950d67b73d481eb7736df65eedb/bcprov-jdk15on-1.54.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.lambdaworks/scrypt/1.4.0/57d1aeaa56daeed9ef55a163aa12c6d5f5c333bf/scrypt-1.4.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.lambdaworks/scrypt/1.4.0/906506b74f30c8c20bccd9ed4a11112d8941fe87/scrypt-1.4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.squareup/javapoet/1.7.0/514d3c57164e54d51fc41388bf6b5a95b748b88f/javapoet-1.7.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.squareup/javapoet/1.7.0/4fdcf1fc27c1a8f55d1109df986c923152f07759/javapoet-1.7.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.reactivex/rxjava/1.2.4/a4e2280742c2f7935d69f0deff2acea315010cf7/rxjava-1.2.4-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.reactivex/rxjava/1.2.4/522cfb00b6c015b72c64ee60054b4f6338880858/rxjava-1.2.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-unixsocket/0.15/1320352a2ac3f0ecf93391e2b32d24e5e5754ec4/jnr-unixsocket-0.15-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-unixsocket/0.15/caac6379cbcac9cfb5b63d719907b43861e8ac19/jnr-unixsocket-0.15.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/info.picocli/picocli/3.6.0/fa7b4c919599b23672444e76b20feca417869aaf/picocli-3.6.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/info.picocli/picocli/3.6.0/658e0dce77754c7df1e770c246aea0d25808dca7/picocli-3.6.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.2.2/6a392bf0e4ce5fc841bf22c419dfd873ec438355/rxjava-2.2.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.2.2/db2277cb0641bd8bd2f491fab555d37345351d6/rxjava-2.2.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.java-websocket/Java-WebSocket/1.3.8/9ab89820379cdee996508fd1ee62cb99ed65d3f2/Java-WebSocket-1.3.8-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.java-websocket/Java-WebSocket/1.3.8/5ed9421c83110a74f6c805cdef3060faa44f5b68/Java-WebSocket-1.3.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/f8262a0e305c01bb4e8cb4053374315a8bc08e21/commons-collections4-4.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/commons-collections4-4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/f2d8698c46d1167ff24b06a840a87d91a02db891/commons-io-2.4-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.stefanbirkner/system-rules/1.18.0/609053535d3a5bc109d11cd4ff10176f13d8a300/system-rules-1.18.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.stefanbirkner/system-rules/1.18.0/4d95a6c83a298c60195c74b8cce3cc094e56dbb/system-rules-1.18.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.bretty/console-table-builder/1.2/c26c00eab5b93834f3fe1acb4464a6d253b5a4f/console-table-builder-1.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/io.bretty/console-table-builder/1.2/657284f977274d2e26363850ece1fe1854f1c456/console-table-builder-1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.17/63577e87886c76228db9f8a2c50ea43cde5072eb/snakeyaml-1.17-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.17/7a27ea250c5130b2922b86dea63cbb1cc10a660c/snakeyaml-1.17.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-websocket/8.5.23/6ea32660c2ddad48a47e3cb05ad34085d364b49/tomcat-embed-websocket-8.5.23-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-websocket/8.5.23/52f07abcae10dc7e1764304b0877def175c2c833/tomcat-embed-websocket-8.5.23.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/8.5.23/e5c70a402738f0ab5153e11b16ec28fb5eb8da2/tomcat-embed-core-8.5.23-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/8.5.23/79261793a47f507890ee08f749b9d81774e4f7f0/tomcat-embed-core-8.5.23.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-el/8.5.23/1fee361d6db46869c31a12fceb3742fe08a5656/tomcat-embed-el-8.5.23-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-el/8.5.23/98d979cde444dffa6d434c8377d0123b2dfa614c/tomcat-embed-el-8.5.23.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/7d49b53caed9bd81d172807c3e096d24f3c57090/validation-api-1.1.0.Final-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3625e6818158ddb4754fa2ec51299e5f57e596b4/jboss-logging-3.3.0.Final-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3616bb87707910296e2c195dc016287080bba5af/jboss-logging-3.3.0.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/a0ad4e203304ccab7e01266fa814115850edb8a9/jackson-annotations-2.9.0-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-jdbc/8.5.16/9a574809b81a7d173ce84d2057e91030e8734c9f/tomcat-jdbc-8.5.16-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-jdbc/8.5.16/c4b7a82f4f4276f0c76e9db11fb2653e6582bfb3/tomcat-jdbc-8.5.16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.6/297b561cc2ca89e07bf4cb6445c08260b524aa4d/jackson-core-2.9.6-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.6/4e393793c37c77e042ccc7be5a914ae39251b365/jackson-core-2.9.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.9/5808b4637c385d939e901eee3dc5f1121fc73a3b/httpcore-4.4.9-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.9/a86ce739e5a7175b4b234c290a00a5fdb80957a0/httpcore-4.4.9.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/11fb3d88ae7e3b757d70237064210ceb954a5a04/commons-codec-1.10-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-enxio/0.14/ef2388ecb89668935f88b411914d065623921992/jnr-enxio-0.14-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-enxio/0.14/a33f125337b270c9ba4cf1e84b40af405c5380f3/jnr-enxio-0.14.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-posix/3.0.33/79b1c4d62dd5ffd138d0771111fec86afb1d19b5/jnr-posix-3.0.33-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-posix/3.0.33/86dd65d4c33c4a6c8c260ee256bfcfecd8c45bee/jnr-posix-3.0.33.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-ffi/2.1.2/756487e6d02b6c9e9da795544d2c80c0eccf8eee/jnr-ffi-2.1.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-ffi/2.1.2/627fff71439402c4b697a03026b1d733140a6b19/jnr-ffi-2.1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-constants/0.9.6/5579ab41c687085e714fc330536ec4dda3350b08/jnr-constants-0.9.6-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-constants/0.9.6/84955256aa28919f12b6c7c9437ed65d814a3c0c/jnr-constants-0.9.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.2/fb592a3d57b11e71eb7a6211dd12ba824c5dd037/reactive-streams-1.0.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.2/323964c36556eb0e6209f65c1cef72b53b461ab8/reactive-streams-1.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-annotations-api/8.5.23/d02a749fbe3a2657582b8dd9c5d828536be98e5e/tomcat-annotations-api-8.5.23-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-annotations-api/8.5.23/aaf17df9fe0240e9e9d5375d24d5f177174b73d9/tomcat-annotations-api-8.5.23.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.7.9/d4715044fac07c15e0578933fa0dd25cd64ad0cc/byte-buddy-1.7.9-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.7.9/51218a01a882c04d0aba8c028179cce488bbcb58/byte-buddy-1.7.9.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.21.0-GA/81fefbd46ba6a18fc7af83b9c60b28c0862cd492/javassist-3.21.0-GA-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.21.0-GA/598244f595db5c5fb713731eddbb1c91a58d959b/javassist-3.21.0-GA.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-juli/8.5.16/7a991de4a74538aa5eab69c9a7dcdb2306c38f77/tomcat-juli-8.5.16-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-juli/8.5.16/e9e65481ee92eaf7dace280320f28139d485c958/tomcat-juli-8.5.16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jffi/1.2.14/248a063e04045dc09bcc65ad000e514f57860b3f/jffi-1.2.14-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jffi/1.2.14/c5928f546442090dba86cd7bdc2b7561c3deb3aa/jffi-1.2.14.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jffi/1.2.14/248a063e04045dc09bcc65ad000e514f57860b3f/jffi-1.2.14-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jffi/1.2.14/d8b010006d29b2db8fa4c498d6c3e508ad06b24a/jffi-1.2.14-native.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/5.0.3/f0f24f6666c1a15c7e202e91610476bd4ce59368/asm-commons-5.0.3-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/5.0.3/a7111830132c7f87d08fe48cb0ca07630f8cb91c/asm-commons-5.0.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/5.0.3/f0f24f6666c1a15c7e202e91610476bd4ce59368/asm-analysis-5.0.3-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/5.0.3/c7126aded0e8e13fed5f913559a0dd7b770a10f3/asm-analysis-5.0.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/5.0.3/f0f24f6666c1a15c7e202e91610476bd4ce59368/asm-util-5.0.3-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/5.0.3/1512e5571325854b05fb1efce1db75fcced54389/asm-util-5.0.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/5.0.3/f0f24f6666c1a15c7e202e91610476bd4ce59368/asm-tree-5.0.3-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/5.0.3/287749b48ba7162fb67c93a026d690b29f410bed/asm-tree-5.0.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.3/f0f24f6666c1a15c7e202e91610476bd4ce59368/asm-5.0.3-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.3/dcc2193db20e19e1feca8b1240dbbc4e190824fa/asm-5.0.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-x86asm/1.0.2/6bb6efcd010567ad80c8bb2bdd5065b30f0f1468/jnr-x86asm-1.0.2-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.github.jnr/jnr-x86asm/1.0.2/6936bbd6c5b235665d87bd450f5e13b52d4b48/jnr-x86asm-1.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="/Users/baidu/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+</classpath>
