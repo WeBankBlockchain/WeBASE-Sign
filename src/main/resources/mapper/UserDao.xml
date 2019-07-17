@@ -46,11 +46,8 @@
   </insert>
 
   <select id="findUser" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
-    select
-    <include refid="USER_COLUMN"/>
-    from tb_user where 1=1
-    <if test="address != null and address != ''">
-      and address = #{address}
-    </if>
+    select <include refid="USER_COLUMN"/>
+    from tb_user 
+    where user_id = #{userId}
   </select>
 </mapper>
