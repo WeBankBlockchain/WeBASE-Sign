@@ -15,17 +15,16 @@
  */
 package com.webank.webase.sign.util;
 
-import com.alibaba.fastjson.JSON;
-import com.webank.webase.sign.enums.CodeMessageEnums;
-import com.webank.webase.sign.exception.ParamException;
-import com.webank.webase.sign.pojo.vo.BaseRspVo;
 import java.util.stream.Collectors;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.validation.BindingResult;
+import com.alibaba.fastjson.JSON;
+import com.webank.webase.sign.enums.CodeMessageEnums;
+import com.webank.webase.sign.exception.ParamException;
+import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * CommonUtils.
