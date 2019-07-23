@@ -1,6 +1,6 @@
 server: 
   # 本工程服务端口，端口被占用则修改
-  port: 8085
+  port: 5004
   context-path: /WeBASE-Sign
 
 spring: 
