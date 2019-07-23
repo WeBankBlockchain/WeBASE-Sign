@@ -78,6 +78,7 @@ sourceSets {
 clean {
     delete 'dist'
     delete 'build'
+    delete 'log'
 }
 
 jar {

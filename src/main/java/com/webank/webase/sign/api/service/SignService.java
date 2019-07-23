@@ -48,11 +48,12 @@ public class SignService {
      * @param req parameter
      */
     public String sign(ReqEncodeInfoVo req) throws BaseException {
-        String address = req.getAddress();
+        Integer userId = req.getUserId();
+        log.info("start sign. userId:{}", userId);
         // check user name not exist.
-        UserInfoPo userRow = userService.findByAddress(address);
+        UserInfoPo userRow = userService.findByUserId(req.getUserId());
         if (Objects.isNull(userRow)) {
-            log.warn("fail sign, user not exists. userAddress:{}", address);
+            log.warn("fail sign, user not exists. userId:{}", userId);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
         }
 
@@ -62,6 +63,7 @@ public class SignService {
         SignatureData signatureData = Sign.getSignInterface().signMessage(
             encodedData, credentials.getEcKeyPair());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
+        log.info("start sign. userId:{}", userId);
         return signDataStr;
     }
 }
