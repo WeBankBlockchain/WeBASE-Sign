@@ -90,7 +90,7 @@ jar {
     doLast {
         copy {
             from file('src/main/resources/')
-            into 'dist/conf'
+            into 'dist/conf_template'
         }
 		copy {
 			from configurations.runtime
