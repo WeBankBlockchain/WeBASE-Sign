@@ -34,8 +34,6 @@ public enum CodeMessageEnums {
     PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
     PRIVATEKEY_FORMAT_ERROR(303005, "privateKey format error"),
-    ADDRESS_IS_NULL(303006, "address is null"),
-
 
     //system error
     SYSTEM_ERROR(103001, "system error"),

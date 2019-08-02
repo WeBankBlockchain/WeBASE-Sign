@@ -13,19 +13,17 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.util.Optional;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.webank.webase.sign.api.dao.UserDao;
-import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
 import com.webank.webase.sign.util.AesUtils;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -76,15 +74,12 @@ public class UserService {
     /**
      * query user by groupId and address.
      */
-    public UserInfoPo findByAddress(String address) throws BaseException {
-        if (StringUtils.isBlank(address)) {
-            log.error("fail findByAddressAndGroupId, address is null");
-            throw new BaseException(CodeMessageEnums.ADDRESS_IS_NULL);
-        }
-
-        UserInfoPo user = userDao.findUser(address);
+    public UserInfoPo findByUserId(Integer userId) throws BaseException {
+        log.info("start findByUserId. userId:{}", userId);
+        UserInfoPo user = userDao.findUser(userId);
         Optional.ofNullable(user)
             .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
+        log.info("end findByUserId. userId:{}", userId);
         return user;
     }
 }
