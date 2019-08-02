@@ -13,6 +13,13 @@
  */
 package com.webank.webase.sign.api.controller;
 
+import java.util.Optional;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
@@ -23,20 +30,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller.
  */
 @Api(value = "user", tags = "user interface")
-@Slf4j
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -59,14 +57,14 @@ public class UserController {
     /**
      * get user.
      */
-    @ApiOperation(value = "get user info", notes = "get user by groupId and address")
+    @ApiOperation(value = "get user info", notes = "get user by userId")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "address", value = "user address", required = true, dataType = "String"),
+        @ApiImplicitParam(name = "userId", value = "user id", required = true, dataType = "int"),
     })
-    @GetMapping("/{address}/userInfo")
-    public BaseRspVo getUserInfo(@PathVariable("address") String address) throws BaseException {
-        //new user
-        UserInfoPo userInfo = userService.findByAddress(address);
+    @GetMapping("/{userId}/userInfo")
+    public BaseRspVo getUserInfo(@PathVariable("userId") Integer userId) throws BaseException {
+        //find user
+        UserInfoPo userInfo = userService.findByUserId(userId);
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
         return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
