@@ -15,19 +15,20 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.util.Objects;
+import org.fisco.bcos.web3j.crypto.Credentials;
+import org.fisco.bcos.web3j.crypto.Sign;
+import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
+import org.fisco.bcos.web3j.utils.ByteUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.webank.webase.sign.constant.ConstantProperties;
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.fisco.bcos.web3j.crypto.Credentials;
-import org.fisco.bcos.web3j.crypto.Sign;
-import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * SignService.
@@ -59,7 +60,7 @@ public class SignService {
 
         // signature
         Credentials credentials = Credentials.create(userRow.getPrivateKey());
-        byte[] encodedData = req.getEncodedDataStr().getBytes();
+        byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
         SignatureData signatureData = Sign.getSignInterface().signMessage(
             encodedData, credentials.getEcKeyPair());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
