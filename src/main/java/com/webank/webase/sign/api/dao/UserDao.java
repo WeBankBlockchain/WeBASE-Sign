@@ -15,6 +15,7 @@ package com.webank.webase.sign.api.dao;
 
 
 import com.webank.webase.sign.pojo.po.UserInfoPo;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +31,5 @@ public interface UserDao {
 
     UserInfoPo findUser(@Param("userId") Integer userId);
 
-    void updateRequestCount(@Param("id") Long id, @Param("requestCount") int requestCount);
-
-    void updateHandleStatus(UserInfoPo userInfoPo);
+    List<UserInfoPo> findUserList();
 }
