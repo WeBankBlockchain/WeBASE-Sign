@@ -13,6 +13,7 @@
  */
 package com.webank.webase.sign.api.controller;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,16 @@ public class UserController {
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
         return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
+    }
+    
+    /**
+     * get user list.
+     */
+    @ApiOperation(value = "get user list", notes = "get user list")
+    @GetMapping("/list")
+    public BaseRspVo getUserList() throws BaseException {
+        //find user list
+        List<RspUserInfoVo> rspUserInfos = userService.findUserList();
+        return CommonUtils.buildSuccessRspVo(rspUserInfos);
     }
 }
