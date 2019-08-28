@@ -56,6 +56,7 @@ start(){
                break
            fi
            let count++
+           echo -n "."
            sleep 1
        done
         
@@ -69,7 +70,7 @@ start(){
                    kill -9 $subPid
                fi
            done
-           echo "[Failed]"
+           echo "[Failed]. Please view log file (path:./log/)."
            echo "==============================================================================================="
        fi
     fi
