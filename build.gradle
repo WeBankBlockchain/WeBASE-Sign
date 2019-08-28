@@ -47,8 +47,15 @@ List logger = [
     "org.slf4j:jcl-over-slf4j:1.7.12"
 ]
 
+List jaxb = [
+     "javax.xml.bind:jaxb-api:2.3.0",
+     "com.sun.xml.bind:jaxb-impl:2.3.0",
+     "com.sun.xml.bind:jaxb-core:2.3.0",
+     "javax.activation:activation:1.1.1"
+]
+
 dependencies {
-    compile springboot,swagger,mysql,logger
+    compile springboot,swagger,mysql,logger,jaxb
     compile "org.apache.commons:commons-lang3:3.6"
     compile "com.alibaba:fastjson:1.2.29"
     compile 'org.fisco-bcos:web3sdk:2.0.5'
