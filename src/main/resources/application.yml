@@ -11,7 +11,7 @@ spring:
     username: dbUsername
     # 数据库密码
     password: dbPassword
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     
 constant: 
   # aes加密key（16位）
