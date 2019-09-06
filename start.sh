@@ -49,7 +49,7 @@ start(){
         echo "==============================================================================================="
     else
         echo -n "Starting Server $APP_MAIN Port $SERVER_PORT ..."
-        nohup $JAVA_HOME/bin/java -cp $CLASSPATH $APP_MAIN >> $LOG_DIR/sign.out 2>&1 &
+        nohup $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH $APP_MAIN >> $LOG_DIR/sign.out 2>&1 &
         
         count=1
         result=0
