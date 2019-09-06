@@ -34,6 +34,10 @@ checkProcess(){
     fi
 }
 
+JAVA_OPTS=" -Dfile.encoding=UTF-8"
+JAVA_OPTS+=" -Xmx256m -Xms256m -Xmn128m -Xss512k -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m"
+JAVA_OPTS+=" -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${LOG_DIR}/heap_error.log"
+
 start(){
     checkProcess
     echo "==============================================================================================="
@@ -44,8 +48,8 @@ start(){
         echo "Server $APP_MAIN Port $SERVER_PORT is running PID($processPid)"
         echo "==============================================================================================="
     else
-        echo -n "Starting Server $APP_MAIN Port $SERVER_PORT ... "
-        nohup $JAVA_HOME/bin/java -cp $CLASSPATH $APP_MAIN >> $LOG_DIR/front.out 2>&1 &
+        echo -n "Starting Server $APP_MAIN Port $SERVER_PORT ..."
+        nohup $JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH $APP_MAIN >> $LOG_DIR/sign.out 2>&1 &
         
         count=1
         result=0
