@@ -50,4 +50,10 @@
     from tb_user 
     where user_id = #{userId}
   </select>
+  
+  <select id="findUserList" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+    select <include refid="USER_COLUMN"/>
+    from tb_user 
+    order by user_id
+  </select>
 </mapper>
