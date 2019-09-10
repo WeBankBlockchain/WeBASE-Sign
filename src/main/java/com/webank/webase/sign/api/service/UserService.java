@@ -13,11 +13,15 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.webank.webase.sign.api.dao.UserDao;
+import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
@@ -70,16 +74,35 @@ public class UserService {
         return rspUserInfoVo;
     }
 
-
     /**
-     * query user by groupId and address.
+     * query user by userId.
      */
     public UserInfoPo findByUserId(Integer userId) throws BaseException {
         log.info("start findByUserId. userId:{}", userId);
         UserInfoPo user = userDao.findUser(userId);
+        if (Objects.isNull(user)) {
+            log.warn("fail findByUserId, user not exists. userId:{}", userId);
+            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+        }
         Optional.ofNullable(user)
             .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
         log.info("end findByUserId. userId:{}", userId);
         return user;
+    }
+    
+    /**
+     * query user list.
+     */
+    public List<RspUserInfoVo> findUserList() throws BaseException {
+        log.info("start findUserList.");
+        List<UserInfoPo> users = userDao.findUserList();
+        List<RspUserInfoVo> rspUserInfoVos = new ArrayList<>();
+        for (UserInfoPo user : users) {
+            RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
+            BeanUtils.copyProperties(user, rspUserInfoVo);
+            rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
+            rspUserInfoVos.add(rspUserInfoVo);
+        }
+        return rspUserInfoVos;
     }
 }
