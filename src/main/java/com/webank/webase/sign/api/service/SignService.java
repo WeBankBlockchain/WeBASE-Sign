@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
+import org.fisco.bcos.web3j.crypto.gm.GenCredential;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,10 +60,10 @@ public class SignService {
         }
 
         // signature
-        Credentials credentials = Credentials.create(userRow.getPrivateKey());
+        Credentials credentials = GenCredential.create(userRow.getPrivateKey());
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
         SignatureData signatureData = Sign.getSignInterface().signMessage(
-            encodedData, credentials.getEcKeyPair());
+                encodedData, credentials.getEcKeyPair());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         log.info("start sign. userId:{}", userId);
         return signDataStr;
