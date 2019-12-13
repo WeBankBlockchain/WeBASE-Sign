@@ -16,6 +16,8 @@
 
 package com.webank.webase.sign.api.controller;
 
+import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.web3j.crypto.EncryptType;
@@ -32,9 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "encrypt")
 public class EncryptTypeController {
     @GetMapping("")
-    public Integer getEncryptType() {
+    public BaseRspVo getEncryptType() {
         int encrypt = EncryptType.encryptType;
         log.info("getEncryptType:{}", encrypt);
-        return encrypt;
+        return CommonUtils.buildSuccessRspVo(encrypt);
     }
 }
