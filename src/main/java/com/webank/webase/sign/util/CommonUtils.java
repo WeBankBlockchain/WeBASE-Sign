@@ -17,6 +17,7 @@ package com.webank.webase.sign.util;
 
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import org.fisco.bcos.web3j.crypto.EncryptType;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.validation.BindingResult;
@@ -32,10 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CommonUtils {
 
+    public static final int publicKeyLength_64 = 64;
+
     /**
      * stringToSignatureData.
-     *
+     * 19/12/24 support guomi： add byte[] pub in signatureData
      * @param signatureData signatureData
+     * @return
      */
     public static SignatureData stringToSignatureData(String signatureData) {
         byte[] byteArr = Numeric.hexStringToByteArray(signatureData);
@@ -43,20 +47,38 @@ public class CommonUtils {
         System.arraycopy(byteArr, 1, signR, 0, signR.length);
         byte[] signS = new byte[32];
         System.arraycopy(byteArr, 1 + signR.length, signS, 0, signS.length);
-        return new SignatureData(byteArr[0], signR, signS);
+        if (EncryptType.encryptType == 1) {
+            byte[] pub = new byte[64];
+            System.arraycopy(byteArr, 1 + signR.length + signS.length, pub, 0, pub.length);
+            return new SignatureData(byteArr[0], signR, signS, pub);
+        } else {
+            return new SignatureData(byteArr[0], signR, signS);
+        }
     }
 
     /**
      * signatureDataToString.
-     *
+     * 19/12/24 support guomi： add byte[] pub in signatureData
      * @param signatureData signatureData
      */
     public static String signatureDataToString(SignatureData signatureData) {
-        byte[] byteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length];
-        byteArr[0] = signatureData.getV();
-        System.arraycopy(signatureData.getR(), 0, byteArr, 1, signatureData.getR().length);
-        System.arraycopy(signatureData.getS(), 0, byteArr, signatureData.getR().length + 1,
-            signatureData.getS().length);
+        byte[] byteArr;
+        if(EncryptType.encryptType == 1) {
+            byteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length + publicKeyLength_64];
+            byteArr[0] = signatureData.getV();
+            System.arraycopy(signatureData.getR(), 0, byteArr, 1, signatureData.getR().length);
+            System.arraycopy(signatureData.getS(), 0, byteArr, signatureData.getR().length + 1,
+                    signatureData.getS().length);
+            System.arraycopy(signatureData.getPub(), 0, byteArr,
+                    signatureData.getS().length + signatureData.getR().length + 1,
+                    signatureData.getPub().length);
+        } else {
+            byteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length];
+            byteArr[0] = signatureData.getV();
+            System.arraycopy(signatureData.getR(), 0, byteArr, 1, signatureData.getR().length);
+            System.arraycopy(signatureData.getS(), 0, byteArr, signatureData.getR().length + 1,
+                    signatureData.getS().length);
+        }
         return Numeric.toHexString(byteArr, 0, byteArr.length, false);
     }
 

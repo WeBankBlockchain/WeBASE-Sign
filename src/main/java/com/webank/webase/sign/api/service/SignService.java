@@ -15,6 +15,8 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
@@ -62,8 +64,11 @@ public class SignService {
         // signature
         Credentials credentials = GenCredential.create(userRow.getPrivateKey());
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+        Instant startTime = Instant.now();
+        log.info("start sign. startTime:{}", startTime.toEpochMilli());
         SignatureData signatureData = Sign.getSignInterface().signMessage(
                 encodedData, credentials.getEcKeyPair());
+        log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         log.info("start sign. userId:{}", userId);
         return signDataStr;
