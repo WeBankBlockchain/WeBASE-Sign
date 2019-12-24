@@ -12,22 +12,21 @@ if [ ${SERVER_PORT}"" = "" ];then
     exit -1
 fi
 
+if [ ${JAVA_HOME}"" = "" ];then
+    echo "JAVA_HOME has not been configured"
+    exit -1
+fi
+
 mkdir -p log
 
+startWaitTime=30
 processPid=0
 processStatus=0
-server_pid=0
 checkProcess(){
-    server_pid=`ps aux | grep java | grep $APP_MAIN | awk '{print $2}'`
-    port_pid=`netstat -anp 2>&1|grep $SERVER_PORT|awk '{printf $7}'|cut -d/ -f1`
-    if [ -n "$port_pid" ] && [ -n "$(echo $port_pid| sed -n "/^[0-9]\+$/p")" ]; then
-        if [[ $server_pid =~ $port_pid ]]; then
-            processPid=$port_pid
-            processStatus=2
-        else
-            processPid=$port_pid
-            processStatus=1
-        fi
+    server_pid=`ps aux | grep java | grep $CURRENT_DIR | grep $APP_MAIN | awk '{print $2}'`
+    if [ -n "$server_pid" ] && [ -n "$(echo $server_pid| sed -n "/^[0-9]\+$/p")" ]; then
+        processPid=$server_pid
+        processStatus=1
     else
         processPid=0
         processStatus=0
@@ -42,9 +41,6 @@ start(){
     checkProcess
     echo "==============================================================================================="
     if [ $processStatus == 1 ]; then
-        echo "Port $SERVER_PORT has been occupied by other server PID($processPid)"
-        echo "==============================================================================================="
-    elif [ $processStatus == 2 ]; then
         echo "Server $APP_MAIN Port $SERVER_PORT is running PID($processPid)"
         echo "==============================================================================================="
     else
@@ -65,16 +61,10 @@ start(){
        done
         
        if [ $result -ne 0 ]; then
-           echo "PID($processPid) [Success]"
+           echo "PID($processPid) [Starting]. Please check through the log file (default path:./log/)."
            echo "==============================================================================================="
        else
-           for subPid in ${server_pid[@]} ; do
-               checkResult=`netstat -tunpl 2>&1|grep $subPid|awk '{printf $7}'|cut -d/ -f1`
-               if [ -z "$checkResult" ]; then
-                   kill -9 $subPid
-               fi
-           done
-           echo "[Failed]. Please view log file (default path:./log/)."
+           echo "[Failed]. Please check through the log file (default path:./log/)."
            echo "==============================================================================================="
        fi
     fi
