@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2014-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,13 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
+import org.fisco.bcos.web3j.crypto.gm.GenCredential;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,10 +62,13 @@ public class SignService {
         }
 
         // signature
-        Credentials credentials = Credentials.create(userRow.getPrivateKey());
+        Credentials credentials = GenCredential.create(userRow.getPrivateKey());
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+        Instant startTime = Instant.now();
+        log.info("start sign. startTime:{}", startTime.toEpochMilli());
         SignatureData signatureData = Sign.getSignInterface().signMessage(
-            encodedData, credentials.getEcKeyPair());
+                encodedData, credentials.getEcKeyPair());
+        log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         log.info("start sign. userId:{}", userId);
         return signDataStr;
