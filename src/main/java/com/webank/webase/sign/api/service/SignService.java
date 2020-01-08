@@ -58,7 +58,6 @@ public class SignService {
         // check user name not exist.
 
         Instant startTime = Instant.now();
-        log.info("start query db time: {} ", startTime.toEpochMilli());
 
         UserInfoPo userRow = userService.findByUserId(req.getUserId());
 
@@ -70,12 +69,16 @@ public class SignService {
         }
 
         // signature
+        Instant startTime1 = Instant.now();
         Credentials credentials = Credentials.create(userRow.getPrivateKey());
+        log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
+
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
         SignatureData signatureData = Sign.getSignInterface().signMessage(
             encodedData, credentials.getEcKeyPair());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         log.info("start sign. userId:{}", userId);
+        log.info(" sign cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
         return signDataStr;
     }
 }
