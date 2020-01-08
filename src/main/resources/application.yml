@@ -8,16 +8,11 @@ spring:
     # 数据库连接信息
     url: jdbc:mysql://127.0.0.1:3306/webasesign?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
     # 数据库用户名
-    username: root
+    username: dbUsername
     # 数据库密码
-    password: Aa12345!
+    password: dbPassword
     driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      connection-test-query: SELECT 1 FROM DUAL
-      connection-timeout: 30000
-      maximum-pool-size: 2000
-      max-lifetime: 1800000
-      minimum-idle: 5
+    
 constant: 
   # aes加密key（16位）
   aesKey: EfdsW23D23d3df43
