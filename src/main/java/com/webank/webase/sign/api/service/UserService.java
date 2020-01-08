@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.webank.webase.sign.api.dao.UserDao;
 import com.webank.webase.sign.enums.CodeMessageEnums;
@@ -77,6 +78,7 @@ public class UserService {
     /**
      * query user by userId.
      */
+    @Cacheable(cacheNames = "user")
     public UserInfoPo findByUserId(Integer userId) throws BaseException {
         log.info("start findByUserId. userId:{}", userId);
         UserInfoPo user = userDao.findUser(userId);
