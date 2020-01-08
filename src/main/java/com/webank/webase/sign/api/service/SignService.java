@@ -71,17 +71,17 @@ public class SignService {
 
         // signature
         Instant startTime1 = Instant.now();
-        Credentials credentials = Credentials.create(userRow.getPrivateKey());
+        Credentials credentials = GenCredential.create(userRow.getPrivateKey());
         log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
 
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
         Instant startTime2 = Instant.now();
-        log.info("start sign. startTime:{}", startTime2.toEpochMilli());
+
         SignatureData signatureData = Sign.getSignInterface().signMessage(
                 encodedData, credentials.getEcKeyPair());
-        log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
+        log.info("end sign duration:{}", Duration.between(startTime2, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
-        log.info("start sign. userId:{}", userId);
+
         return signDataStr;
     }
 }
