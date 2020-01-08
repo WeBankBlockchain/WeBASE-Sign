@@ -27,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Slf4j
 @EnableSwagger2
-@EnableCaching  //开启缓存
+@EnableCaching
 @SpringBootApplication
 @MapperScan("com.webank.webase.sign")
 public class Application {
