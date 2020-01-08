@@ -27,7 +27,7 @@
 
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="signAsync" />
+            <AppenderRef ref="console" />
         </Root>
     </Loggers>
 </Configuration>

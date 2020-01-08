@@ -15,7 +15,11 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
+
+import com.alibaba.fastjson.JSON;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
@@ -52,7 +56,14 @@ public class SignService {
         Integer userId = req.getUserId();
         log.info("start sign. userId:{}", userId);
         // check user name not exist.
+
+        Instant startTime = Instant.now();
+        log.info("start query db time: {} ", startTime.toEpochMilli());
+
         UserInfoPo userRow = userService.findByUserId(req.getUserId());
+
+        log.info("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
+
         if (Objects.isNull(userRow)) {
             log.warn("fail sign, user not exists. userId:{}", userId);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
