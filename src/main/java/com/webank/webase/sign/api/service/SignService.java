@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2014-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
+import org.fisco.bcos.web3j.crypto.gm.GenCredential;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,11 +75,13 @@ public class SignService {
         log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
 
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+        Instant startTime2 = Instant.now();
+        log.info("start sign. startTime:{}", startTime2.toEpochMilli());
         SignatureData signatureData = Sign.getSignInterface().signMessage(
-            encodedData, credentials.getEcKeyPair());
+                encodedData, credentials.getEcKeyPair());
+        log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureDataToString(signatureData);
         log.info("start sign. userId:{}", userId);
-        log.info(" sign cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
         return signDataStr;
     }
 }

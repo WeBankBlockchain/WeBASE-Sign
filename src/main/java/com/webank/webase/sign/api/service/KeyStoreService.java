@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2014-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package com.webank.webase.sign.api.service;
 
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
+import com.webank.webase.sign.util.GmUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
 import org.fisco.bcos.web3j.crypto.Keys;
@@ -47,13 +48,15 @@ public class KeyStoreService {
             log.error("fail getKeyStoreFromPrivateKey. private key is null");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_IS_NULL);
         }
-        
+
         if(!isValidPrivateKey(privateKey)){
             log.error("fail getKeyStoreFromPrivateKey. private key format error");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_FORMAT_ERROR);
         }
-        
-        ECKeyPair keyPair = ECKeyPair.create(Numeric.toBigInt(privateKey));
+
+//        ECKeyPair keyPair = GenCredential.create(Numeric.toBigInt(privateKey));
+        // support guomi
+        ECKeyPair keyPair = GmUtils.createKeyPair(privateKey);
         return keyPair2KeyStoreInfo(keyPair);
     }
 
@@ -63,7 +66,8 @@ public class KeyStoreService {
      */
     public KeyStoreInfo newKey() throws BaseException {
         try {
-            ECKeyPair keyPair = Keys.createEcKeyPair();
+            // support guomi TODO upgrade in web3sdk 2.1.3+
+            ECKeyPair keyPair = GmUtils.createKeyPair();
             return keyPair2KeyStoreInfo(keyPair);
         } catch (Exception e) {
             log.error("createEcKeyPair fail.", e);
@@ -77,7 +81,7 @@ public class KeyStoreService {
      */
     private KeyStoreInfo keyPair2KeyStoreInfo(ECKeyPair keyPair) {
         String publicKey = Numeric
-            .toHexStringWithPrefixZeroPadded(keyPair.getPublicKey(), PUBLIC_KEY_LENGTH_IN_HEX);
+                .toHexStringWithPrefixZeroPadded(keyPair.getPublicKey(), PUBLIC_KEY_LENGTH_IN_HEX);
         String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
         String address = "0x" + Keys.getAddress(keyPair.getPublicKey());
         log.debug("publicKey:{} privateKey:{} address:{}", publicKey, privateKey, address);
@@ -87,7 +91,7 @@ public class KeyStoreService {
         keyStoreInfo.setAddress(address);
         return keyStoreInfo;
     }
-    
+
     private static boolean isValidPrivateKey(String privateKey) {
         String cleanPrivateKey = Numeric.cleanHexPrefix(privateKey);
         return cleanPrivateKey.length() == PRIVATE_KEY_LENGTH_IN_HEX;
