@@ -13,8 +13,12 @@
  */
 package com.webank.webase.sign.api.controller;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +39,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * Controller.
  */
+@Slf4j
 @Api(value = "user", tags = "user interface")
 @RestController
 @RequestMapping("user")
@@ -65,7 +70,10 @@ public class UserController {
     @GetMapping("/{userId}/userInfo")
     public BaseRspVo getUserInfo(@PathVariable("userId") Integer userId) throws BaseException {
         //find user
+        Instant startTime = Instant.now();
+        log.info("start query db time: {} ", startTime.toEpochMilli());
         UserInfoPo userInfo = userService.findByUserId(userId);
+        log.info("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
         return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
