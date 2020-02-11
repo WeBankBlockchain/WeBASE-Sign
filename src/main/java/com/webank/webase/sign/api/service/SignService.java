@@ -17,6 +17,7 @@ package com.webank.webase.sign.api.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 import com.alibaba.fastjson.JSON;
@@ -24,6 +25,7 @@ import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.crypto.gm.GenCredential;
+import org.fisco.bcos.web3j.protocol.core.Request;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +62,7 @@ public class SignService {
 
         Instant startTime = Instant.now();
 
-        UserInfoPo userRow = userService.findByUserId(req.getUserId());
+        UserInfoPo userRow = userService.findByUserId(userId);
 
         log.info("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
 
@@ -75,6 +77,41 @@ public class SignService {
         log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
 
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+        Instant startTime2 = Instant.now();
+
+        SignatureData signatureData = Sign.getSignInterface().signMessage(
+                encodedData, credentials.getEcKeyPair());
+        log.info("end sign duration:{}", Duration.between(startTime2, Instant.now()).toMillis());
+        String signDataStr = CommonUtils.signatureDataToString(signatureData);
+
+        return signDataStr;
+    }
+
+
+    public String signForWebSocket(Request req) throws BaseException {
+        List params = req.getParams();
+        Integer userId = Integer.parseInt((String)params.get(0));
+        log.info("start sign. userId:{}", params.get(0));
+        // check user name not exist.
+
+        Instant startTime = Instant.now();
+
+        UserInfoPo userRow = userService.findByUserId(userId);
+
+        log.info("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
+
+        if (Objects.isNull(userRow)) {
+            log.warn("fail sign, user not exists. userId:{}", userId);
+            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+        }
+
+        // signature
+        Instant startTime1 = Instant.now();
+        Credentials credentials = GenCredential.create(userRow.getPrivateKey());
+        log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
+
+        String encodedDataStr = (String)params.get(1);
+        byte[] encodedData = ByteUtil.hexStringToBytes(encodedDataStr);
         Instant startTime2 = Instant.now();
 
         SignatureData signatureData = Sign.getSignInterface().signMessage(

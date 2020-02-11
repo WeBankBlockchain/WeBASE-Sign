@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.api.service.SignService;
 import com.webank.webase.sign.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
+import org.fisco.bcos.web3j.protocol.core.Request;
+import org.fisco.bcos.web3j.protocol.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.DependsOn;
@@ -29,8 +31,8 @@ public class WebSocket {
         WebSocket.applicationContext = applicationContext;
     }
 
-    @Autowired
-    SignService signService;
+
+    private SignService signService = null ;
     /**
      * onOpen是当用户发起连接时，会生成一个用户的Session 注意此Session是 javax.websocket.Session;
      * 然后我们用userId作为Key Session作为Vaule存入Map中暂存起来
@@ -66,7 +68,7 @@ public class WebSocket {
     @OnMessage
     public void onMessage(String message) throws BaseException {
         log.info("====>WebSocketService OnMessage: " + message);
-        MessageVo messageVo = JSON.parseObject(message, MessageVo.class);
+        Request messageVo = JSON.parseObject(message, Request.class);
 
             one2one(messageVo);
         }
@@ -87,15 +89,22 @@ public class WebSocket {
      *  session.getAsyncRemote().sendText(message); 即向目标session发送消息。
      *
      */
-    private  void one2one(MessageVo vo) throws BaseException {
-        Session consumerSession = sessionMap.get(vo.getFrontId());
+    private  void one2one(Request vo) throws BaseException {
+        Session consumerSession = sessionMap.get(vo.getMethod().split("&")[1]);
         if (consumerSession == null) {
             log.info("消息消费者不存在");
         } else {
-            SignService signService = applicationContext.getBean(SignService.class);
-            String signString = signService.sign(vo);
-            vo.setSignedStr(signString);
-            consumerSession.getAsyncRemote().sendText(JSON.toJSONString(vo));
+            if(signService == null) {
+                signService = applicationContext.getBean(SignService.class);
+            }
+            String signString = signService.signForWebSocket(vo);
+
+            Response response = new Response();
+            response.setId(vo.getId());
+            response.setJsonrpc(vo.getJsonrpc());
+            response.setRawResponse(signString);
+
+            consumerSession.getAsyncRemote().sendText(JSON.toJSONString(response));
         }
     }
 
