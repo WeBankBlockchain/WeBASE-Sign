@@ -39,7 +39,6 @@ public class WebSocket {
 
     /**
      * onOpen是当用户发起连接时，会生成一个用户的Session 注意此Session是 javax.websocket.Session;
-     * 然后我们用userId作为Key Session作为Vaule存入Map中暂存起来
      *
      * @param frontId
      * @param session
@@ -55,7 +54,6 @@ public class WebSocket {
     }
 
     /**
-     * onClose 是用户关闭聊天窗时，将用户session移除
      *
      * @param frontId
      */
@@ -66,7 +64,7 @@ public class WebSocket {
     }
 
     /**
-     * onMessage 实现聊天功能， message是前端传来的JSON字符串。其中含有MessageVo里的信息。根据vo实现点对点/广播聊天。
+     *  message是前端传来的JSON字符串。其中含有Message里的信息。
      *
      * @param message
      */
@@ -91,7 +89,6 @@ public class WebSocket {
     }
 
     /**
-     * 点对点
      * session.getAsyncRemote().sendText(message); 即向目标session发送消息。
      */
     private  void one2one(Request vo) throws BaseException {
