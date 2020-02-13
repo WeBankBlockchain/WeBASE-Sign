@@ -58,6 +58,7 @@ List jaxb = [
 
 dependencies {
     compile springboot,swagger,mysql,logger,jaxb
+ //   compile 'org.glassfish.tyrus:tyrus-server:1.15'
     compile "org.apache.commons:commons-lang3:3.6"
     compile "com.alibaba:fastjson:1.2.60"
     compile 'org.fisco-bcos:web3sdk:2.2.0'

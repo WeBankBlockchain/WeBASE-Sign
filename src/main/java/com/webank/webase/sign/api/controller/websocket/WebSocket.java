@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.api.service.SignService;
 import com.webank.webase.sign.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.websocket.WsRemoteEndpointAsync;
 import org.fisco.bcos.web3j.protocol.core.Request;
 import org.fisco.bcos.web3j.protocol.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,13 +29,14 @@ public class WebSocket {
     public static Map<String, Session> sessionMap = new ConcurrentHashMap<String, Session>();
 
     private static ApplicationContext applicationContext;
+
     //你要注入的service或者dao
     public static void setApplicationContext(ApplicationContext applicationContext) {
         WebSocket.applicationContext = applicationContext;
     }
 
+    private SignService signService = null;
 
-    private SignService signService = null ;
     /**
      * onOpen是当用户发起连接时，会生成一个用户的Session 注意此Session是 javax.websocket.Session;
      * 然后我们用userId作为Key Session作为Vaule存入Map中暂存起来
@@ -43,6 +47,7 @@ public class WebSocket {
     @OnOpen
     public void onOpen(@PathParam("frontId") String frontId, Session session) {
         log.info("====>WebSocketService onOpen: " + frontId);
+        log.info("open sessionId: {}" + session.getId());
         if (sessionMap == null) {
             sessionMap = new ConcurrentHashMap<String, Session>();
         }
@@ -81,20 +86,20 @@ public class WebSocket {
      */
     @OnError
     public void error(Throwable t) {
+        log.info("====>WebSocketService error: " + t.getMessage());
         t.printStackTrace();
     }
 
     /**
      * 点对点
-     *  session.getAsyncRemote().sendText(message); 即向目标session发送消息。
-     *
+     * session.getAsyncRemote().sendText(message); 即向目标session发送消息。
      */
     private  void one2one(Request vo) throws BaseException {
         Session consumerSession = sessionMap.get(vo.getMethod().split("&")[1]);
         if (consumerSession == null) {
             log.info("消息消费者不存在");
         } else {
-            if(signService == null) {
+            if (signService == null) {
                 signService = applicationContext.getBean(SignService.class);
             }
             String signString = signService.signForWebSocket(vo);
@@ -107,6 +112,7 @@ public class WebSocket {
             consumerSession.getAsyncRemote().sendText(JSON.toJSONString(response));
         }
     }
-
-
 }
+
+
+
