@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @Component
-public class WebSocketConfig {
+public class WebSocketServerConfig {
 
     @Bean
     public ServerEndpointExporter serverEndpointExporter() {
