@@ -15,12 +15,13 @@
  */
 package com.webank.webase.sign.api.service;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-import java.util.Objects;
-
-import com.alibaba.fastjson.JSON;
+import com.webank.webase.sign.constant.ConstantProperties;
+import com.webank.webase.sign.enums.CodeMessageEnums;
+import com.webank.webase.sign.exception.BaseException;
+import com.webank.webase.sign.pojo.po.UserInfoPo;
+import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
+import com.webank.webase.sign.util.CommonUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
@@ -29,13 +30,11 @@ import org.fisco.bcos.web3j.protocol.core.Request;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.webank.webase.sign.constant.ConstantProperties;
-import com.webank.webase.sign.enums.CodeMessageEnums;
-import com.webank.webase.sign.exception.BaseException;
-import com.webank.webase.sign.pojo.po.UserInfoPo;
-import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
-import com.webank.webase.sign.util.CommonUtils;
-import lombok.extern.slf4j.Slf4j;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * SignService.
@@ -57,7 +56,7 @@ public class SignService {
      */
     public String sign(ReqEncodeInfoVo req) throws BaseException {
         Integer userId = req.getUserId();
-        log.info("start sign. userId:{}", userId);
+        log.debug("start sign. userId:{}", userId);
         // check user name not exist.
 
         Instant startTime = Instant.now();
