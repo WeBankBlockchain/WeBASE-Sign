@@ -12,8 +12,6 @@ public class TomcatConfig {
     @Bean
     public EmbeddedServletContainerFactory createEmbeddedServletContainerFactory() {
         TomcatEmbeddedServletContainerFactory tomcatFactory = new TomcatEmbeddedServletContainerFactory();
-        // tomcat的配置可以在这里加
-        // public static final String DEFAULT_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
         tomcatFactory.addConnectorCustomizers(connector -> {
             Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
             //设置最大连接数
