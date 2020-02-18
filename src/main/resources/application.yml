@@ -25,6 +25,7 @@ spring:
 constant: 
   # aes加密key（16位）
   aesKey: EfdsW23D23d3df43
+  keepAliveRequests: 100
 
 mybatis: 
   mapper-locations: classpath:mapper/*.xml
