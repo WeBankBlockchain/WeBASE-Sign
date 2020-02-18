@@ -13,6 +13,8 @@ targetCompatibility = 1.8
 // In this section you declare where to find the dependencies of your project
 repositories {
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+
     maven { url 'https://dl.bintray.com/ethereum/maven/'}
     mavenLocal()
     mavenCentral()
@@ -61,7 +63,7 @@ dependencies {
  //   compile 'org.glassfish.tyrus:tyrus-server:1.15'
     compile "org.apache.commons:commons-lang3:3.6"
     compile "com.alibaba:fastjson:1.2.60"
-    compile 'org.fisco-bcos:web3sdk:2.2.0'
+    compile 'org.fisco-bcos:web3sdk:2.2.0.0211.bsn-SNAPSHOT'
     compile 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
