@@ -15,13 +15,11 @@
  */
 package com.webank.webase.sign;
 
-import com.webank.webase.sign.api.controller.websocket.WebSocket;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.ConfigurableApplicationContext;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -35,8 +33,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Application {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext=SpringApplication.run(Application.class, args);
-        WebSocket.setApplicationContext(applicationContext);
+      SpringApplication.run(Application.class, args);
 
         log.info("main run success...");
     }
