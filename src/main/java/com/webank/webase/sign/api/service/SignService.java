@@ -63,7 +63,7 @@ public class SignService {
 
         UserInfoPo userRow = userService.findByUserId(userId);
 
-        log.info("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
+        log.debug("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
 
         if (Objects.isNull(userRow)) {
             log.warn("fail sign, user not exists. userId:{}", userId);
@@ -87,37 +87,4 @@ public class SignService {
     }
 
 
-    public String signForWebSocket(Request req) throws BaseException {
-        List params = req.getParams();
-        Integer userId = Integer.parseInt((String)params.get(0));
-        log.info("start sign. userId:{}", params.get(0));
-        // check user name not exist.
-
-        Instant startTime = Instant.now();
-
-        UserInfoPo userRow = userService.findByUserId(userId);
-
-        log.info("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
-
-        if (Objects.isNull(userRow)) {
-            log.warn("fail sign, user not exists. userId:{}", userId);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
-        }
-
-        // signature
-        Instant startTime1 = Instant.now();
-        Credentials credentials = GenCredential.create(userRow.getPrivateKey());
-        log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
-
-        String encodedDataStr = (String)params.get(1);
-        byte[] encodedData = ByteUtil.hexStringToBytes(encodedDataStr);
-        Instant startTime2 = Instant.now();
-
-        SignatureData signatureData = Sign.getSignInterface().signMessage(
-                encodedData, credentials.getEcKeyPair());
-        log.info("end sign duration:{}", Duration.between(startTime2, Instant.now()).toMillis());
-        String signDataStr = CommonUtils.signatureDataToString(signatureData);
-
-        return signDataStr;
-    }
 }
