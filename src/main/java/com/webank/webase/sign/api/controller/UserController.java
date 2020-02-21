@@ -70,10 +70,7 @@ public class UserController {
     @GetMapping("/{userId}/userInfo")
     public BaseRspVo getUserInfo(@PathVariable("userId") Integer userId) throws BaseException {
         //find user
-        Instant startTime = Instant.now();
-        log.info("start query db time: {} ", startTime.toEpochMilli());
         UserInfoPo userInfo = userService.findByUserId(userId);
-        log.info("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
         return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
