@@ -29,6 +29,7 @@ import org.fisco.bcos.web3j.crypto.gm.GenCredential;
 import org.fisco.bcos.web3j.protocol.core.Request;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -47,6 +48,8 @@ public class SignService {
     private UserService userService;
     @Autowired
     ConstantProperties properties;
+    @Autowired
+    KeyStoreService keyStoreService;
 
 
     /**
@@ -72,7 +75,8 @@ public class SignService {
 
         // signature
         Instant startTime1 = Instant.now();
-        Credentials credentials = GenCredential.create(userRow.getPrivateKey());
+        Credentials credentials = keyStoreService.getCredentioan(userRow.getPrivateKey());
+
         log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
 
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
@@ -85,6 +89,5 @@ public class SignService {
 
         return signDataStr;
     }
-
 
 }
