@@ -1,7 +1,6 @@
 package com.webank.webase.sign.config;
 
 import com.webank.webase.sign.constant.ConstantProperties;
-import org.apache.coyote.Constants;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
@@ -14,7 +13,7 @@ public class TomcatConfig {
 
 
     @Autowired
-    ConstantProperties constantProperties;
+    private ConstantProperties constantProperties;
     @Bean
     public EmbeddedServletContainerFactory createEmbeddedServletContainerFactory() {
         TomcatEmbeddedServletContainerFactory tomcatFactory = new TomcatEmbeddedServletContainerFactory();
