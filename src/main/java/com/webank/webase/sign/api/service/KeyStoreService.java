@@ -19,10 +19,13 @@ import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
 import com.webank.webase.sign.util.GmUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
 import org.fisco.bcos.web3j.crypto.Keys;
+import org.fisco.bcos.web3j.crypto.gm.GenCredential;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.util.AesUtils;
@@ -95,6 +98,11 @@ public class KeyStoreService {
     private static boolean isValidPrivateKey(String privateKey) {
         String cleanPrivateKey = Numeric.cleanHexPrefix(privateKey);
         return cleanPrivateKey.length() == PRIVATE_KEY_LENGTH_IN_HEX;
+    }
+
+    @Cacheable(cacheNames = "getPrivatekey")
+    public  Credentials getCredentioan(String privateKey) {
+        return   GenCredential.create(privateKey);
     }
 
 }

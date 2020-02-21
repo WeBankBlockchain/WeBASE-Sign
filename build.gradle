@@ -13,6 +13,8 @@ targetCompatibility = 1.8
 // In this section you declare where to find the dependencies of your project
 repositories {
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+
     maven { url 'https://dl.bintray.com/ethereum/maven/'}
     mavenLocal()
     mavenCentral()
@@ -24,7 +26,9 @@ List springboot =[
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
 	"org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version",
 	"org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version",
-	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
+	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version",
+   // "org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version",
+    "org.springframework.boot:spring-boot-starter-cache:$spring_boot_version"
 ]
 
 List swagger = [
@@ -56,9 +60,10 @@ List jaxb = [
 
 dependencies {
     compile springboot,swagger,mysql,logger,jaxb
+ //   compile 'org.glassfish.tyrus:tyrus-server:1.15'
     compile "org.apache.commons:commons-lang3:3.6"
     compile "com.alibaba:fastjson:1.2.60"
-    compile 'org.fisco-bcos:web3sdk:2.2.0'
+    compile 'org.fisco-bcos:web3sdk:2.2.0.0211.bsn-SNAPSHOT'
     compile 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
