@@ -64,22 +64,50 @@ public class CommonUtils {
     public static String signatureDataToString(SignatureData signatureData) {
         byte[] byteArr;
         if(EncryptType.encryptType == 1) {
-            byteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length + publicKeyLength_64];
-            byteArr[0] = signatureData.getV();
-            System.arraycopy(signatureData.getR(), 0, byteArr, 1, signatureData.getR().length);
-            System.arraycopy(signatureData.getS(), 0, byteArr, signatureData.getR().length + 1,
-                    signatureData.getS().length);
-            System.arraycopy(signatureData.getPub(), 0, byteArr,
-                    signatureData.getS().length + signatureData.getR().length + 1,
-                    signatureData.getPub().length);
+            byteArr = sigData2ByteArrGuomi(signatureData);
         } else {
-            byteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length];
-            byteArr[0] = signatureData.getV();
-            System.arraycopy(signatureData.getR(), 0, byteArr, 1, signatureData.getR().length);
-            System.arraycopy(signatureData.getS(), 0, byteArr, signatureData.getR().length + 1,
-                    signatureData.getS().length);
+            byteArr = sigData2ByteArrECDSA(signatureData);
         }
         return Numeric.toHexString(byteArr, 0, byteArr.length, false);
+    }
+
+    /**
+     * signatureDataToString by type
+     * @param signatureData
+     * @param encryptType
+     * @return
+     */
+    public static String signatureDataToStringByType(SignatureData signatureData, int encryptType) {
+        byte[] byteArr;
+        if(encryptType == 1) {
+            byteArr = sigData2ByteArrGuomi(signatureData);
+        } else {
+            byteArr = sigData2ByteArrECDSA(signatureData);
+        }
+        return Numeric.toHexString(byteArr, 0, byteArr.length, false);
+    }
+
+    private static byte[] sigData2ByteArrGuomi(SignatureData signatureData) {
+        byte[] targetByteArr;
+        targetByteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length + publicKeyLength_64];
+        targetByteArr[0] = signatureData.getV();
+        System.arraycopy(signatureData.getR(), 0, targetByteArr, 1, signatureData.getR().length);
+        System.arraycopy(signatureData.getS(), 0, targetByteArr, signatureData.getR().length + 1,
+                signatureData.getS().length);
+        System.arraycopy(signatureData.getPub(), 0, targetByteArr,
+                signatureData.getS().length + signatureData.getR().length + 1,
+                signatureData.getPub().length);
+        return targetByteArr;
+    }
+
+    private static byte[] sigData2ByteArrECDSA(SignatureData signatureData) {
+        byte[] targetByteArr;
+        targetByteArr = new byte[1 + signatureData.getR().length + signatureData.getS().length];
+        targetByteArr[0] = signatureData.getV();
+        System.arraycopy(signatureData.getR(), 0, targetByteArr, 1, signatureData.getR().length);
+        System.arraycopy(signatureData.getS(), 0, targetByteArr, signatureData.getR().length + 1,
+                signatureData.getS().length);
+        return targetByteArr;
     }
 
 
