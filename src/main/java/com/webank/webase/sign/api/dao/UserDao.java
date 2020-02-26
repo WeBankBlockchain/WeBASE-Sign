@@ -24,12 +24,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserDao {
-
+    /**
+     * create table tb_user
+     */
     void createTbUser();
 
     void insertUserInfo(UserInfoPo userInfoPo);
 
     UserInfoPo findUser(@Param("userId") Integer userId);
 
-    List<UserInfoPo> findUserList();
+    /**
+     * select by encryptType
+     */
+    List<UserInfoPo> findUserList(@Param("encryptType") Integer encryptType);
 }

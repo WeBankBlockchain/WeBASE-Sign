@@ -16,6 +16,8 @@
 package com.webank.webase.sign.api.controller;
 
 import javax.validation.Valid;
+
+import com.webank.webase.sign.enums.EncryptTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,25 +37,44 @@ import io.swagger.annotations.ApiOperation;
  * Controller.
  */
 @Api(value = "sign", tags = "sign interface")
-@RestController
+@RestController("sign")
 public class SignController {
 
     @Autowired
     SignService signService;
 
     /**
-     * add sign.
+     * add sign by ecdsa
      *
      * @param req parameter
      * @param result checkResult
      */
-    @ApiOperation(value = "add sign", notes = "add sign")
+    @ApiOperation(value = "add sign standard", notes = "add sign standard")
     @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
-    @PostMapping("/sign")
-    public BaseRspVo sign(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
+    @PostMapping("/standard")
+    public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
-        String signResult = signService.sign(req);
+        String signResult = signService.sign(req, EncryptTypes.STANDARD.getValue());
+        // return
+        RspSignVo rspSignVo = new RspSignVo();
+        rspSignVo.setSignDataStr(signResult);
+        return CommonUtils.buildSuccessRspVo(rspSignVo);
+    }
+
+    /**
+     * add sign by guomi
+     *
+     * @param req parameter
+     * @param result checkResult
+     */
+    @ApiOperation(value = "add sign guomi", notes = "add sign guomi")
+    @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
+    @PostMapping("/guomi")
+    public BaseRspVo signGuomi(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
+            throws BaseException {
+        CommonUtils.checkParamBindResult(result);
+        String signResult = signService.sign(req, EncryptTypes.GUOMI.getValue());
         // return
         RspSignVo rspSignVo = new RspSignVo();
         rspSignVo.setSignDataStr(signResult);

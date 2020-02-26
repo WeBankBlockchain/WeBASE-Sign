@@ -41,35 +41,35 @@ public class CommonUtils {
      * @param signatureData signatureData
      * @return
      */
-    public static SignatureData stringToSignatureData(String signatureData) {
-        byte[] byteArr = Numeric.hexStringToByteArray(signatureData);
-        byte[] signR = new byte[32];
-        System.arraycopy(byteArr, 1, signR, 0, signR.length);
-        byte[] signS = new byte[32];
-        System.arraycopy(byteArr, 1 + signR.length, signS, 0, signS.length);
-        if (EncryptType.encryptType == 1) {
-            byte[] pub = new byte[64];
-            System.arraycopy(byteArr, 1 + signR.length + signS.length, pub, 0, pub.length);
-            return new SignatureData(byteArr[0], signR, signS, pub);
-        } else {
-            return new SignatureData(byteArr[0], signR, signS);
-        }
-    }
+//    public static SignatureData stringToSignatureData(String signatureData) {
+//        byte[] byteArr = Numeric.hexStringToByteArray(signatureData);
+//        byte[] signR = new byte[32];
+//        System.arraycopy(byteArr, 1, signR, 0, signR.length);
+//        byte[] signS = new byte[32];
+//        System.arraycopy(byteArr, 1 + signR.length, signS, 0, signS.length);
+//        if (EncryptType.encryptType == 1) {
+//            byte[] pub = new byte[64];
+//            System.arraycopy(byteArr, 1 + signR.length + signS.length, pub, 0, pub.length);
+//            return new SignatureData(byteArr[0], signR, signS, pub);
+//        } else {
+//            return new SignatureData(byteArr[0], signR, signS);
+//        }
+//    }
 
     /**
      * signatureDataToString.
      * 19/12/24 support guomi： add byte[] pub in signatureData
      * @param signatureData signatureData
      */
-    public static String signatureDataToString(SignatureData signatureData) {
-        byte[] byteArr;
-        if(EncryptType.encryptType == 1) {
-            byteArr = sigData2ByteArrGuomi(signatureData);
-        } else {
-            byteArr = sigData2ByteArrECDSA(signatureData);
-        }
-        return Numeric.toHexString(byteArr, 0, byteArr.length, false);
-    }
+//    public static String signatureDataToString(SignatureData signatureData) {
+//        byte[] byteArr;
+//        if(EncryptType.encryptType == 1) {
+//            byteArr = sigData2ByteArrGuomi(signatureData);
+//        } else {
+//            byteArr = sigData2ByteArrECDSA(signatureData);
+//        }
+//        return Numeric.toHexString(byteArr, 0, byteArr.length, false);
+//    }
 
     /**
      * signatureDataToString by type

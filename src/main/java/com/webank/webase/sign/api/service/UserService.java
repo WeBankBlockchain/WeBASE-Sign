@@ -43,16 +43,16 @@ public class UserService {
     /**
      * add user.
      */
-    public RspUserInfoVo newUser() throws BaseException {
-        log.info("start addUser");
+    public RspUserInfoVo newUser(int encryptType) throws BaseException {
+        log.info("start addUser encryptType:{}", encryptType);
 
         // get keyStoreInfo
-        KeyStoreInfo keyStoreInfo = keyStoreService.newKey();
+        KeyStoreInfo keyStoreInfo = keyStoreService.newKey(encryptType);
 
         //save user.
         UserInfoPo userInfoPo = new UserInfoPo();
         BeanUtils.copyProperties(keyStoreInfo, userInfoPo);
-
+        userInfoPo.setEncryptType(encryptType);
         RspUserInfoVo rspUserInfoVo = saveUser(userInfoPo);
         log.info("end addUser");
         return rspUserInfoVo;
@@ -92,10 +92,11 @@ public class UserService {
     
     /**
      * query user list.
+     * @param encryptType 1: guomi, 0: standard
      */
-    public List<RspUserInfoVo> findUserList() throws BaseException {
+    public List<RspUserInfoVo> findUserList(int encryptType) {
         log.info("start findUserList.");
-        List<UserInfoPo> users = userDao.findUserList();
+        List<UserInfoPo> users = userDao.findUserList(encryptType);
         List<RspUserInfoVo> rspUserInfoVos = new ArrayList<>();
         for (UserInfoPo user : users) {
             RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();

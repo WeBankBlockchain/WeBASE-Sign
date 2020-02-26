@@ -28,4 +28,8 @@ public class UserInfoPo {
 	private String publicKey;
 	private String privateKey;
     private String description;
+	/**
+	 * 0 is standard, 1 is guomi
+	 */
+	private Integer encryptType;
 }

@@ -9,6 +9,7 @@
           public_key varchar(256) NOT NULL COMMENT '公钥',
           private_key varchar(256) NOT NULL COMMENT '私钥',
           description varchar(128) DEFAULT NULL COMMENT '描述',
+          encrypt_type int NOT NULL COMMENT '加密类型，1：国密；0：ECDSA',
           gmt_create datetime DEFAULT NULL COMMENT '创建时间',
           gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
           PRIMARY KEY (user_id),
@@ -21,7 +22,8 @@
         address,
         public_key as publicKey,
         private_key as privateKey,
-        description
+        description,
+        encrypt_type as encryptType
     </sql>
 
   <insert id="insertUserInfo" parameterType="com.webank.webase.sign.pojo.po.UserInfoPo">
@@ -33,6 +35,7 @@
     `public_key`,
     `private_key`,
     `description`,
+    `encrypt_type`,
     `gmt_create`,
     `gmt_modify`
     ) values (
@@ -40,6 +43,7 @@
     #{publicKey},
     #{privateKey},
     #{description},
+    #{encryptType},
     NOW(),
     NOW()
     )
@@ -53,7 +57,8 @@
   
   <select id="findUserList" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
-    from tb_user 
+    from tb_user
+    where encrypt_type = #{encryptType}
     order by user_id
   </select>
 </mapper>
