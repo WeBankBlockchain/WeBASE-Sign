@@ -18,6 +18,9 @@ package com.webank.webase.sign.api.service;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+
+import com.webank.webase.sign.util.KeyPairUtils;
+import com.webank.webase.sign.util.SignUtils;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
@@ -48,12 +51,12 @@ public class SignService {
 
     /**
      * add sign.
-     *
+     * @param encryptType 1: guomi, 0: standard(ecdsa)
      * @param req parameter
      */
-    public String sign(ReqEncodeInfoVo req) throws BaseException {
+    public String sign(ReqEncodeInfoVo req, int encryptType) throws BaseException {
         Integer userId = req.getUserId();
-        log.info("start sign. userId:{}", userId);
+        log.info("start sign. userId:{},encryptType:{}", userId, encryptType);
         // check user name not exist.
         UserInfoPo userRow = userService.findByUserId(req.getUserId());
         if (Objects.isNull(userRow)) {
@@ -62,14 +65,15 @@ public class SignService {
         }
 
         // signature
-        Credentials credentials = GenCredential.create(userRow.getPrivateKey());
+        Credentials credentials = KeyPairUtils.create(userRow.getPrivateKey(), encryptType);
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
         Instant startTime = Instant.now();
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
-        SignatureData signatureData = Sign.getSignInterface().signMessage(
-                encodedData, credentials.getEcKeyPair());
+        // sign message by type
+        SignatureData signatureData = SignUtils.signMessageByType(
+                encodedData, credentials.getEcKeyPair(), encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
-        String signDataStr = CommonUtils.signatureDataToString(signatureData);
+        String signDataStr = CommonUtils.signatureDataToStringByType(signatureData, encryptType);
         log.info("start sign. userId:{}", userId);
         return signDataStr;
     }

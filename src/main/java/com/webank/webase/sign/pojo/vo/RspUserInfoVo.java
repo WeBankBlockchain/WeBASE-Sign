@@ -28,4 +28,5 @@ public class RspUserInfoVo {
 	private String publicKey;
 	private String privateKey;
     private String description;
+    private Integer encryptType;
 }
