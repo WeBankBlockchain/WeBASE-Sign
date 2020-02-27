@@ -19,10 +19,7 @@ import java.util.Optional;
 import com.webank.webase.sign.enums.EncryptTypes;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
@@ -48,24 +45,13 @@ public class UserController {
     /**
      * new user from ecdsa(standard)
      */
-    @ApiOperation(value = "new user from ecdsa", notes = "new user from ecdsa")
+    @ApiOperation(value = "new user from ecdsa/guomi, default ecdsa",
+            notes = "新建公私钥用户(ecdsa或国密)，默认ecdas")
     @GetMapping("/newUser")
-    public BaseRspVo newUser()
+    public BaseRspVo newUser(@RequestParam(required = false, defaultValue = "0") Integer encryptType)
         throws BaseException {
         //new user
-        RspUserInfoVo userInfo = userService.newUser(EncryptTypes.STANDARD.getValue());
-        return CommonUtils.buildSuccessRspVo(userInfo);
-    }
-
-    /**
-     * new user from guomi
-     */
-    @ApiOperation(value = "new user from guomi", notes = "new user from guomi")
-    @GetMapping("/newUserGuomi")
-    public BaseRspVo newUserGuomi()
-            throws BaseException {
-        //new user
-        RspUserInfoVo userInfo = userService.newUser(EncryptTypes.GUOMI.getValue());
+        RspUserInfoVo userInfo = userService.newUser(encryptType);
         return CommonUtils.buildSuccessRspVo(userInfo);
     }
 
@@ -86,24 +72,16 @@ public class UserController {
     }
     
     /**
-     * get user list of ecdsa(standard) encrypt type
+     * get user list of ecdsa/guomi by encrypt type
      */
-    @ApiOperation(value = "get standard user list", notes = "get standard user list")
+    @ApiOperation(value = "get standard user list by encrypt type",
+            notes = "获取国密或ECDSA用户列表")
     @GetMapping("/list")
-    public BaseRspVo getStandardUserList() throws BaseException {
+    public BaseRspVo getUserList(@RequestParam(required = false, defaultValue = "0") Integer encryptType)
+            throws BaseException {
         //find user list
-        List<RspUserInfoVo> rspUserInfos = userService.findUserList(EncryptTypes.STANDARD.getValue());
+        List<RspUserInfoVo> rspUserInfos = userService.findUserList(encryptType);
         return CommonUtils.buildSuccessRspVo(rspUserInfos);
     }
 
-    /**
-     * get user list of guomi encrypt type
-     */
-    @ApiOperation(value = "get guomi user list", notes = "get guomi user list")
-    @GetMapping("/listGuomi")
-    public BaseRspVo getUserList() throws BaseException {
-        //find user list
-        List<RspUserInfoVo> rspUserInfos = userService.findUserList(EncryptTypes.GUOMI.getValue());
-        return CommonUtils.buildSuccessRspVo(rspUserInfos);
-    }
 }

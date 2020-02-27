@@ -18,6 +18,7 @@ package com.webank.webase.sign.api.controller;
 import javax.validation.Valid;
 
 import com.webank.webase.sign.enums.EncryptTypes;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,32 +52,18 @@ public class SignController {
      * @param req parameter
      * @param result checkResult
      */
-    @ApiOperation(value = "add sign standard", notes = "add sign standard")
+    @ApiOperation(value = "add sign by ecdsa(default) or guomi", notes = "获取ECDSA或国密SM2签名数据，默认ECDSA")
     @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
     @PostMapping("")
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
-        String signResult = signService.sign(req, EncryptTypes.STANDARD.getValue());
-        // return
-        RspSignVo rspSignVo = new RspSignVo();
-        rspSignVo.setSignDataStr(signResult);
-        return CommonUtils.buildSuccessRspVo(rspSignVo);
-    }
-
-    /**
-     * add sign by guomi
-     *
-     * @param req parameter
-     * @param result checkResult
-     */
-    @ApiOperation(value = "add sign guomi", notes = "add sign guomi")
-    @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
-    @PostMapping("guomi")
-    public BaseRspVo signGuomi(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
-            throws BaseException {
-        CommonUtils.checkParamBindResult(result);
-        String signResult = signService.sign(req, EncryptTypes.GUOMI.getValue());
+        Integer encryptType = req.getEncryptType();
+        if (encryptType == null) {
+            // default 0
+            encryptType = EncryptTypes.STANDARD.getValue();
+        }
+        String signResult = signService.sign(req, encryptType);
         // return
         RspSignVo rspSignVo = new RspSignVo();
         rspSignVo.setSignDataStr(signResult);
