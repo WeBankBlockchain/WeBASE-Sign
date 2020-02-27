@@ -21,11 +21,17 @@ import org.fisco.bcos.web3j.crypto.ECDSASign;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
 import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.gm.sm2.SM2Sign;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author marsli
  */
+@Component
 public class SignUtils {
+
+	@Autowired
+	ECDSASign ecdsaSign;
 
 	/**
 	 * get signature data  by encrypt type
@@ -34,12 +40,11 @@ public class SignUtils {
 	 * @param encryptType 1: guomi, 0: standard
 	 * @return
 	 */
-	public static Sign.SignatureData signMessageByType(byte[] message, ECKeyPair keyPair, int encryptType) {
+	public Sign.SignatureData signMessageByType(byte[] message, ECKeyPair keyPair, int encryptType) {
 		if (encryptType == EncryptTypes.GUOMI.getValue()) {
 			return SM2Sign.sign(message, keyPair);
 		} else {
-			ECDSASign sign = new ECDSASign();
-			return sign.signMessage(message, keyPair);
+			return ecdsaSign.signMessage(message, keyPair);
 		}
 	}
 }

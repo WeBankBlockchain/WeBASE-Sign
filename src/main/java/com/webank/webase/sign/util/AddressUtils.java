@@ -22,6 +22,8 @@ import org.fisco.bcos.web3j.crypto.SHA3Digest;
 import org.fisco.bcos.web3j.crypto.gm.sm3.SM3Digest;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.fisco.bcos.web3j.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -31,7 +33,13 @@ import java.util.Arrays;
  * get address by encrypt type
  * @author marsli
  */
+@Component
 public class AddressUtils {
+
+	@Autowired
+	SHA3Digest sha3Digest;
+	@Autowired
+	SM3Digest sm3Digest;
 
 	private static final int PUBLIC_KEY_SIZE = 64;
 
@@ -46,7 +54,7 @@ public class AddressUtils {
 	 * @param encryptType 1: guomi, 0: standard
 	 * @return
 	 */
-	public static String getAddressByType(ECKeyPair ecKeyPair, int encryptType) {
+	public String getAddressByType(ECKeyPair ecKeyPair, int encryptType) {
 		return getAddressByType(ecKeyPair.getPublicKey(), encryptType);
 	}
 
@@ -55,7 +63,7 @@ public class AddressUtils {
 	 * @param encryptType 1: guomi, 0: standard
 	 * @return
 	 */
-	public static String getAddressByType(BigInteger publicKey, int encryptType) {
+	public String getAddressByType(BigInteger publicKey, int encryptType) {
 		String publicKeyHex = Numeric.toHexStringWithPrefixZeroPadded(publicKey, PUBLIC_KEY_LENGTH_IN_HEX);
 		return getAddressByType(publicKeyHex, encryptType);
 	}
@@ -65,7 +73,7 @@ public class AddressUtils {
 	 * @param encryptType 1: guomi, 0: standard
 	 * @return
 	 */
-	public static String getAddressByType(String publicKeyHex, int encryptType) {
+	public String getAddressByType(String publicKeyHex, int encryptType) {
 		String publicKeyHexNoPrefix = Numeric.cleanHexPrefix(publicKeyHex);
 
 		if (publicKeyHexNoPrefix.length() < PUBLIC_KEY_LENGTH_IN_HEX) {
@@ -83,7 +91,7 @@ public class AddressUtils {
 	 * @param encryptType 1: guomi, 0: standard
 	 * @return
 	 */
-	public static byte[] getAddressByType(byte[] publicKey, int encryptType) {
+	public byte[] getAddressByType(byte[] publicKey, int encryptType) {
 		byte[] hash = hashByType(publicKey, encryptType);
 		// right most 160 bits
 		return Arrays.copyOfRange(hash, hash.length - 20, hash.length);
@@ -95,13 +103,11 @@ public class AddressUtils {
 	 * @param encryptType 1: guomi, 0: standard
 	 * @return
 	 */
-	public static String hashByType(String hexInput, int encryptType) {
+	public String hashByType(String hexInput, int encryptType) {
 		if (encryptType == EncryptTypes.GUOMI.getValue()) {
-			SM3Digest sm3 = new SM3Digest();
-			return sm3.hash(hexInput);
+			return sm3Digest.hash(hexInput);
 		} else {
-			SHA3Digest sha3 = new SHA3Digest();
-			return sha3.hash(hexInput);
+			return sha3Digest.hash(hexInput);
 		}
 	}
 
@@ -111,13 +117,11 @@ public class AddressUtils {
 	 * @param encryptType 1: guomi, 0: standard
 	 * @return
 	 */
-	public static byte[] hashByType(byte[] input, int encryptType) {
+	public  byte[] hashByType(byte[] input, int encryptType) {
 		if (encryptType == EncryptTypes.GUOMI.getValue()) {
-			SM3Digest sm3 = new SM3Digest();
-			return sm3.hash(input);
+			return sm3Digest.hash(input);
 		} else {
-			SHA3Digest sha3 = new SHA3Digest();
-			return sha3.hash(input);
+			return sha3Digest.hash(input);
 		}
 	}
 }

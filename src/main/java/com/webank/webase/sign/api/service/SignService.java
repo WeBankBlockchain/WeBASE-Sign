@@ -45,6 +45,10 @@ public class SignService {
     private UserService userService;
     @Autowired
     ConstantProperties properties;
+    @Autowired
+    SignUtils signUtils;
+    @Autowired
+    private KeyPairUtils keyPairUtils;
 
 
     /**
@@ -63,12 +67,12 @@ public class SignService {
         }
 
         // signature
-        Credentials credentials = KeyPairUtils.create(userRow.getPrivateKey(), encryptType);
+        Credentials credentials = keyPairUtils.create(userRow.getPrivateKey(), encryptType);
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
         Instant startTime = Instant.now();
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
         // sign message by type
-        SignatureData signatureData = SignUtils.signMessageByType(
+        SignatureData signatureData = signUtils.signMessageByType(
                 encodedData, credentials.getEcKeyPair(), encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureDataToStringByType(signatureData, encryptType);
