@@ -16,6 +16,8 @@
 package com.webank.webase.sign.pojo.vo;
 
 import javax.validation.constraints.NotNull;
+
+import lombok.Value;
 import org.hibernate.validator.constraints.NotBlank;
 import lombok.Data;
 
@@ -28,4 +30,5 @@ public class ReqEncodeInfoVo {
     private Integer userId;
     @NotBlank(message = "encodedDataStr cannot be empty")
     private String encodedDataStr;
+    private Integer encryptType;
 }
