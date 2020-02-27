@@ -41,13 +41,13 @@ public class UserService {
     private KeyStoreService keyStoreService;
 
     /**
-     * add user.
+     * add user by encrypt type
      */
     public RspUserInfoVo newUser(int encryptType) throws BaseException {
         log.info("start addUser encryptType:{}", encryptType);
 
         // get keyStoreInfo
-        KeyStoreInfo keyStoreInfo = keyStoreService.newKey(encryptType);
+        KeyStoreInfo keyStoreInfo = keyStoreService.newKeyByType(encryptType);
 
         //save user.
         UserInfoPo userInfoPo = new UserInfoPo();

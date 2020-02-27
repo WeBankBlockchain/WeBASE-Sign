@@ -16,6 +16,7 @@
 
 package com.webank.webase.sign.util;
 
+import com.webank.webase.sign.enums.EncryptTypes;
 import lombok.extern.log4j.Log4j2;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
@@ -83,7 +84,7 @@ public class KeyPairUtils {
      * @return ECKeyPair
      */
     public static ECKeyPair createKeyPairByType(String privateKey, int encryptType) {
-        if (encryptType == 1) {
+        if (encryptType == EncryptTypes.GUOMI.getValue()) {
             return createGuomiKeyPair(privateKey);
         } else {
             return createECDSAKeyPair(privateKey);
