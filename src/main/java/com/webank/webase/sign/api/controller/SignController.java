@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.webank.webase.sign.api.service.SignService;
 import com.webank.webase.sign.exception.BaseException;
@@ -37,7 +38,8 @@ import io.swagger.annotations.ApiOperation;
  * Controller.
  */
 @Api(value = "sign", tags = "sign interface")
-@RestController("sign")
+@RestController
+@RequestMapping("sign")
 public class SignController {
 
     @Autowired
@@ -51,7 +53,7 @@ public class SignController {
      */
     @ApiOperation(value = "add sign standard", notes = "add sign standard")
     @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
-    @PostMapping("/standard")
+    @PostMapping("")
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
@@ -70,7 +72,7 @@ public class SignController {
      */
     @ApiOperation(value = "add sign guomi", notes = "add sign guomi")
     @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
-    @PostMapping("/guomi")
+    @PostMapping("guomi")
     public BaseRspVo signGuomi(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
             throws BaseException {
         CommonUtils.checkParamBindResult(result);
