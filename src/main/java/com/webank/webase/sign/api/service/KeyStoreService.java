@@ -21,8 +21,6 @@ import com.webank.webase.sign.util.AddressUtils;
 import com.webank.webase.sign.util.KeyPairUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
-import org.fisco.bcos.web3j.crypto.Keys;
-import org.fisco.bcos.web3j.crypto.gm.GenCredential;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,10 +62,10 @@ public class KeyStoreService {
 
 
     /**
-     * getKey.
+     * get Key by encrypt type
      * @param encryptType 1: guomi, 0: standard
      */
-    public KeyStoreInfo newKey(int encryptType) throws BaseException {
+    public KeyStoreInfo newKeyByType(int encryptType) throws BaseException {
         try {
             // support guomi
             ECKeyPair keyPair = KeyPairUtils.createKeyPairByType(encryptType);

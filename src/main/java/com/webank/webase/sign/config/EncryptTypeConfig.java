@@ -27,19 +27,19 @@ import org.springframework.context.annotation.Configuration;
  * guomi configuration in web3sdk
  * sdk switch ecdsa to sm2, sha to sm3
  */
-@Data
-@Configuration
-@ConfigurationProperties(prefix = "sdk")
-public class EncryptTypeConfig {
-    // 0:standard, 1:guomi
-    private int encryptType;
-
-    /**
-     * 覆盖EncryptType构造函数
-     * @return
-     */
-    @Bean
-    public EncryptType EncryptType() {
-        return new EncryptType(encryptType);
-    }
-}
+//@Data
+//@Configuration
+//@ConfigurationProperties(prefix = "sdk")
+//public class EncryptTypeConfig {
+//    // 0:standard, 1:guomi
+//    private int encryptType;
+//
+//    /**
+//     * 覆盖EncryptType构造函数
+//     * @return
+//     */
+//    @Bean
+//    public EncryptType EncryptType() {
+//        return new EncryptType(encryptType);
+//    }
+//}

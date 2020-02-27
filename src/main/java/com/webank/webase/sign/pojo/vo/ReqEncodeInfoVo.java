@@ -24,8 +24,8 @@ import lombok.Data;
  */
 @Data
 public class ReqEncodeInfoVo {
-    @NotNull
+    @NotNull(message = "userId cannot be null")
     private Integer userId;
-    @NotBlank
+    @NotBlank(message = "encodedDataStr cannot be empty")
     private String encodedDataStr;
 }

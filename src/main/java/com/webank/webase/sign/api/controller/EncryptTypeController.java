@@ -25,18 +25,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * return encrypt type to web 0 is standard, 1 is guomi
- */
-@Api(value = "/encrypt", tags = "encrypt type interface(standard/guomi)")
-@Slf4j
-@RestController
-@RequestMapping(value = "encrypt")
-public class EncryptTypeController {
-    @GetMapping("")
-    public BaseRspVo getEncryptType() {
-        int encrypt = EncryptType.encryptType;
-        log.info("getEncryptType:{}", encrypt);
-        return CommonUtils.buildSuccessRspVo(encrypt);
-    }
-}
+///**
+// * return encrypt type to web 0 is standard, 1 is guomi
+// */
+//@Api(value = "/encrypt", tags = "encrypt type interface(standard/guomi)")
+//@Slf4j
+//@RestController
+//@RequestMapping(value = "encrypt")
+//public class EncryptTypeController {
+//    @GetMapping("")
+//    public BaseRspVo getEncryptType() {
+//        int encrypt = EncryptType.encryptType;
+//        log.info("getEncryptType:{}", encrypt);
+//        return CommonUtils.buildSuccessRspVo(encrypt);
+//    }
+//}
