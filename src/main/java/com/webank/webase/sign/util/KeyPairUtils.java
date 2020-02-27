@@ -26,6 +26,7 @@ import org.fisco.bcos.web3j.crypto.gm.sm2.crypto.asymmetric.SM2KeyGenerator;
 import org.fisco.bcos.web3j.crypto.gm.sm2.crypto.asymmetric.SM2PrivateKey;
 import org.fisco.bcos.web3j.crypto.gm.sm2.crypto.asymmetric.SM2PublicKey;
 import org.fisco.bcos.web3j.crypto.gm.sm2.util.encoders.Hex;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -35,6 +36,7 @@ import java.security.KeyPair;
  * @author marsli
  */
 @Log4j2
+@Component
 public class KeyPairUtils {
 
     /**
@@ -43,7 +45,7 @@ public class KeyPairUtils {
      * @param encryptType 1: guomi, 0: standard
      * @return Credentials
      */
-    public static Credentials create(String privateKey, int encryptType) {
+    public Credentials create(String privateKey, int encryptType) {
         try {
             ECKeyPair keyPair = createKeyPairByType(privateKey, encryptType);
             if (keyPair == null) {
@@ -63,7 +65,7 @@ public class KeyPairUtils {
      * @param encryptType 1: guomi, 0: standard
      * @return Credentials
      */
-    public static Credentials create(ECKeyPair keyPair, int encryptType) {
+    public Credentials create(ECKeyPair keyPair, int encryptType) {
         try {
             ECKeyPair newKeyPair = createKeyPairByType(keyPair.getPrivateKey().toString(16), encryptType);
             if (newKeyPair == null) {
@@ -83,7 +85,7 @@ public class KeyPairUtils {
      * @param encryptType 1: guomi, 0: standard
      * @return ECKeyPair
      */
-    public static ECKeyPair createKeyPairByType(String privateKey, int encryptType) {
+    public ECKeyPair createKeyPairByType(String privateKey, int encryptType) {
         if (encryptType == EncryptTypes.GUOMI.getValue()) {
             return createGuomiKeyPair(privateKey);
         } else {
@@ -96,7 +98,7 @@ public class KeyPairUtils {
      * @param encryptType 1: guomi, 0: standard
      * @return ECKeyPair
      */
-    public static ECKeyPair createKeyPairByType(int encryptType) {
+    public ECKeyPair createKeyPairByType(int encryptType) {
         // use guomi
         if (encryptType == 1) {
             return GenCredential.createGuomiKeyPair();
@@ -109,7 +111,7 @@ public class KeyPairUtils {
      * init ecdsa key pair
      * @return ECKeyPair ecdsa
      */
-    private static ECKeyPair createECDSAKeyPair() {
+    private ECKeyPair createECDSAKeyPair() {
         try {
             ECKeyPair keyPair = Keys.createEcKeyPair();
             return keyPair;
@@ -124,7 +126,7 @@ public class KeyPairUtils {
      * @param privateKey string
      * @return ECKeyPair guomi
      */
-    private static ECKeyPair createGuomiKeyPair(String privateKey) {
+    private ECKeyPair createGuomiKeyPair(String privateKey) {
         SM2KeyGenerator generator = new SM2KeyGenerator();
         final KeyPair keyPairData = generator.generateKeyPair(privateKey);
         if (keyPairData != null) {
@@ -138,7 +140,7 @@ public class KeyPairUtils {
      * @param privateKey string
      * @return ECKeyPair ecdsa
      */
-    private static ECKeyPair createECDSAKeyPair(String privateKey) {
+    private ECKeyPair createECDSAKeyPair(String privateKey) {
         try {
             BigInteger bigPrivateKey = new BigInteger(privateKey, 16);
             ECKeyPair keyPair = ECKeyPair.create(bigPrivateKey);
@@ -154,7 +156,7 @@ public class KeyPairUtils {
      * @param keyPairData common key pair
      * @return ECKeyPair
      */
-    private static ECKeyPair genEcPairFromKeyPair(KeyPair keyPairData) {
+    private ECKeyPair genEcPairFromKeyPair(KeyPair keyPairData) {
         try {
             SM2PrivateKey vk = (SM2PrivateKey) keyPairData.getPrivate();
             SM2PublicKey pk = (SM2PublicKey) keyPairData.getPublic();

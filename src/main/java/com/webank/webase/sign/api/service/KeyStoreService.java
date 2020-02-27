@@ -36,6 +36,10 @@ import lombok.extern.slf4j.Slf4j;
 public class KeyStoreService {
     @Autowired
     private AesUtils aesUtils;
+    @Autowired
+    private KeyPairUtils keyPairUtils;
+    @Autowired
+    private AddressUtils addressUtils;
 
     static final int PUBLIC_KEY_LENGTH_IN_HEX = 128;
     static final int PRIVATE_KEY_LENGTH_IN_HEX = 16;
@@ -56,7 +60,7 @@ public class KeyStoreService {
         }
 
         // support guomi. v1.3.0+: create by type
-        ECKeyPair keyPair = KeyPairUtils.createKeyPairByType(privateKey, encryptType);
+        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKey, encryptType);
         return keyPair2KeyStoreInfo(keyPair, encryptType);
     }
 
@@ -68,7 +72,7 @@ public class KeyStoreService {
     public KeyStoreInfo newKeyByType(int encryptType) throws BaseException {
         try {
             // support guomi
-            ECKeyPair keyPair = KeyPairUtils.createKeyPairByType(encryptType);
+            ECKeyPair keyPair = keyPairUtils.createKeyPairByType(encryptType);
             return keyPair2KeyStoreInfo(keyPair, encryptType);
         } catch (Exception e) {
             log.error("createEcKeyPair fail.", e);
@@ -86,7 +90,7 @@ public class KeyStoreService {
         String publicKey = Numeric
                 .toHexStringWithPrefixZeroPadded(keyPair.getPublicKey(), PUBLIC_KEY_LENGTH_IN_HEX);
         String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
-        String address = "0x" + AddressUtils.getAddressByType(keyPair.getPublicKey(), encryptType);
+        String address = "0x" + addressUtils.getAddressByType(keyPair.getPublicKey(), encryptType);
         log.debug("publicKey:{} privateKey:{} address:{}", publicKey, privateKey, address);
         KeyStoreInfo keyStoreInfo = new KeyStoreInfo();
         keyStoreInfo.setPublicKey(publicKey);
