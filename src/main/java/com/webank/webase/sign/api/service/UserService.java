@@ -69,7 +69,7 @@ public class UserService {
         // return
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         BeanUtils.copyProperties(userInfoPo, rspUserInfoVo);
-        rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(userInfoPo.getPrivateKey()));
+//        rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(userInfoPo.getPrivateKey()));
 
         return rspUserInfoVo;
     }
@@ -89,7 +89,20 @@ public class UserService {
         log.info("end findByUserId. userId:{}", userId);
         return user;
     }
-    
+
+    public UserInfoPo findByAddress(String address) throws BaseException {
+        log.info("start findByUserId. address:{}", address);
+        UserInfoPo user = userDao.findUserByAddress(address);
+        if (Objects.isNull(user)) {
+            log.warn("fail findByUserId, user not exists. address:{}", address);
+            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+        }
+        Optional.ofNullable(user)
+                .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
+        log.info("end findByUserId. address:{}", address);
+        return user;
+    }
+
     /**
      * query user list.
      * @param encryptType 1: guomi, 0: standard
@@ -101,7 +114,7 @@ public class UserService {
         for (UserInfoPo user : users) {
             RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
             BeanUtils.copyProperties(user, rspUserInfoVo);
-            rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
+//            rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
             rspUserInfoVos.add(rspUserInfoVo);
         }
         return rspUserInfoVos;

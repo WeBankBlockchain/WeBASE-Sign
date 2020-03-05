@@ -33,6 +33,8 @@ public interface UserDao {
 
     UserInfoPo findUser(@Param("userId") Integer userId);
 
+    UserInfoPo findUserByAddress(@Param("address") String address);
+
     /**
      * select by encryptType
      */

@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import com.webank.webase.sign.util.KeyPairUtils;
 import com.webank.webase.sign.util.SignUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.ByteUtil;
@@ -58,9 +59,19 @@ public class SignService {
      */
     public String sign(ReqEncodeInfoVo req, int encryptType) throws BaseException {
         Integer userId = req.getUserId();
-        log.info("start sign. userId:{},encryptType:{}", userId, encryptType);
+        String address = req.getAddress();
+        log.info("start sign. address:{},encryptType:{}", address, encryptType);
+
+        UserInfoPo userRow;
+        // find by address or findById, otherwise error
+        if (StringUtils.isNotBlank(address)) {
+            userRow = userService.findByAddress(address);
+        } else if (!Objects.isNull(userId)) {
+            userRow = userService.findByUserId(req.getUserId());
+        } else {
+            throw new BaseException(CodeMessageEnums.PARAM_EXCEPTION);
+        }
         // check user name not exist.
-        UserInfoPo userRow = userService.findByUserId(req.getUserId());
         if (Objects.isNull(userRow)) {
             log.warn("fail sign, user not exists. userId:{}", userId);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
