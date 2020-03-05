@@ -37,7 +37,7 @@ public enum CodeMessageEnums {
 
     //system error
     SYSTEM_ERROR(103001, "system error"),
-    PARAM_VAILD_FAIL(103001, "system error");
+    PARAM_VAILD_FAIL(103001, "param valid fail");
 
     int code;
     @Setter

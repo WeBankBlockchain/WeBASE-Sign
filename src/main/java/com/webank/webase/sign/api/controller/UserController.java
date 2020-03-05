@@ -57,31 +57,33 @@ public class UserController {
 
     /**
      * get user.
+     * @deprecated
      */
-    @ApiOperation(value = "get user info", notes = "get user by userId")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "userId", value = "user id", required = true, dataType = "int"),
-    })
-    @GetMapping("/{userId}/userInfo")
-    public BaseRspVo getUserInfo(@PathVariable("userId") Integer userId) throws BaseException {
-        //find user
-        UserInfoPo userInfo = userService.findByUserId(userId);
-        RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
-        Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
-        return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
-    }
+//    @ApiOperation(value = "get user info", notes = "get user by userId")
+//    @ApiImplicitParams({
+//        @ApiImplicitParam(name = "userId", value = "user id", required = true, dataType = "int"),
+//    })
+//    @GetMapping("/{userId}/userInfo")
+//    public BaseRspVo getUserInfo(@PathVariable("userId") Integer userId) throws BaseException {
+//        //find user
+//        UserInfoPo userInfo = userService.findByUserId(userId);
+//        RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
+//        Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
+//        return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
+//    }
     
     /**
      * get user list of ecdsa/guomi by encrypt type
+     * @deprecated
      */
-    @ApiOperation(value = "get standard user list by encrypt type",
-            notes = "获取国密或ECDSA用户列表")
-    @GetMapping("/list")
-    public BaseRspVo getUserList(@RequestParam(required = false, defaultValue = "0") Integer encryptType)
-            throws BaseException {
-        //find user list
-        List<RspUserInfoVo> rspUserInfos = userService.findUserList(encryptType);
-        return CommonUtils.buildSuccessRspVo(rspUserInfos);
-    }
+//    @ApiOperation(value = "get standard user list by encrypt type",
+//            notes = "获取国密或ECDSA用户列表")
+//    @GetMapping("/list")
+//    public BaseRspVo getUserList(@RequestParam(required = false, defaultValue = "0") Integer encryptType)
+//            throws BaseException {
+//        //find user list
+//        List<RspUserInfoVo> rspUserInfos = userService.findUserList(encryptType);
+//        return CommonUtils.buildSuccessRspVo(rspUserInfos);
+//    }
 
 }
