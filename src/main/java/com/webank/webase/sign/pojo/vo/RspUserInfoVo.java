@@ -26,7 +26,8 @@ public class RspUserInfoVo {
 	private String address;
 	private String publicKey;
 	// not return privateKey
-	// private String privateKey;
+	@Deprecated
+    private String privateKey;
     private String description;
     private Integer encryptType;
 }
