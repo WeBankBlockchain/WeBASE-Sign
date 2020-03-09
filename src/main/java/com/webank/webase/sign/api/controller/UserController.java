@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.webank.webase.sign.enums.EncryptTypes;
+import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ADDRESS_IS_BLANK;
 
 /**
  * Controller.
@@ -52,7 +56,20 @@ public class UserController {
         throws BaseException {
         //new user
         RspUserInfoVo userInfo = userService.newUser(encryptType);
+        userInfo.setPrivateKey("");
         return CommonUtils.buildSuccessRspVo(userInfo);
+    }
+
+    @ApiOperation(value = "delete user by address",
+            notes = "通过地址删除私钥")
+    @DeleteMapping("")
+    public BaseRspVo deleteUser(@RequestBody ReqUserInfoVo req) throws BaseException {
+        String address = req.getAddress();
+        if (StringUtils.isBlank(address)) {
+            throw new BaseException(PARAM_ADDRESS_IS_BLANK);
+        }
+        userService.deleteByAddress(address);
+        return CommonUtils.buildSuccessRspVo(null);
     }
 
     /**

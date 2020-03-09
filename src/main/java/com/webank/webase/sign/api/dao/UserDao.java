@@ -39,4 +39,9 @@ public interface UserDao {
      * select by encryptType
      */
     List<UserInfoPo> findUserList(@Param("encryptType") Integer encryptType);
+
+    /**
+     * delete user by address
+     */
+    void deleteUserByAddress(@Param("address") String address);
 }

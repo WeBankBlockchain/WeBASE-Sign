@@ -67,4 +67,8 @@
     where encrypt_type = #{encryptType}
     order by user_id
   </select>
+
+  <delete id="deleteUserByAddress" parameterType="java.lang.String">
+    delete from tb_user where address = #{address}
+  </delete>
 </mapper>

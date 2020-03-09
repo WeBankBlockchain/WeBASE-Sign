@@ -91,15 +91,15 @@ public class UserService {
     }
 
     public UserInfoPo findByAddress(String address) throws BaseException {
-        log.info("start findByUserId. address:{}", address);
+        log.info("start findUserByAddress. address:{}", address);
         UserInfoPo user = userDao.findUserByAddress(address);
         if (Objects.isNull(user)) {
-            log.warn("fail findByUserId, user not exists. address:{}", address);
+            log.warn("fail findUserByAddress, user not exists. address:{}", address);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
         }
         Optional.ofNullable(user)
                 .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
-        log.info("end findByUserId. address:{}", address);
+        log.info("end findUserByAddress. address:{}", address);
         return user;
     }
 
@@ -118,5 +118,17 @@ public class UserService {
             rspUserInfoVos.add(rspUserInfoVo);
         }
         return rspUserInfoVos;
+    }
+
+    /**
+     * delete user by address
+     */
+    public void deleteByAddress(String address) throws BaseException{
+        UserInfoPo user = userDao.findUserByAddress(address);
+        if (Objects.isNull(user)) {
+            log.warn("fail findUserByAddress, user not exists. address:{}", address);
+            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+        }
+        userDao.deleteUserByAddress(address);
     }
 }

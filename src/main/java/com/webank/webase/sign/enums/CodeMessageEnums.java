@@ -27,6 +27,7 @@ public enum CodeMessageEnums {
 
     //param
     PARAM_EXCEPTION(203003, "param exception"),
+    PARAM_ADDRESS_IS_BLANK(203004, "address cannot be blank"),
 
     //business exception
     USER_IS_EXISTS(303001, "user is already exists"),
