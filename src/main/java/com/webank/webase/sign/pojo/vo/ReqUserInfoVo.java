@@ -20,5 +20,5 @@ import lombok.Data;
 
 @Data
 public class ReqUserInfoVo {
-	private String address;
+	private String uuidUser;
 }

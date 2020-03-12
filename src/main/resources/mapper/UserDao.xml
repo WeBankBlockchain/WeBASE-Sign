@@ -5,6 +5,7 @@
   <update id="createTbUser">
         CREATE TABLE IF NOT EXISTS tb_user (
           user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
+          uuid_user varchar(64) NOT NULL COMMENT '用户唯一的业务userId编号',
           address varchar(64) NOT NULL COMMENT '用户地址',
           public_key varchar(256) NOT NULL COMMENT '公钥',
           private_key varchar(256) NOT NULL COMMENT '私钥',
@@ -13,12 +14,14 @@
           gmt_create datetime DEFAULT NULL COMMENT '创建时间',
           gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
           PRIMARY KEY (user_id),
-          UNIQUE KEY unique_address (address)
-        ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+          UNIQUE KEY unique_address (address),
+          UNIQUE KEY unique_uuid (uuid_user)
+    ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
     </update>
 
   <sql id="USER_COLUMN">
         user_id as userId,
+        uuid_user as uuidUser,
         address,
         public_key as publicKey,
         private_key as privateKey,
@@ -31,6 +34,7 @@
       select LAST_INSERT_ID()
     </selectKey>
     insert into tb_user(
+    `uuid_user`,
     `address`,
     `public_key`,
     `private_key`,
@@ -39,6 +43,7 @@
     `gmt_create`,
     `gmt_modify`
     ) values (
+    #{uuidUser},
     #{address},
     #{publicKey},
     #{privateKey},
@@ -49,10 +54,10 @@
     )
   </insert>
 
-  <select id="findUser" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+  <select id="findUserByUuid" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user 
-    where user_id = #{userId}
+    where uuid_user = #{uuidUser}
   </select>
 
   <select id="findUserByAddress" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
@@ -68,7 +73,7 @@
     order by user_id
   </select>
 
-  <delete id="deleteUserByAddress" parameterType="java.lang.String">
-    delete from tb_user where address = #{address}
+  <delete id="deleteUserByUuid" parameterType="java.lang.String">
+    delete from tb_user where uuid_user = #{uuidUser}
   </delete>
 </mapper>

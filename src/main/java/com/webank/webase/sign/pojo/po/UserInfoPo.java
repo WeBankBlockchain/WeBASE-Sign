@@ -18,12 +18,16 @@ package com.webank.webase.sign.pojo.po;
 import lombok.Data;
 
 /**
- * UserInfoPo.
- * 
+ * UserInfo Plain Object from db
  */
 @Data
 public class UserInfoPo {
-    private Integer userId;
+	/**
+	 * id but no use
+	 */
+	private Integer userId;
+
+    private String uuidUser;
 	private String address;
 	private String publicKey;
 	private String privateKey;

@@ -23,6 +23,7 @@ import lombok.Data;
  */
 @Data
 public class RspUserInfoVo {
+	private String uuidUser;
 	private String address;
 	private String publicKey;
 	// not return privateKey
