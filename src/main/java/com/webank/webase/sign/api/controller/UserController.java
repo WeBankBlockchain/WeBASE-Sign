@@ -16,6 +16,7 @@ package com.webank.webase.sign.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +34,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ADDRESS_IS_BLANK;
+import static com.webank.webase.sign.enums.CodeMessageEnums.*;
 
 /**
  * Controller.
@@ -47,60 +48,55 @@ public class UserController {
     private UserService userService;
 
     /**
-     * new user from ecdsa(standard)
+     * new user from ecdsa or guomi
      */
     @ApiOperation(value = "new user from ecdsa/guomi, default ecdsa",
             notes = "新建公私钥用户(ecdsa或国密)，默认ecdas")
     @GetMapping("/newUser")
-    public BaseRspVo newUser(@RequestParam(required = false, defaultValue = "0") Integer encryptType)
+    public BaseRspVo newUser(@RequestParam String uuidUser,
+                             @RequestParam(required = false, defaultValue = "0") Integer encryptType)
         throws BaseException {
-        //new user
-        RspUserInfoVo userInfo = userService.newUser(encryptType);
+        // validate uuidUser
+        if (StringUtils.isBlank(uuidUser)) {
+            throw new BaseException(PARAM_UUID_USER_IS_BLANK);
+        }
+        if (!CommonUtils.isLetterDigit(uuidUser)) {
+            throw new BaseException(PARAM_UUID_USER_IS_INVALID);
+        }
+        // new user
+        RspUserInfoVo userInfo = userService.newUser(uuidUser, encryptType);
         userInfo.setPrivateKey("");
         return CommonUtils.buildSuccessRspVo(userInfo);
+    }
+
+    /**
+     * get user.
+     */
+    @ApiOperation(value = "check user info exist", notes = "check user info exist")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "uuidUser", value = "uuid of user in business system",
+                    required = true, dataType = "String"),
+    })
+    @GetMapping("/{uuidUser}/userInfo")
+    public BaseRspVo getUserInfo(@PathVariable("uuidUser") String uuidUser) throws BaseException {
+        //find user
+        UserInfoPo userInfo = userService.findByUuidUser(uuidUser);
+        RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
+        Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
+        rspUserInfoVo.setPrivateKey("");
+        return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
     }
 
     @ApiOperation(value = "delete user by address",
             notes = "通过地址删除私钥")
     @DeleteMapping("")
     public BaseRspVo deleteUser(@RequestBody ReqUserInfoVo req) throws BaseException {
-        String address = req.getAddress();
-        if (StringUtils.isBlank(address)) {
-            throw new BaseException(PARAM_ADDRESS_IS_BLANK);
+        String uuidUser = req.getUuidUser();
+        if (StringUtils.isBlank(uuidUser)) {
+            throw new BaseException(PARAM_UUID_USER_IS_BLANK);
         }
-        userService.deleteByAddress(address);
+        userService.deleteByUuid(uuidUser);
         return CommonUtils.buildSuccessRspVo(null);
     }
-
-    /**
-     * get user.
-     * @deprecated
-     */
-//    @ApiOperation(value = "get user info", notes = "get user by userId")
-//    @ApiImplicitParams({
-//        @ApiImplicitParam(name = "userId", value = "user id", required = true, dataType = "int"),
-//    })
-//    @GetMapping("/{userId}/userInfo")
-//    public BaseRspVo getUserInfo(@PathVariable("userId") Integer userId) throws BaseException {
-//        //find user
-//        UserInfoPo userInfo = userService.findByUserId(userId);
-//        RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
-//        Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
-//        return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
-//    }
-    
-    /**
-     * get user list of ecdsa/guomi by encrypt type
-     * @deprecated
-     */
-//    @ApiOperation(value = "get standard user list by encrypt type",
-//            notes = "获取国密或ECDSA用户列表")
-//    @GetMapping("/list")
-//    public BaseRspVo getUserList(@RequestParam(required = false, defaultValue = "0") Integer encryptType)
-//            throws BaseException {
-//        //find user list
-//        List<RspUserInfoVo> rspUserInfos = userService.findUserList(encryptType);
-//        return CommonUtils.buildSuccessRspVo(rspUserInfos);
-//    }
 
 }

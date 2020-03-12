@@ -43,8 +43,14 @@ public class UserService {
     /**
      * add user by encrypt type
      */
-    public RspUserInfoVo newUser(int encryptType) throws BaseException {
-        log.info("start addUser encryptType:{}", encryptType);
+    public RspUserInfoVo newUser(String uuidUser, int encryptType) throws BaseException {
+        log.info("start addUser uuidUser:{},encryptType:{}", uuidUser, encryptType);
+
+        // check user uuid exist
+        UserInfoPo checkUuidUserExists = userDao.findUserByUuid(uuidUser);
+        if (Objects.nonNull(checkUuidUserExists)) {
+            throw new BaseException(CodeMessageEnums.USER_IS_EXISTS);
+        }
 
         // get keyStoreInfo
         KeyStoreInfo keyStoreInfo = keyStoreService.newKeyByType(encryptType);
@@ -53,6 +59,7 @@ public class UserService {
         UserInfoPo userInfoPo = new UserInfoPo();
         BeanUtils.copyProperties(keyStoreInfo, userInfoPo);
         userInfoPo.setEncryptType(encryptType);
+        userInfoPo.setUuidUser(uuidUser);
         RspUserInfoVo rspUserInfoVo = saveUser(userInfoPo);
         log.info("end addUser");
         return rspUserInfoVo;
@@ -69,7 +76,6 @@ public class UserService {
         // return
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         BeanUtils.copyProperties(userInfoPo, rspUserInfoVo);
-//        rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(userInfoPo.getPrivateKey()));
 
         return rspUserInfoVo;
     }
@@ -77,16 +83,16 @@ public class UserService {
     /**
      * query user by userId.
      */
-    public UserInfoPo findByUserId(Integer userId) throws BaseException {
-        log.info("start findByUserId. userId:{}", userId);
-        UserInfoPo user = userDao.findUser(userId);
+    public UserInfoPo findByUuidUser(String uuidUser) throws BaseException {
+        log.info("start findByUuidUser. uuidUser:{}", uuidUser);
+        UserInfoPo user = userDao.findUserByUuid(uuidUser);
         if (Objects.isNull(user)) {
-            log.warn("fail findByUserId, user not exists. userId:{}", userId);
+            log.warn("fail findByUuidUser, user not exists. userId:{}", uuidUser);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
         }
         Optional.ofNullable(user)
             .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
-        log.info("end findByUserId. userId:{}", userId);
+        log.info("end findByUuidUser. userId:{}", uuidUser);
         return user;
     }
 
@@ -121,14 +127,16 @@ public class UserService {
     }
 
     /**
-     * delete user by address
+     * delete user by uuidUser
      */
-    public void deleteByAddress(String address) throws BaseException{
-        UserInfoPo user = userDao.findUserByAddress(address);
+    public void deleteByUuid(String uuidUser) throws BaseException{
+        log.info("start deleteByUuid uuidUser:{}", uuidUser);
+        UserInfoPo user = userDao.findUserByUuid(uuidUser);
         if (Objects.isNull(user)) {
-            log.warn("fail findUserByAddress, user not exists. address:{}", address);
+            log.warn("fail deleteByUuid, user not exists. uuidUser:{}", uuidUser);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
         }
-        userDao.deleteUserByAddress(address);
+        userDao.deleteUserByUuid(uuidUser);
+        log.info("end deleteByUuid.");
     }
 }

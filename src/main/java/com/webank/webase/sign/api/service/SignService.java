@@ -58,22 +58,14 @@ public class SignService {
      * @param req parameter
      */
     public String sign(ReqEncodeInfoVo req, int encryptType) throws BaseException {
-        Integer userId = req.getUserId();
-        String address = req.getAddress();
-        log.info("start sign. address:{},encryptType:{}", address, encryptType);
+        String uuidUser = req.getUuidUser();
+        log.info("start sign. uuidUser:{},encryptType:{}", uuidUser, encryptType);
 
-        UserInfoPo userRow;
-        // find by address or findById, otherwise error
-        if (StringUtils.isNotBlank(address)) {
-            userRow = userService.findByAddress(address);
-        } else if (!Objects.isNull(userId)) {
-            userRow = userService.findByUserId(req.getUserId());
-        } else {
-            throw new BaseException(CodeMessageEnums.PARAM_EXCEPTION);
-        }
+        // check exist
+        UserInfoPo userRow = userService.findByUuidUser(uuidUser);
         // check user name not exist.
         if (Objects.isNull(userRow)) {
-            log.warn("fail sign, user not exists. userId:{}", userId);
+            log.warn("fail sign, user not exists. uuidUser:{}", uuidUser);
             throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
         }
 
@@ -87,7 +79,7 @@ public class SignService {
                 encodedData, credentials.getEcKeyPair(), encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureDataToStringByType(signatureData, encryptType);
-        log.info("start sign. userId:{}", userId);
+        log.info("end sign. uuidUser:{}", uuidUser);
         return signDataStr;
     }
 }

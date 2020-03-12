@@ -31,7 +31,7 @@ public interface UserDao {
 
     void insertUserInfo(UserInfoPo userInfoPo);
 
-    UserInfoPo findUser(@Param("userId") Integer userId);
+    UserInfoPo findUserByUuid(@Param("uuidUser") String uuidUser);
 
     UserInfoPo findUserByAddress(@Param("address") String address);
 
@@ -43,5 +43,5 @@ public interface UserDao {
     /**
      * delete user by address
      */
-    void deleteUserByAddress(@Param("address") String address);
+    void deleteUserByUuid(@Param("uuidUser") String uuidUser);
 }

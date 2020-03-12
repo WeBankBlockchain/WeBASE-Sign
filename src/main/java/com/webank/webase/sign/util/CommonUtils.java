@@ -138,4 +138,9 @@ public class CommonUtils {
         baseRspVo.setData(data);
         return baseRspVo;
     }
+
+    public static boolean isLetterDigit(String str) {
+        String regex = "^[a-z0-9A-Z]+$";
+        return str.matches(regex);
+    }
 }
