@@ -1,4 +1,10 @@
 # 签名服务
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE/CONTRIBUTING.html)
+[![CodeFactor](https://www.codefactor.io/repository/github/webankfintech/webase-sign/badge)](https://www.codefactor.io/repository/github/webankfintech/webase-sign)
+[![Code Lines](https://tokei.rs/b1/github/WeBankFinTech/WeBASE-Sign?category=code)](https://github.com/WeBankFinTech/WeBASE-Sign)
+[![license](http://img.shields.io/badge/license-Apache%20v2-blue.svg)](http://www.apache.org/licenses/)
+[![GitHub (pre-)release](https://img.shields.io/github/release/WeBankFinTech/WeBASE-Sign/all.svg)](https://github.com/WeBankFinTech/WeBASE-Sign/releases)
+
 ## 简介
 本工程为签名服务子系统。功能：管理公私钥、对数据进行签名。 详细介绍请查看[WeBASE-Sign在线文档](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE-Sign/index.html)
 
