@@ -26,8 +26,8 @@ import lombok.Data;
  */
 @Data
 public class ReqEncodeInfoVo {
-    @NotBlank(message = "uuidUser cannot be empty")
-    private String uuidUser;
+    @NotBlank(message = "signUserId cannot be empty")
+    private String signUserId;
     @NotBlank(message = "encodedDataStr cannot be empty")
     private String encodedDataStr;
     private Integer encryptType;

@@ -31,7 +31,7 @@ public interface UserDao {
 
     void insertUserInfo(UserInfoPo userInfoPo);
 
-    UserInfoPo findUserByUuid(@Param("uuidUser") String uuidUser);
+    UserInfoPo findUserBySignUserId(@Param("signUserId") String signUserId);
 
     UserInfoPo findUserByAddress(@Param("address") String address);
 
@@ -41,7 +41,12 @@ public interface UserDao {
     List<UserInfoPo> findUserList(@Param("encryptType") Integer encryptType);
 
     /**
+     * select by appId
+     */
+    List<UserInfoPo> findUserListByAppId(@Param("appId") String appId);
+
+    /**
      * delete user by address
      */
-    void deleteUserByUuid(@Param("uuidUser") String uuidUser);
+    void deleteUserBySignUserId(@Param("signUserId") String signUserId);
 }
