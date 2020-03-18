@@ -5,7 +5,8 @@
   <update id="createTbUser">
         CREATE TABLE IF NOT EXISTS tb_user (
           user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
-          uuid_user varchar(64) NOT NULL COMMENT '用户唯一的业务userId编号',
+          sign_user_id varchar(64) NOT NULL COMMENT '用户唯一的业务编号',
+          app_id varchar(64) NOT NULL COMMENT '用户对应的应用编号',
           address varchar(64) NOT NULL COMMENT '用户地址',
           public_key varchar(256) NOT NULL COMMENT '公钥',
           private_key varchar(256) NOT NULL COMMENT '私钥',
@@ -15,13 +16,14 @@
           gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
           PRIMARY KEY (user_id),
           UNIQUE KEY unique_address (address),
-          UNIQUE KEY unique_uuid (uuid_user)
+          UNIQUE KEY unique_uuid (sign_user_id)
     ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
     </update>
 
   <sql id="USER_COLUMN">
         user_id as userId,
-        uuid_user as uuidUser,
+        sign_user_id as signUserId,
+        app_id as appId,
         address,
         public_key as publicKey,
         private_key as privateKey,
@@ -34,7 +36,8 @@
       select LAST_INSERT_ID()
     </selectKey>
     insert into tb_user(
-    `uuid_user`,
+    `sign_user_id`,
+    `app_id`,
     `address`,
     `public_key`,
     `private_key`,
@@ -43,7 +46,8 @@
     `gmt_create`,
     `gmt_modify`
     ) values (
-    #{uuidUser},
+    #{signUserId},
+    #{appId},
     #{address},
     #{publicKey},
     #{privateKey},
@@ -54,10 +58,10 @@
     )
   </insert>
 
-  <select id="findUserByUuid" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+  <select id="findUserBySignUserId" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user 
-    where uuid_user = #{uuidUser}
+    where sign_user_id = #{signUserId}
   </select>
 
   <select id="findUserByAddress" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
@@ -73,7 +77,14 @@
     order by user_id
   </select>
 
-  <delete id="deleteUserByUuid" parameterType="java.lang.String">
-    delete from tb_user where uuid_user = #{uuidUser}
+  <select id="findUserListByAppId" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+    select <include refid="USER_COLUMN"/>
+    from tb_user
+    where app_id = #{appId}
+    order by user_id
+  </select>
+
+  <delete id="deleteUserBySignUserId" parameterType="java.lang.String">
+    delete from tb_user where sign_user_id = #{signUserId}
   </delete>
 </mapper>
