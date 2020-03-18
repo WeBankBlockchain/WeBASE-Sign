@@ -139,6 +139,11 @@ public class CommonUtils {
         return baseRspVo;
     }
 
+    /**
+     * signUserId支持数字，字母与下划线"_"
+     * @param str
+     * @return
+     */
     public static boolean isLetterDigit(String str) {
         String regex = "^[a-z0-9A-Z_]+$";
         return str.matches(regex);
