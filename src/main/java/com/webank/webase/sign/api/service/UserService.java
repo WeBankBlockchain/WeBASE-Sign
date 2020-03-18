@@ -43,13 +43,13 @@ public class UserService {
     /**
      * add user by encrypt type
      */
-    public RspUserInfoVo newUser(String uuidUser, int encryptType) throws BaseException {
-        log.info("start addUser uuidUser:{},encryptType:{}", uuidUser, encryptType);
-
+    public RspUserInfoVo newUser(String signUserId, String appId, int encryptType) throws BaseException {
+        log.info("start addUser signUserId:{},appId:{},encryptType:{}",
+                signUserId, appId, encryptType);
         // check user uuid exist
-        UserInfoPo checkUuidUserExists = userDao.findUserByUuid(uuidUser);
-        if (Objects.nonNull(checkUuidUserExists)) {
-            throw new BaseException(CodeMessageEnums.USER_IS_EXISTS);
+        UserInfoPo checkSignUserIdExists = userDao.findUserBySignUserId(signUserId);
+        if (Objects.nonNull(checkSignUserIdExists)) {
+            throw new BaseException(CodeMessageEnums.USER_EXISTS);
         }
 
         // get keyStoreInfo
@@ -59,7 +59,8 @@ public class UserService {
         UserInfoPo userInfoPo = new UserInfoPo();
         BeanUtils.copyProperties(keyStoreInfo, userInfoPo);
         userInfoPo.setEncryptType(encryptType);
-        userInfoPo.setUuidUser(uuidUser);
+        userInfoPo.setSignUserId(signUserId);
+        userInfoPo.setAppId(appId);
         RspUserInfoVo rspUserInfoVo = saveUser(userInfoPo);
         log.info("end addUser");
         return rspUserInfoVo;
@@ -83,16 +84,16 @@ public class UserService {
     /**
      * query user by userId.
      */
-    public UserInfoPo findByUuidUser(String uuidUser) throws BaseException {
-        log.info("start findByUuidUser. uuidUser:{}", uuidUser);
-        UserInfoPo user = userDao.findUserByUuid(uuidUser);
+    public UserInfoPo findBySignUserId(String signUserId) throws BaseException {
+        log.info("start findBySignUserId. signUserId:{}", signUserId);
+        UserInfoPo user = userDao.findUserBySignUserId(signUserId);
         if (Objects.isNull(user)) {
-            log.warn("fail findByUuidUser, user not exists. userId:{}", uuidUser);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+            log.warn("fail findBySignUserId, user not exists. userId:{}", signUserId);
+            throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
         Optional.ofNullable(user)
             .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
-        log.info("end findByUuidUser. userId:{}", uuidUser);
+        log.info("end findBySignUserId. userId:{}", signUserId);
         return user;
     }
 
@@ -101,7 +102,7 @@ public class UserService {
         UserInfoPo user = userDao.findUserByAddress(address);
         if (Objects.isNull(user)) {
             log.warn("fail findUserByAddress, user not exists. address:{}", address);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+            throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
         Optional.ofNullable(user)
                 .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
@@ -120,23 +121,37 @@ public class UserService {
         for (UserInfoPo user : users) {
             RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
             BeanUtils.copyProperties(user, rspUserInfoVo);
-//            rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
+            rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
             rspUserInfoVos.add(rspUserInfoVo);
         }
         return rspUserInfoVos;
     }
 
-    /**
-     * delete user by uuidUser
-     */
-    public void deleteByUuid(String uuidUser) throws BaseException{
-        log.info("start deleteByUuid uuidUser:{}", uuidUser);
-        UserInfoPo user = userDao.findUserByUuid(uuidUser);
-        if (Objects.isNull(user)) {
-            log.warn("fail deleteByUuid, user not exists. uuidUser:{}", uuidUser);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+    public List<RspUserInfoVo> findUserListByAppId(String appId) {
+        log.info("start findUserListByAppId.");
+        List<UserInfoPo> users = userDao.findUserListByAppId(appId);
+        List<RspUserInfoVo> rspUserInfoVos = new ArrayList<>();
+        for (UserInfoPo user : users) {
+            RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
+            BeanUtils.copyProperties(user, rspUserInfoVo);
+            rspUserInfoVo.setPrivateKey(aesUtils.aesDecrypt(user.getPrivateKey()));
+            rspUserInfoVos.add(rspUserInfoVo);
         }
-        userDao.deleteUserByUuid(uuidUser);
+        return rspUserInfoVos;
+    }
+
+
+    /**
+     * delete user by signUserId
+     */
+    public void deleteBySignUserId(String signUserId) throws BaseException{
+        log.info("start deleteByUuid signUserId:{}", signUserId);
+        UserInfoPo user = userDao.findUserBySignUserId(signUserId);
+        if (Objects.isNull(user)) {
+            log.warn("fail deleteByUuid, user not exists. signUserId:{}", signUserId);
+            throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
+        }
+        userDao.deleteUserBySignUserId(signUserId);
         log.info("end deleteByUuid.");
     }
 }
