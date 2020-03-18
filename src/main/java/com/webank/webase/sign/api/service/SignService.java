@@ -21,7 +21,6 @@ import java.util.Objects;
 
 import com.webank.webase.sign.util.KeyPairUtils;
 import com.webank.webase.sign.util.SignUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.ByteUtil;
@@ -58,15 +57,15 @@ public class SignService {
      * @param req parameter
      */
     public String sign(ReqEncodeInfoVo req, int encryptType) throws BaseException {
-        String uuidUser = req.getUuidUser();
-        log.info("start sign. uuidUser:{},encryptType:{}", uuidUser, encryptType);
+        String signUserId = req.getSignUserId();
+        log.info("start sign. signUserId:{},encryptType:{}", signUserId, encryptType);
 
         // check exist
-        UserInfoPo userRow = userService.findByUuidUser(uuidUser);
+        UserInfoPo userRow = userService.findBySignUserId(signUserId);
         // check user name not exist.
         if (Objects.isNull(userRow)) {
-            log.warn("fail sign, user not exists. uuidUser:{}", uuidUser);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+            log.warn("fail sign, user not exists. signUserId:{}", signUserId);
+            throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
 
         // signature
@@ -79,7 +78,7 @@ public class SignService {
                 encodedData, credentials.getEcKeyPair(), encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureDataToStringByType(signatureData, encryptType);
-        log.info("end sign. uuidUser:{}", uuidUser);
+        log.info("end sign. signUserId:{}", signUserId);
         return signDataStr;
     }
 }

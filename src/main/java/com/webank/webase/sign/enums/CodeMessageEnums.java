@@ -28,12 +28,13 @@ public enum CodeMessageEnums {
     //param
     PARAM_EXCEPTION(203003, "param exception"),
     PARAM_ADDRESS_IS_BLANK(203004, "address cannot be blank"),
-    PARAM_UUID_USER_IS_BLANK(203005, "uuidUser cannot be blank"),
-    PARAM_UUID_USER_IS_INVALID(203005, "invalid uuidUser: only support letter and digit"),
+    PARAM_SIGN_USER_ID_IS_BLANK(203005, "sign user id cannot be blank"),
+    PARAM_SIGN_USER_ID_IS_INVALID(203006, "invalid sign user id: only support letter and digit"),
+    PARAM_APP_ID_IS_BLANK(203007, "app id cannot be blank"),
 
     //business exception
-    USER_IS_EXISTS(303001, "user of this uuid is already exists"),
-    USER_IS_NOT_EXISTS(303002, "user does not exist"),
+    USER_EXISTS(303001, "user of this sign user id is already exists"),
+    USER_NOT_EXISTS(303002, "user does not exist"),
     PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
     PRIVATEKEY_FORMAT_ERROR(303005, "privateKey format error"),

@@ -140,7 +140,7 @@ public class CommonUtils {
     }
 
     public static boolean isLetterDigit(String str) {
-        String regex = "^[a-z0-9A-Z]+$";
+        String regex = "^[a-z0-9A-Z_]+$";
         return str.matches(regex);
     }
 }

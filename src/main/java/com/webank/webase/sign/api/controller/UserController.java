@@ -53,18 +53,22 @@ public class UserController {
     @ApiOperation(value = "new user from ecdsa/guomi, default ecdsa",
             notes = "新建公私钥用户(ecdsa或国密)，默认ecdas")
     @GetMapping("/newUser")
-    public BaseRspVo newUser(@RequestParam String uuidUser,
+    public BaseRspVo newUser(@RequestParam String signUserId,
+                             @RequestParam String appId,
                              @RequestParam(required = false, defaultValue = "0") Integer encryptType)
         throws BaseException {
-        // validate uuidUser
-        if (StringUtils.isBlank(uuidUser)) {
-            throw new BaseException(PARAM_UUID_USER_IS_BLANK);
+        // validate signUserId
+        if (StringUtils.isBlank(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
         }
-        if (!CommonUtils.isLetterDigit(uuidUser)) {
-            throw new BaseException(PARAM_UUID_USER_IS_INVALID);
+        if (!CommonUtils.isLetterDigit(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
+        }
+        if (StringUtils.isBlank(appId)) {
+            throw new BaseException(PARAM_APP_ID_IS_BLANK);
         }
         // new user
-        RspUserInfoVo userInfo = userService.newUser(uuidUser, encryptType);
+        RspUserInfoVo userInfo = userService.newUser(signUserId, appId, encryptType);
         userInfo.setPrivateKey("");
         return CommonUtils.buildSuccessRspVo(userInfo);
     }
@@ -74,28 +78,46 @@ public class UserController {
      */
     @ApiOperation(value = "check user info exist", notes = "check user info exist")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "uuidUser", value = "uuid of user in business system",
+            @ApiImplicitParam(name = "signUserId", value = "business id of user in system",
                     required = true, dataType = "String"),
     })
-    @GetMapping("/{uuidUser}/userInfo")
-    public BaseRspVo getUserInfo(@PathVariable("uuidUser") String uuidUser) throws BaseException {
+    @GetMapping("/{signUserId}/userInfo")
+    public BaseRspVo getUserInfo(@PathVariable("signUserId") String signUserId) throws BaseException {
         //find user
-        UserInfoPo userInfo = userService.findByUuidUser(uuidUser);
+        UserInfoPo userInfo = userService.findBySignUserId(signUserId);
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
         rspUserInfoVo.setPrivateKey("");
         return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
     }
 
+    /**
+     * get user list by app id
+     */
+    @ApiOperation(value = "get user list by app id", notes = "根据appId获取user列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appId", value = "app id that users belong to",
+                    required = true, dataType = "String"),
+    })
+    @GetMapping("/list/{appId}")
+    public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId) {
+        //find user
+        List<RspUserInfoVo> userList = userService.findUserListByAppId(appId);
+        if (!userList.isEmpty()) {
+            userList.forEach(user -> user.setPrivateKey(""));
+        }
+        return CommonUtils.buildSuccessRspVo(userList);
+    }
+
     @ApiOperation(value = "delete user by address",
             notes = "通过地址删除私钥")
     @DeleteMapping("")
     public BaseRspVo deleteUser(@RequestBody ReqUserInfoVo req) throws BaseException {
-        String uuidUser = req.getUuidUser();
-        if (StringUtils.isBlank(uuidUser)) {
-            throw new BaseException(PARAM_UUID_USER_IS_BLANK);
+        String signUserId = req.getSignUserId();
+        if (StringUtils.isBlank(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
         }
-        userService.deleteByUuid(uuidUser);
+        userService.deleteBySignUserId(signUserId);
         return CommonUtils.buildSuccessRspVo(null);
     }
 
