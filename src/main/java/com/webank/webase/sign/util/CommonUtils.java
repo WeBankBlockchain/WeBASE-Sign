@@ -17,7 +17,6 @@ package com.webank.webase.sign.util;
 
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
-import org.fisco.bcos.web3j.crypto.EncryptType;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.validation.BindingResult;
