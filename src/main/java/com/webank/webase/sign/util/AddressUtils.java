@@ -37,9 +37,9 @@ import java.util.Arrays;
 public class AddressUtils {
 
 	@Autowired
-	SHA3Digest sha3Digest;
+	private SHA3Digest sha3Digest;
 	@Autowired
-	SM3Digest sm3Digest;
+	private SM3Digest sm3Digest;
 
 	private static final int PUBLIC_KEY_SIZE = 64;
 
