@@ -28,7 +28,7 @@ import com.webank.webase.sign.constant.ConstantProperties;
 public class AesUtils {
 
     @Autowired
-    ConstantProperties properties;
+    private ConstantProperties properties;
 
     /**
      * Encrypt by aes.
