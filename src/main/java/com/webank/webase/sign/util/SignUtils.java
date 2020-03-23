@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 public class SignUtils {
 
 	@Autowired
-	ECDSASign ecdsaSign;
+	private ECDSASign ecdsaSign;
 
 	/**
 	 * get signature data  by encrypt type
