@@ -15,14 +15,10 @@ package com.webank.webase.sign.api.controller;
 
 import java.util.List;
 import java.util.Optional;
-
-import com.webank.webase.sign.enums.CodeMessageEnums;
-import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
@@ -33,6 +29,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
 import static com.webank.webase.sign.enums.CodeMessageEnums.*;
 
