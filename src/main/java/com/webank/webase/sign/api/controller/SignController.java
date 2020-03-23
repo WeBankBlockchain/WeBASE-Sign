@@ -15,10 +15,8 @@
  */
 package com.webank.webase.sign.api.controller;
 
-import javax.validation.Valid;
-
 import com.webank.webase.sign.enums.EncryptTypes;
-import org.apache.commons.lang3.ObjectUtils;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,8 +50,10 @@ public class SignController {
      * @param req parameter
      * @param result checkResult
      */
-    @ApiOperation(value = "add sign by ecdsa(default) or guomi", notes = "获取ECDSA或国密SM2签名数据，默认ECDSA")
-    @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
+    @ApiOperation(value = "add sign by ecdsa(default) or guomi",
+            notes = "获取ECDSA或国密SM2签名数据，默认ECDSA")
+    @ApiImplicitParam(name = "req", value = "encode info", required = true,
+            dataType = "ReqEncodeInfoVo")
     @PostMapping("")
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
