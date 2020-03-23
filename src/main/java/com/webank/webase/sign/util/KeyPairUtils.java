@@ -136,22 +136,6 @@ public class KeyPairUtils {
     }
 
     /**
-     * create ecdsa keypair from privateKey
-     * @param privateKey string
-     * @return ECKeyPair ecdsa
-     */
-    private ECKeyPair createECDSAKeyPair(String privateKey) {
-        try {
-            BigInteger bigPrivateKey = new BigInteger(privateKey, 16);
-            ECKeyPair keyPair = ECKeyPair.create(bigPrivateKey);
-            return keyPair;
-        } catch (Exception e) {
-            log.error("KeyPairUtils create keypair of ECDSA failed, error msg:" + e.getMessage());
-            return null;
-        }
-    }
-
-    /**
      * get ec key pair from guomi key pair data
      * @param keyPairData common key pair
      * @return ECKeyPair
@@ -170,6 +154,22 @@ public class KeyPairUtils {
             return keyPair;
         } catch (Exception e) {
             log.error("KeyPairUtils create ec_keypair of guomi failed, error msg:" + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * create ecdsa keypair from privateKey
+     * @param privateKey string
+     * @return ECKeyPair ecdsa
+     */
+    private ECKeyPair createECDSAKeyPair(String privateKey) {
+        try {
+            BigInteger bigPrivateKey = new BigInteger(privateKey, 16);
+            ECKeyPair keyPair = ECKeyPair.create(bigPrivateKey);
+            return keyPair;
+        } catch (Exception e) {
+            log.error("KeyPairUtils create keypair of ECDSA failed, error msg:" + e.getMessage());
             return null;
         }
     }
