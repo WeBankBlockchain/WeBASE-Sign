@@ -23,9 +23,12 @@ import lombok.Data;
  */
 @Data
 public class RspUserInfoVo {
-    private Integer userId;
+	private String signUserId;
+	private String appId;
 	private String address;
 	private String publicKey;
-	private String privateKey;
+	// not return privateKey
+    private String privateKey;
     private String description;
+    private Integer encryptType;
 }

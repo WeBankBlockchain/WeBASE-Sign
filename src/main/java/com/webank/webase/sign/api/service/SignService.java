@@ -15,15 +15,17 @@
  */
 package com.webank.webase.sign.api.service;
 
+
 import com.webank.webase.sign.constant.ConstantProperties;
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
+import com.webank.webase.sign.util.KeyPairUtils;
+import com.webank.webase.sign.util.SignUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.web3j.crypto.Credentials;
-import org.fisco.bcos.web3j.crypto.Sign;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,44 +47,42 @@ public class SignService {
     @Autowired
     ConstantProperties properties;
     @Autowired
-    KeyStoreService keyStoreService;
+    SignUtils signUtils;
+    @Autowired
+    private KeyPairUtils keyPairUtils;
 
 
     /**
      * add sign.
-     *
+     * @param encryptType 1: guomi, 0: standard(ecdsa)
      * @param req parameter
      */
-    public String sign(ReqEncodeInfoVo req) throws BaseException {
-        Integer userId = req.getUserId();
-        log.debug("start sign. userId:{}", userId);
+    public String sign(ReqEncodeInfoVo req, int encryptType) throws BaseException {
+        String signUserId = req.getSignUserId();
+        log.info("start sign. signUserId:{},encryptType:{}", signUserId, encryptType);
+        log.debug("start sign. userId:{}", signUserId);
+        Instant startTimeDB = Instant.now();
+        // check exist
+        UserInfoPo userRow = userService.findBySignUserId(signUserId);
+       log.debug("end query db time: {}", Duration.between(startTimeDB, Instant.now()).toMillis());
+
         // check user name not exist.
-
-        Instant startTime = Instant.now();
-
-        UserInfoPo userRow = userService.findByUserId(userId);
-
-        log.debug("end query db time: {}", Duration.between(startTime, Instant.now()).toMillis());
-
         if (Objects.isNull(userRow)) {
-            log.warn("fail sign, user not exists. userId:{}", userId);
-            throw new BaseException(CodeMessageEnums.USER_IS_NOT_EXISTS);
+            log.warn("fail sign, user not exists. signUserId:{}", signUserId);
+            throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
 
         // signature
-        Instant startTime1 = Instant.now();
-        Credentials credentials = keyStoreService.getCredentioan(userRow.getPrivateKey());
-
-        log.info(" create key cost time: {}", Duration.between(startTime1, Instant.now()).toMillis());
-
+        Credentials credentials = keyPairUtils.create(userRow.getPrivateKey(), encryptType);
         byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
-        Instant startTime2 = Instant.now();
-
-        SignatureData signatureData = Sign.getSignInterface().signMessage(
-                encodedData, credentials.getEcKeyPair());
-        log.info("end sign duration:{}", Duration.between(startTime2, Instant.now()).toMillis());
-        String signDataStr = CommonUtils.signatureDataToString(signatureData);
-
+        Instant startTime = Instant.now();
+        log.info("start sign. startTime:{}", startTime.toEpochMilli());
+        // sign message by type
+        SignatureData signatureData = signUtils.signMessageByType(
+                encodedData, credentials.getEcKeyPair(), encryptType);
+        log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
+        String signDataStr = CommonUtils.signatureDataToStringByType(signatureData, encryptType);
+        log.info("end sign. signUserId:{}", signUserId);
         return signDataStr;
     }
 
