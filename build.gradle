@@ -13,6 +13,8 @@ targetCompatibility = 1.8
 // In this section you declare where to find the dependencies of your project
 repositories {
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+
     maven { url 'https://dl.bintray.com/ethereum/maven/'}
     mavenLocal()
     mavenCentral()
@@ -24,7 +26,9 @@ List springboot =[
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
 	"org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version",
 	"org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version",
-	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
+	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version",
+   // "org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version",
+    "org.springframework.boot:spring-boot-starter-cache:$spring_boot_version"
 ]
 
 List swagger = [
@@ -62,6 +66,7 @@ List jackson = [
 ]
 
 dependencies {
+
     compile springboot,swagger,mysql,logger,jaxb,jackson
     compile "org.apache.commons:commons-lang3:3.6"
     compile "com.alibaba:fastjson:1.2.60"
