@@ -16,6 +16,7 @@ package com.webank.webase.sign.api.controller;
 import java.util.List;
 import java.util.Optional;
 import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,10 +43,10 @@ import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_I
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
 
-
 /**
  * Controller.
  */
+@Slf4j
 @Api(value = "user", tags = "user interface")
 @RestController
 @RequestMapping("user")
