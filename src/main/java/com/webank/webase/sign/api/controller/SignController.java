@@ -15,11 +15,13 @@
  */
 package com.webank.webase.sign.api.controller;
 
+import com.webank.webase.sign.enums.EncryptTypes;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.webank.webase.sign.api.service.SignService;
 import com.webank.webase.sign.exception.BaseException;
@@ -36,24 +38,32 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(value = "sign", tags = "sign interface")
 @RestController
+@RequestMapping("sign")
 public class SignController {
 
     @Autowired
     SignService signService;
 
     /**
-     * add sign.
+     * add sign by ecdsa
      *
      * @param req parameter
      * @param result checkResult
      */
-    @ApiOperation(value = "add sign", notes = "add sign")
-    @ApiImplicitParam(name = "req", value = "encode info", required = true, dataType = "ReqEncodeInfoVo")
-    @PostMapping("/sign")
-    public BaseRspVo sign(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
+    @ApiOperation(value = "add sign by ecdsa(default) or guomi",
+            notes = "获取ECDSA或国密SM2签名数据，默认ECDSA")
+    @ApiImplicitParam(name = "req", value = "encode info", required = true,
+            dataType = "ReqEncodeInfoVo")
+    @PostMapping("")
+    public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
-        String signResult = signService.sign(req);
+        Integer encryptType = req.getEncryptType();
+        if (encryptType == null) {
+            // default 0
+            encryptType = EncryptTypes.STANDARD.getValue();
+        }
+        String signResult = signService.sign(req, encryptType);
         // return
         RspSignVo rspSignVo = new RspSignVo();
         rspSignVo.setSignDataStr(signResult);

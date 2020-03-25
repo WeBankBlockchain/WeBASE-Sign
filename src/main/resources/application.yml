@@ -32,7 +32,3 @@ mybatis:
 
 logging: 
   config: classpath:log4j2.xml
-
-sdk:
-  # web3sdk国密与非国密切换 0: standard, 1: guomi
-  encryptType: 0
