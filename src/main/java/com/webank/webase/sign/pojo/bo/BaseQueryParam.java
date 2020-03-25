@@ -10,8 +10,4 @@ import lombok.NoArgsConstructor;
 public class BaseQueryParam {
     private Integer start;
     private Integer pageSize;
-    public BaseQueryParam(Integer start,Integer pageSize){
-        this.start = start;
-        this.pageSize = pageSize;
-    }
 }
