@@ -15,8 +15,11 @@
  */
 package com.webank.webase.sign.api.controller;
 
+import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.enums.EncryptTypes;
 import javax.validation.Valid;
+
+import com.webank.webase.sign.pojo.po.UserInfoPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,9 +46,11 @@ public class SignController {
 
     @Autowired
     SignService signService;
+    @Autowired
+    UserService userService;
 
     /**
-     * add sign by ecdsa
+     * add sign by ecdsa or guomi encryption
      *
      * @param req parameter
      * @param result checkResult
@@ -58,11 +63,8 @@ public class SignController {
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
-        Integer encryptType = req.getEncryptType();
-        if (encryptType == null) {
-            // default 0
-            encryptType = EncryptTypes.STANDARD.getValue();
-        }
+        UserInfoPo user = userService.findBySignUserId(req.getSignUserId());
+        Integer encryptType = user.getEncryptType();
         String signResult = signService.sign(req, encryptType);
         // return
         RspSignVo rspSignVo = new RspSignVo();

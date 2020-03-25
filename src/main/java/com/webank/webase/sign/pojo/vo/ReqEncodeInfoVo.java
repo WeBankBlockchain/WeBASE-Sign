@@ -27,5 +27,4 @@ public class ReqEncodeInfoVo {
     private String signUserId;
     @NotBlank(message = "encodedDataStr cannot be empty")
     private String encodedDataStr;
-    private Integer encryptType;
 }
