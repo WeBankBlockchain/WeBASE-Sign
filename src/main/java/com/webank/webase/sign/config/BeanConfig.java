@@ -16,30 +16,31 @@
 
 package com.webank.webase.sign.config;
 
-
-import lombok.Data;
-import org.fisco.bcos.web3j.crypto.EncryptType;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.fisco.bcos.web3j.crypto.ECDSASign;
+import org.fisco.bcos.web3j.crypto.SHA3Digest;
+import org.fisco.bcos.web3j.crypto.gm.sm3.SM3Digest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * guomi configuration in web3sdk
- * sdk switch ecdsa to sm2, sha to sm3
+ * init bean in utils
+ * @author marsli
  */
-@Data
 @Configuration
-@ConfigurationProperties(prefix = "sdk")
-public class EncryptTypeConfig {
-    // 0:standard, 1:guomi
-    private int encryptType;
+public class BeanConfig {
 
-    /**
-     * 覆盖EncryptType构造函数
-     * @return
-     */
-    @Bean
-    public EncryptType EncryptType() {
-        return new EncryptType(encryptType);
-    }
+	@Bean
+	public ECDSASign getECDSASign() {
+		return new ECDSASign();
+	}
+
+	@Bean
+	public SM3Digest getSM3Digest() {
+		return new SM3Digest();
+	}
+
+	@Bean
+	public SHA3Digest getSHA3Digest() {
+		return new SHA3Digest();
+	}
 }
