@@ -14,6 +14,7 @@
 package com.webank.webase.sign.api.dao;
 
 
+import com.webank.webase.sign.pojo.bo.UserParam;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -38,12 +39,12 @@ public interface UserDao {
     /**
      * select by encryptType
      */
-    List<UserInfoPo> findUserList(@Param("encryptType") Integer encryptType);
+    List<UserInfoPo> findUserList(UserParam userParam);
 
     /**
      * select by appId
      */
-    List<UserInfoPo> findUserListByAppId(@Param("appId") String appId);
+    List<UserInfoPo> findUserListByAppId(UserParam userParam);
 
     /**
      * delete user by address
