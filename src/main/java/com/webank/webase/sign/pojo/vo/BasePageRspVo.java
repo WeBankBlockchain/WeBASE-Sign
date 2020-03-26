@@ -18,11 +18,13 @@ package com.webank.webase.sign.pojo.vo;
 
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author marsli
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BasePageRspVo extends BaseRspVo {
 
 	private long totalCount;
