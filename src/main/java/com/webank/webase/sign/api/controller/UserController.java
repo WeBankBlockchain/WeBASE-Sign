@@ -132,7 +132,7 @@ public class UserController {
         if (!userList.isEmpty()) {
             userList.forEach(user -> user.setPrivateKey(""));
         }
-        return CommonUtils.buildSuccessRspVo(userList);
+        return CommonUtils.buildSuccessPageRspVo(userList, userList.size());
     }
 
     @ApiOperation(value = "delete user by address",
