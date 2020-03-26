@@ -15,7 +15,6 @@
  */
 package com.webank.webase.sign.api.service;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
