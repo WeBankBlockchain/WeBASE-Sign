@@ -36,6 +36,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.Objects;
+
+import static com.webank.webase.sign.enums.CodeMessageEnums.USER_NOT_EXISTS;
+
 /**
  * Controller.
  */
@@ -63,9 +67,7 @@ public class SignController {
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
-        UserInfoPo user = userService.findBySignUserId(req.getSignUserId());
-        Integer encryptType = user.getEncryptType();
-        String signResult = signService.sign(req, encryptType);
+        String signResult = signService.sign(req);
         // return
         RspSignVo rspSignVo = new RspSignVo();
         rspSignVo.setSignDataStr(signResult);

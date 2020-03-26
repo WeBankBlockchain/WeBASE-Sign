@@ -15,6 +15,7 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
@@ -23,6 +24,7 @@ import com.webank.webase.sign.util.KeyPairUtils;
 import com.webank.webase.sign.util.SignUtils;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
+import org.fisco.bcos.web3j.crypto.gm.sm2.util.encoders.DecoderException;
 import org.fisco.bcos.web3j.utils.ByteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,12 +55,11 @@ public class SignService {
 
     /**
      * add sign.
-     * @param encryptType 1: guomi, 0: standard(ecdsa)
      * @param req parameter
      */
-    public String sign(ReqEncodeInfoVo req, int encryptType) throws BaseException {
+    public String sign(ReqEncodeInfoVo req) throws BaseException {
         String signUserId = req.getSignUserId();
-        log.info("start sign. signUserId:{},encryptType:{}", signUserId, encryptType);
+        log.info("start sign. signUserId:{}", signUserId);
 
         // check exist
         UserInfoPo userRow = userService.findBySignUserId(signUserId);
@@ -67,10 +68,17 @@ public class SignService {
             log.warn("fail sign, user not exists. signUserId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
-
+        int encryptType = userRow.getEncryptType();
         // signature
         Credentials credentials = keyPairUtils.create(userRow.getPrivateKey(), encryptType);
-        byte[] encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+        byte[] encodedData;
+        try {
+            encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+        } catch (DecoderException e) {
+            log.error("hexStringToBytes error: ", e);
+            throw new BaseException(CodeMessageEnums.PARAM_ENCODED_DATA_INVALID);
+
+        }
         Instant startTime = Instant.now();
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
         // sign message by type
