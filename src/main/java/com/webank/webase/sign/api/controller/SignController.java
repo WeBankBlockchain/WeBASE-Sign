@@ -19,7 +19,6 @@ import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.enums.EncryptTypes;
 import javax.validation.Valid;
 
-import com.webank.webase.sign.pojo.po.UserInfoPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +35,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
-import java.util.Objects;
-
-import static com.webank.webase.sign.enums.CodeMessageEnums.USER_NOT_EXISTS;
 
 /**
  * Controller.
