@@ -78,7 +78,7 @@ public class UserController {
         if (StringUtils.isBlank(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_BLANK);
         }
-        if (CommonUtils.isLetterDigit(appId)) {
+        if (!CommonUtils.isLetterDigit(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
         if (encryptType != EncryptTypes.STANDARD.getValue()
