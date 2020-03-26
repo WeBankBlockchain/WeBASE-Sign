@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import com.webank.webase.sign.pojo.bo.UserParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -115,11 +117,11 @@ public class UserService {
 
     /**
      * query user list.
-     * @param encryptType 1: guomi, 0: standard
+     * @param param  encryptType 1: guomi, 0: standard
      */
-    public List<RspUserInfoVo> findUserList(int encryptType) {
+    public List<RspUserInfoVo> findUserList(UserParam param) {
         log.info("start findUserList.");
-        List<UserInfoPo> users = userDao.findUserList(encryptType);
+        List<UserInfoPo> users = userDao.findUserList(param);
         List<RspUserInfoVo> rspUserInfoVos = new ArrayList<>();
         for (UserInfoPo user : users) {
             RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
@@ -130,9 +132,9 @@ public class UserService {
         return rspUserInfoVos;
     }
 
-    public List<RspUserInfoVo> findUserListByAppId(String appId) {
+    public List<RspUserInfoVo> findUserListByAppId(UserParam param) {
         log.info("start findUserListByAppId.");
-        List<UserInfoPo> users = userDao.findUserListByAppId(appId);
+        List<UserInfoPo> users = userDao.findUserListByAppId(param);
         List<RspUserInfoVo> rspUserInfoVos = new ArrayList<>();
         for (UserInfoPo user : users) {
             RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
