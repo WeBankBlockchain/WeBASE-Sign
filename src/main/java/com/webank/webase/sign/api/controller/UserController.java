@@ -15,6 +15,8 @@ package com.webank.webase.sign.api.controller;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.webank.webase.sign.pojo.bo.UserParam;
 import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -39,9 +41,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ENCRYPT_TYPE_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 
 /**
  * Controller.
@@ -75,6 +79,12 @@ public class UserController {
         if (StringUtils.isBlank(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_BLANK);
         }
+        if (CommonUtils.isLetterDigit(appId)) {
+            throw new BaseException(PARAM_APP_ID_IS_INVALID);
+        }
+        if (encryptType != 0 && encryptType != 1) {
+            throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
+        }
         // new user
         RspUserInfoVo userInfo = userService.newUser(signUserId, appId, encryptType);
         userInfo.setPrivateKey("");
@@ -107,10 +117,18 @@ public class UserController {
             @ApiImplicitParam(name = "appId", value = "app id that users belong to",
                     required = true, dataType = "String"),
     })
-    @GetMapping("/list/{appId}")
-    public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId) {
+    @GetMapping("/list/{appId}/{pageNumber}/{pageSize}")
+    public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId,
+                                        @PathVariable("pageNumber") Integer pageNumber,
+                                        @PathVariable("pageSize") Integer pageSize) {
+        UserParam param = new UserParam();
+        param.setAppId(appId);
+        Integer start = Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize)
+                .orElse(null);
+        param.setStart(start);
+        param.setPageSize(pageSize);
         //find user
-        List<RspUserInfoVo> userList = userService.findUserListByAppId(appId);
+        List<RspUserInfoVo> userList = userService.findUserListByAppId(param);
         if (!userList.isEmpty()) {
             userList.forEach(user -> user.setPrivateKey(""));
         }
