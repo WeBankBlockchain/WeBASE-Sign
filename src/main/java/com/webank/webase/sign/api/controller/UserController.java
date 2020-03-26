@@ -13,26 +13,23 @@
  */
 package com.webank.webase.sign.api.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.webank.webase.sign.pojo.bo.UserParam;
-import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.webank.webase.sign.api.service.UserService;
+import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.exception.BaseException;
+import com.webank.webase.sign.pojo.bo.UserParam;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import java.util.List;
+import java.util.Optional;
 
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
@@ -79,10 +78,11 @@ public class UserController {
         if (StringUtils.isBlank(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_BLANK);
         }
-        if (CommonUtils.isLetterDigit(appId)) {
+        if (!CommonUtils.isLetterDigit(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
-        if (encryptType != 0 && encryptType != 1) {
+        if (encryptType != EncryptTypes.STANDARD.getValue()
+                && encryptType != EncryptTypes.GUOMI.getValue()) {
             throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
         }
         // new user
@@ -132,7 +132,7 @@ public class UserController {
         if (!userList.isEmpty()) {
             userList.forEach(user -> user.setPrivateKey(""));
         }
-        return CommonUtils.buildSuccessRspVo(userList);
+        return CommonUtils.buildSuccessPageRspVo(userList, userList.size());
     }
 
     @ApiOperation(value = "delete user by address",
