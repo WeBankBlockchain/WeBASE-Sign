@@ -15,9 +15,6 @@
  */
 package com.webank.webase.sign.api.service;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Objects;
 
 import com.webank.webase.sign.util.KeyPairUtils;
 import com.webank.webase.sign.util.SignUtils;
@@ -34,6 +31,9 @@ import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Objects;
 
 /**
  * SignService.
@@ -59,9 +59,10 @@ public class SignService {
     public String sign(ReqEncodeInfoVo req) throws BaseException {
         String signUserId = req.getSignUserId();
         log.info("start sign. signUserId:{}", signUserId);
-
+        Instant startTimeDB = Instant.now();
         // check exist
         UserInfoPo userRow = userService.findBySignUserId(signUserId);
+       log.debug("end query db time: {}", Duration.between(startTimeDB, Instant.now()).toMillis());
         // check user name not exist.
         if (Objects.isNull(userRow)) {
             log.warn("fail sign, user not exists. signUserId:{}", signUserId);
@@ -88,4 +89,5 @@ public class SignService {
         log.info("end sign. signUserId:{}", signUserId);
         return signDataStr;
     }
+
 }

@@ -13,32 +13,27 @@
  */
 package com.webank.webase.sign.api.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.webank.webase.sign.enums.EncryptTypes;
-import com.webank.webase.sign.pojo.bo.UserParam;
-import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.webank.webase.sign.api.service.UserService;
+import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.exception.BaseException;
+import com.webank.webase.sign.pojo.bo.UserParam;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
@@ -46,10 +41,10 @@ import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_INVA
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ENCRYPT_TYPE_IS_INVALID;
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 
-
 /**
  * Controller.
  */
+@Slf4j
 @Api(value = "user", tags = "user interface")
 @RestController
 @RequestMapping("user")

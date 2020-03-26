@@ -21,6 +21,8 @@ import java.util.Optional;
 import com.webank.webase.sign.pojo.bo.UserParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.webank.webase.sign.api.dao.UserDao;
 import com.webank.webase.sign.enums.CodeMessageEnums;
@@ -86,6 +88,7 @@ public class UserService {
     /**
      * query user by userId.
      */
+    @Cacheable(cacheNames = "user")
     public UserInfoPo findBySignUserId(String signUserId) throws BaseException {
         log.info("start findBySignUserId. signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
@@ -146,6 +149,7 @@ public class UserService {
     /**
      * delete user by signUserId
      */
+    @CacheEvict(cacheNames = "user")
     public void deleteBySignUserId(String signUserId) throws BaseException{
         log.info("start deleteByUuid signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
