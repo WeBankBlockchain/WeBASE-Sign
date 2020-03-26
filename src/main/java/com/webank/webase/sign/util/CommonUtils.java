@@ -16,6 +16,8 @@
 package com.webank.webase.sign.util;
 
 import java.util.stream.Collectors;
+
+import com.webank.webase.sign.pojo.vo.BasePageRspVo;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
@@ -130,12 +132,22 @@ public class CommonUtils {
     }
 
     /**
-     *
+     * base response
      */
     public static BaseRspVo buildSuccessRspVo(Object data) {
         BaseRspVo baseRspVo = new BaseRspVo(CodeMessageEnums.SUCCEED);
         baseRspVo.setData(data);
         return baseRspVo;
+    }
+
+    /**
+     * base page response
+     */
+    public static BaseRspVo buildSuccessPageRspVo(Object data, long totalCount) {
+        BasePageRspVo basePageRspVo = new BasePageRspVo(CodeMessageEnums.SUCCEED);
+        basePageRspVo.setData(data);
+        basePageRspVo.setTotalCount(totalCount);
+        return basePageRspVo;
     }
 
     /**

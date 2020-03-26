@@ -19,7 +19,6 @@ import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.enums.EncryptTypes;
 import javax.validation.Valid;
 
-import com.webank.webase.sign.pojo.po.UserInfoPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +34,7 @@ import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+
 
 /**
  * Controller.
@@ -63,9 +63,7 @@ public class SignController {
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
-        UserInfoPo user = userService.findBySignUserId(req.getSignUserId());
-        Integer encryptType = user.getEncryptType();
-        String signResult = signService.sign(req, encryptType);
+        String signResult = signService.sign(req);
         // return
         RspSignVo rspSignVo = new RspSignVo();
         rspSignVo.setSignDataStr(signResult);
