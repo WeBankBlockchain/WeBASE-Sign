@@ -16,6 +16,7 @@ package com.webank.webase.sign.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.pojo.bo.UserParam;
 import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import org.apache.commons.lang3.StringUtils;
@@ -80,7 +81,8 @@ public class UserController {
         if (CommonUtils.isLetterDigit(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
-        if (encryptType != 0 && encryptType != 1) {
+        if (encryptType != EncryptTypes.STANDARD.getValue()
+                && encryptType != EncryptTypes.GUOMI.getValue()) {
             throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
         }
         // new user
