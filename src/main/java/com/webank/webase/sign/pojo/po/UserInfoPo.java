@@ -18,6 +18,8 @@ package com.webank.webase.sign.pojo.po;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * UserInfo Plain Object of tb_user table
  */
@@ -44,6 +46,7 @@ public class UserInfoPo {
 	 */
 	private Integer encryptType;
 
-	@JsonIgnore
 	private String status;
+
+	private LocalDateTime gmtModify;
 }

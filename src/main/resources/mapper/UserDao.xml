@@ -30,7 +30,8 @@
         private_key as privateKey,
         description,
         status,
-        encrypt_type as encryptType
+        encrypt_type as encryptType,
+        gmt_modify as gmtModify
     </sql>
 
   <insert id="insertUserInfo" parameterType="com.webank.webase.sign.pojo.po.UserInfoPo">
@@ -82,17 +83,7 @@
 
   <select id="findLatestUpdateUser" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select
-    user_id as userId,
-    sign_user_id as signUserId,
-    app_id as appId,
-    address,
-    public_key as publicKey,
-    private_key as privateKey,
-    description,
-    status
-    encrypt_type as encryptType,
-    gmt_create,
-    gmt_modify
+    <include refid="USER_COLUMN"/>
     from tb_user
     where status ='1'
     order by gmt_modify desc
@@ -111,11 +102,23 @@
   </select>
 
 
+  <select id="findUserListByTime" parameterType="map"
+          resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+    select <include refid="USER_COLUMN"/>
+    from tb_user
+    where status ='0' AND
+    gmt_modify between #{beginTime} and #{endTime}
+  </select>
+
+
+
+
   <update id="deleteUserBySignUserId" parameterType="java.lang.String">
     UPDATE
     tb_user
     SET
     status = '0'
+    where  sign_user_id = #{signUserId}
   </update>
 
 
