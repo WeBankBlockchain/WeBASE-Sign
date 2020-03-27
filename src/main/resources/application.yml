@@ -28,7 +28,7 @@ constant:
   # aes加密key（16位）
   aesKey: EfdsW23D23d3df43
   keepAliveRequests: 100
-  syncUsrCacheTaskFixedDelay: 5000
+  syncUsrCacheTaskFixedDelay: 10000
 
 mybatis: 
   mapper-locations: classpath:mapper/*.xml

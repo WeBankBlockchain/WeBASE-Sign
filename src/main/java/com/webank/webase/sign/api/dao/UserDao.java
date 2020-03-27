@@ -55,5 +55,5 @@ public interface UserDao {
      */
     int deleteUserBySignUserId(@Param("signUserId") String signUserId);
 
-    List<UserInfoPo> findUserListByTime(LocalDateTime beginTime, LocalDateTime endTime);
+    List<UserInfoPo> findUserListByTime(@Param("beginTime")LocalDateTime beginTime, @Param("endTime")LocalDateTime endTime);
 }

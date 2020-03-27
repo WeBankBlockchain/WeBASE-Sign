@@ -157,7 +157,7 @@ public class UserService {
     /**
      * delete user by signUserId
      */
-    @CacheEvict(cacheNames = "user")
+    @CacheEvict(cacheNames = "user", beforeInvocation=true )
     public void deleteBySignUserId(String signUserId) throws BaseException{
         log.info("start deleteByUuid signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
