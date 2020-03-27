@@ -13,6 +13,7 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -145,6 +146,13 @@ public class UserService {
         return rspUserInfoVos;
     }
 
+    public List<UserInfoPo> findUserListByTime(LocalDateTime begin ,LocalDateTime end) {
+        log.info("start findUserListByTime.");
+        List<UserInfoPo> users = userDao.findUserListByTime(begin,end);
+
+        return users;
+    }
+
 
     /**
      * delete user by signUserId
@@ -159,5 +167,10 @@ public class UserService {
         }
         userDao.deleteUserBySignUserId(signUserId);
         log.info("end deleteByUuid.");
+    }
+
+    public UserInfoPo findLatestUpdatedUser() {
+        UserInfoPo user = userDao.findLatestUpdateUser();
+        return user;
     }
 }
