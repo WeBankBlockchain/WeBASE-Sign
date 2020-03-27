@@ -35,22 +35,27 @@ public class SynUsrTask {
         log.debug("start syncUsrCacheTask task");
 
         UserInfoPo user =  userService.findLatestUpdatedUser();
+        log.debug("latest delete userId :"+ user.getSignUserId());
+         if(user ==null ) return;
 
           LocalDateTime dbLatestUpdateTime = user.getGmtModify();
+
+          log.debug("***" +synTime + "****db : " + dbLatestUpdateTime);
           if(synTime!= null && synTime.isBefore(dbLatestUpdateTime)) {
 
               List<UserInfoPo> userInfoPoList = userService.findUserListByTime(synTime, dbLatestUpdateTime);
               Cache cache = cacheManager.getCache("user");
-            for(int i = 0; i<userInfoPoList.size();i++) {
-                UserInfoPo userInfoPo = userInfoPoList.get(i);
-                if(cache.get(userInfoPo.getSignUserId())!= null){
-                    cache.evict(userInfoPo.getSignUserId());
-                    log.debug("evict  : {}" , userInfoPo.getSignUserId());
-                }
-            }
+              for (int i = 0; i < userInfoPoList.size(); i++) {
+                  UserInfoPo userInfoPo = userInfoPoList.get(i);
+                  if (cache.get(userInfoPo.getSignUserId()) != null) {
+                      cache.evict(userInfoPo.getSignUserId());
+                      log.debug("evict  : {}", userInfoPo.getSignUserId());
+                  }
+              }
+          }
               synTime  =  dbLatestUpdateTime;
 
-          }
+
         log.debug("end syncUsrCacheTask task");
 
     }

@@ -12,12 +12,13 @@
           private_key varchar(256) NOT NULL COMMENT '私钥',
           description varchar(128) DEFAULT NULL COMMENT '描述',
           encrypt_type int NOT NULL COMMENT '加密类型，1：国密；0：ECDSA',
-          gmt_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-          gmt_modify TIMESTAMP DEFAULT  CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
+          gmt_create datetime DEFAULT NULL COMMENT '创建时间',
+          gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
           status char(1)  NOT NULL DEFAULT '1' COMMENT  '状态： 1 有效 0 无效',
-          PRIMARY KEY (user_id),
+
+      PRIMARY KEY (user_id),
           UNIQUE KEY unique_address (address),
-          UNIQUE KEY unique_uuid (sign_user_id， status)
+          UNIQUE KEY unique_uuid (sign_user_id)
     ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
     </update>
 
@@ -45,7 +46,9 @@
     `public_key`,
     `private_key`,
     `description`,
-    `encrypt_type`
+    `encrypt_type`,
+    `gmt_create`,
+    `gmt_modify`
     ) values (
     #{signUserId},
     #{appId},
@@ -53,7 +56,9 @@
     #{publicKey},
     #{privateKey},
     #{description},
-    #{encryptType}
+    #{encryptType},
+    NOW(),
+    NOW()
     )
   </insert>
 
@@ -85,7 +90,7 @@
     select
     <include refid="USER_COLUMN"/>
     from tb_user
-    where status ='1'
+    where status ='0'
     order by gmt_modify desc
       limit 0,1
   </select>
@@ -112,12 +117,12 @@
 
 
 
-
   <update id="deleteUserBySignUserId" parameterType="java.lang.String">
     UPDATE
     tb_user
     SET
-    status = '0'
+    status = '0' and
+    gmt_modify = NOW()
     where  sign_user_id = #{signUserId}
   </update>
 
