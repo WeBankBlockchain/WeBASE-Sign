@@ -15,6 +15,7 @@
  */
 package com.webank.webase.sign.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -42,4 +43,7 @@ public class UserInfoPo {
 	 * 0 is standard, 1 is guomi
 	 */
 	private Integer encryptType;
+
+	@JsonIgnore
+	private String status;
 }
