@@ -4,7 +4,6 @@ package com.webank.webase.sign.task;
 import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -36,7 +35,7 @@ public class SynUsrTask {
 
         UserInfoPo user =  userService.findLatestUpdatedUser();
         log.debug("latest delete userId :"+ user.getSignUserId());
-         if(user ==null ) return;
+         if(user == null ) return;
 
           LocalDateTime dbLatestUpdateTime = user.getGmtModify();
 
