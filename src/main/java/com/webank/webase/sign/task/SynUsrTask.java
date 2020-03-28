@@ -19,9 +19,9 @@ public class SynUsrTask {
 
 
     @Autowired
-    CacheManager cacheManager;
+    private CacheManager cacheManager;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     public static LocalDateTime synTime ;
 

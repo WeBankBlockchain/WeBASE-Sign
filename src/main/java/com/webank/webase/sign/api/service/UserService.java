@@ -47,7 +47,7 @@ public class UserService {
     @Autowired
     private KeyStoreService keyStoreService;
     @Autowired
-    CacheManager cacheManager;
+    private CacheManager cacheManager;
 
     /**
      * add user by encrypt type
