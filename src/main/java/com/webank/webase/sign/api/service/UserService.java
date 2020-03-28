@@ -22,6 +22,8 @@ import java.util.Optional;
 import com.webank.webase.sign.pojo.bo.UserParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,8 @@ public class UserService {
     private AesUtils aesUtils;
     @Autowired
     private KeyStoreService keyStoreService;
+    @Autowired
+    CacheManager cacheManager;
 
     /**
      * add user by encrypt type
@@ -167,6 +171,17 @@ public class UserService {
         }
         userDao.deleteUserBySignUserId(signUserId);
         log.info("end deleteByUuid.");
+    }
+
+
+    public Boolean deleteAllUserCache() {
+        log.info("delete all user cache");
+
+        Cache cache = cacheManager.getCache("user");
+        if(cache!=null) {
+            cache.clear();
+        }
+        return true;
     }
 
     public UserInfoPo findLatestUpdatedUser() {
