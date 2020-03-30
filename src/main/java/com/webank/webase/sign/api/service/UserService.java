@@ -13,12 +13,17 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import com.webank.webase.sign.pojo.bo.UserParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -41,6 +46,8 @@ public class UserService {
     private AesUtils aesUtils;
     @Autowired
     private KeyStoreService keyStoreService;
+    @Autowired
+    private CacheManager cacheManager;
 
     /**
      * add user by encrypt type
@@ -115,11 +122,11 @@ public class UserService {
 
     /**
      * query user list.
-     * @param encryptType 1: guomi, 0: standard
+     * @param param  encryptType 1: guomi, 0: standard
      */
-    public List<RspUserInfoVo> findUserList(int encryptType) {
+    public List<RspUserInfoVo> findUserList(UserParam param) {
         log.info("start findUserList.");
-        List<UserInfoPo> users = userDao.findUserList(encryptType);
+        List<UserInfoPo> users = userDao.findUserList(param);
         List<RspUserInfoVo> rspUserInfoVos = new ArrayList<>();
         for (UserInfoPo user : users) {
             RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
@@ -130,9 +137,9 @@ public class UserService {
         return rspUserInfoVos;
     }
 
-    public List<RspUserInfoVo> findUserListByAppId(String appId) {
+    public List<RspUserInfoVo> findUserListByAppId(UserParam param) {
         log.info("start findUserListByAppId.");
-        List<UserInfoPo> users = userDao.findUserListByAppId(appId);
+        List<UserInfoPo> users = userDao.findUserListByAppId(param);
         List<RspUserInfoVo> rspUserInfoVos = new ArrayList<>();
         for (UserInfoPo user : users) {
             RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
@@ -141,13 +148,20 @@ public class UserService {
             rspUserInfoVos.add(rspUserInfoVo);
         }
         return rspUserInfoVos;
+    }
+
+    public List<UserInfoPo> findUserListByTime(LocalDateTime begin ,LocalDateTime end) {
+        log.info("start findUserListByTime.");
+        List<UserInfoPo> users = userDao.findUserListByTime(begin,end);
+
+        return users;
     }
 
 
     /**
      * delete user by signUserId
      */
-    @CacheEvict(cacheNames = "user")
+    @CacheEvict(cacheNames = "user", beforeInvocation=true )
     public void deleteBySignUserId(String signUserId) throws BaseException{
         log.info("start deleteByUuid signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
@@ -157,5 +171,21 @@ public class UserService {
         }
         userDao.deleteUserBySignUserId(signUserId);
         log.info("end deleteByUuid.");
+    }
+
+
+    public Boolean deleteAllUserCache() {
+        log.info("delete all user cache");
+
+        Cache cache = cacheManager.getCache("user");
+        if(cache!=null) {
+            cache.clear();
+        }
+        return true;
+    }
+
+    public UserInfoPo findLatestUpdatedUser() {
+        UserInfoPo user = userDao.findLatestUpdateUser();
+        return user;
     }
 }
