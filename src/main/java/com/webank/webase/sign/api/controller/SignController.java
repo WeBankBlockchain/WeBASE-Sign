@@ -15,15 +15,8 @@
  */
 package com.webank.webase.sign.api.controller;
 
-import com.webank.webase.sign.enums.EncryptTypes;
-import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.webank.webase.sign.api.service.SignService;
+import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
@@ -32,6 +25,15 @@ import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
 
 /**
  * Controller.
@@ -43,9 +45,11 @@ public class SignController {
 
     @Autowired
     SignService signService;
+    @Autowired
+    UserService userService;
 
     /**
-     * add sign by ecdsa
+     * add sign by ecdsa or guomi encryption
      *
      * @param req parameter
      * @param result checkResult
@@ -58,12 +62,7 @@ public class SignController {
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
-        Integer encryptType = req.getEncryptType();
-        if (encryptType == null) {
-            // default 0
-            encryptType = EncryptTypes.STANDARD.getValue();
-        }
-        String signResult = signService.sign(req, encryptType);
+        String signResult = signService.sign(req);
         // return
         RspSignVo rspSignVo = new RspSignVo();
         rspSignVo.setSignDataStr(signResult);

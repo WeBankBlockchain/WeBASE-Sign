@@ -100,7 +100,7 @@ public class KeyPairUtils {
      */
     public ECKeyPair createKeyPairByType(int encryptType) {
         // use guomi
-        if (encryptType == 1) {
+        if (encryptType == EncryptTypes.GUOMI.getValue()) {
             return GenCredential.createGuomiKeyPair();
         } else {
             return createECDSAKeyPair();

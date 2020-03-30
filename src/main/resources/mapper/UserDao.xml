@@ -14,7 +14,9 @@
           encrypt_type int NOT NULL COMMENT '加密类型，1：国密；0：ECDSA',
           gmt_create datetime DEFAULT NULL COMMENT '创建时间',
           gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
-          PRIMARY KEY (user_id),
+          status char(1)  NOT NULL DEFAULT '1' COMMENT  '状态： 1 有效 0 无效',
+
+      PRIMARY KEY (user_id),
           UNIQUE KEY unique_address (address),
           UNIQUE KEY unique_uuid (sign_user_id)
     ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
@@ -28,7 +30,9 @@
         public_key as publicKey,
         private_key as privateKey,
         description,
-        encrypt_type as encryptType
+        status,
+        encrypt_type as encryptType,
+        gmt_modify as gmtModify
     </sql>
 
   <insert id="insertUserInfo" parameterType="com.webank.webase.sign.pojo.po.UserInfoPo">
@@ -61,30 +65,67 @@
   <select id="findUserBySignUserId" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user 
-    where sign_user_id = #{signUserId}
+    where status ='1' and  sign_user_id = #{signUserId}
   </select>
 
   <select id="findUserByAddress" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user
-    where address = #{address}
+    where status ='1' and address = #{address}
   </select>
 
-  <select id="findUserList" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+  <select id="findUserList" parameterType="com.webank.webase.sign.pojo.bo.UserParam"
+          resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user
-    where encrypt_type = #{encryptType}
-    order by user_id
+    where status ='1' and encrypt_type = #{encryptType}
+    order by user_id desc
+    <if test="start != null and pageSize != null">
+      limit #{start},#{pageSize}
+    </if>
   </select>
 
-  <select id="findUserListByAppId" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+
+  <select id="findLatestUpdateUser" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+    select
+    <include refid="USER_COLUMN"/>
+    from tb_user
+    where status ='0'
+    order by gmt_modify desc
+      limit 0,1
+  </select>
+
+  <select id="findUserListByAppId" parameterType="com.webank.webase.sign.pojo.bo.UserParam"
+          resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user
-    where app_id = #{appId}
-    order by user_id
+    where status ='1' and app_id = #{appId}
+    order by user_id desc
+    <if test="start != null and pageSize != null">
+      limit #{start},#{pageSize}
+    </if>
   </select>
 
-  <delete id="deleteUserBySignUserId" parameterType="java.lang.String">
-    delete from tb_user where sign_user_id = #{signUserId}
-  </delete>
+
+  <select id="findUserListByTime" parameterType="map"
+          resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
+    select <include refid="USER_COLUMN"/>
+    from tb_user
+    where status ='0' AND
+    gmt_modify between #{beginTime} and #{endTime}
+  </select>
+
+
+
+  <update id="deleteUserBySignUserId" parameterType="java.lang.String">
+    UPDATE
+    tb_user
+    SET
+    status = '0' and
+    gmt_modify = NOW()
+    where  sign_user_id = #{signUserId}
+  </update>
+
+
+
 </mapper>
