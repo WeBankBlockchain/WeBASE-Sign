@@ -28,4 +28,5 @@ public class ConstantProperties {
     public static final String CONSTANT_PREFIX = "constant";
     private String aesKey;
     private int keepAliveRequests;
+    private int syncUsrCacheTaskFixedDelay;
 }
