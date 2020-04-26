@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_MAIN=com.webank.webase.sign.Application
-CURRENT_DIR=`pwd`/
+CURRENT_DIR=$(pwd)/
 CONF_DIR=${CURRENT_DIR}conf
 
 SERVER_PORT=$(cat $CONF_DIR/application.yml| grep "port" | awk '{print $2}'| sed 's/\r//')

@@ -2,7 +2,7 @@
 
 APP_MAIN=com.webank.webase.sign.Application
 CLASSPATH='conf/:apps/*:lib/*'
-CURRENT_DIR=`pwd`/
+CURRENT_DIR=$(pwd)/
 LOG_DIR=${CURRENT_DIR}log
 CONF_DIR=${CURRENT_DIR}conf
 
