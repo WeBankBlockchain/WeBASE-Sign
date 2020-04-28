@@ -16,9 +16,11 @@ package com.webank.webase.sign.api.dao;
 
 import com.webank.webase.sign.pojo.bo.UserParam;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * user repository.
@@ -36,6 +38,7 @@ public interface UserDao {
 
     UserInfoPo findUserByAddress(@Param("address") String address);
 
+    UserInfoPo findLatestUpdateUser();
     /**
      * select by encryptType
      */
@@ -49,5 +52,7 @@ public interface UserDao {
     /**
      * delete user by address
      */
-    void deleteUserBySignUserId(@Param("signUserId") String signUserId);
+    int deleteUserBySignUserId(@Param("signUserId") String signUserId);
+
+    List<UserInfoPo> findUserListByTime(@Param("beginTime")LocalDateTime beginTime, @Param("endTime")LocalDateTime endTime);
 }
