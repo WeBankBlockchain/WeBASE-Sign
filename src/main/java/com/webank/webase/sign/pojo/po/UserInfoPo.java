@@ -17,6 +17,8 @@ package com.webank.webase.sign.pojo.po;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * UserInfo Plain Object of tb_user table
  */
@@ -42,4 +44,8 @@ public class UserInfoPo {
 	 * 0 is standard, 1 is guomi
 	 */
 	private Integer encryptType;
+
+	private String status;
+
+	private LocalDateTime gmtModify;
 }
