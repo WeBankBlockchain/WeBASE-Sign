@@ -58,7 +58,11 @@ public class UserService {
         // check user uuid exist
         UserInfoPo checkSignUserIdExists = userDao.findUserBySignUserId(signUserId);
         if (Objects.nonNull(checkSignUserIdExists)) {
-            throw new BaseException(CodeMessageEnums.USER_EXISTS);
+            if(checkSignUserIdExists.getStatus().equals("1")) {
+                throw new BaseException(CodeMessageEnums.USER_EXISTS);
+            } else {
+                throw new BaseException(CodeMessageEnums.USER_DISABLE);
+            }
         }
 
         // get keyStoreInfo
