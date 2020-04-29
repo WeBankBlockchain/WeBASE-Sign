@@ -27,4 +27,6 @@ public class ConstantProperties {
     // constant configuration from file
     public static final String CONSTANT_PREFIX = "constant";
     private String aesKey;
+    private int keepAliveRequests;
+    private int syncUsrCacheTaskFixedDelay;
 }

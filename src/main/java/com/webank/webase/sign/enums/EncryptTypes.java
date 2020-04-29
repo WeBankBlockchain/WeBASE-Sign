@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2019  the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.webase.sign.pojo.vo;
 
-import org.hibernate.validator.constraints.NotBlank;
-import lombok.Data;
+package com.webank.webase.sign.enums;
 
 /**
- * ReqEncodeInfoVo.
+ * encrypt type status:
+ * 1: guomi, 0: standard
  */
-@Data
-public class ReqEncodeInfoVo {
-    @NotBlank(message = "signUserId cannot be empty")
-    private String signUserId;
-    @NotBlank(message = "encodedDataStr cannot be empty")
-    private String encodedDataStr;
+public enum EncryptTypes {
+    /**
+     * not guomi status
+     */
+    STANDARD(0),
+    /**
+     * guomi status
+     */
+    GUOMI(1);
+
+    private int value;
+
+    EncryptTypes(Integer gmStatus) {
+        this.value = gmStatus;
+    }
+
+    public int getValue() {
+        return this.value;
+    }
 }

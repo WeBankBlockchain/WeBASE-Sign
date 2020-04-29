@@ -13,6 +13,8 @@ targetCompatibility = 1.8
 // In this section you declare where to find the dependencies of your project
 repositories {
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+
     maven { url 'https://dl.bintray.com/ethereum/maven/'}
     mavenLocal()
     mavenCentral()
@@ -23,8 +25,10 @@ List springboot =[
 	"org.springframework.boot:spring-boot-starter-web:$spring_boot_version",
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
 	"org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version",
-	"org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version",
-	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
+	// "org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version",
+	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version",
+    // "org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version",
+    "org.springframework.boot:spring-boot-starter-cache:$spring_boot_version"
 ]
 
 List swagger = [
@@ -38,7 +42,7 @@ List mysql = [
     'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1'
 ]
 
-def log4j_version="2.9.0"
+def log4j_version="2.13.1"
 List logger = [
     "org.apache.logging.log4j:log4j-api:$log4j_version",
     "org.apache.logging.log4j:log4j-core:$log4j_version",
@@ -54,10 +58,18 @@ List jaxb = [
      "javax.activation:activation:1.1.1"
 ]
 
+List jackson = [
+    "com.fasterxml.jackson.core:jackson-databind:2.10.0",
+    "com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.0",
+    "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.0",
+    "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.0"
+]
+
 dependencies {
-    compile springboot,swagger,mysql,logger,jaxb
+
+    compile springboot,swagger,mysql,logger,jaxb,jackson
     compile "org.apache.commons:commons-lang3:3.6"
-    compile "com.alibaba:fastjson:1.2.60"
+    compile "com.alibaba:fastjson:1.2.67"
     compile 'org.fisco-bcos:web3sdk:2.2.0'
     compile 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'

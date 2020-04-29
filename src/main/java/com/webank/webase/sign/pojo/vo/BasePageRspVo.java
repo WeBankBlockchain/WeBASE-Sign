@@ -14,32 +14,26 @@
  * limitations under the License.
  */
 
-package com.webank.webase.sign.config;
+package com.webank.webase.sign.pojo.vo;
 
-
+import com.webank.webase.sign.enums.CodeMessageEnums;
 import lombok.Data;
-import org.fisco.bcos.web3j.crypto.EncryptType;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lombok.EqualsAndHashCode;
 
 /**
- * guomi configuration in web3sdk
- * sdk switch ecdsa to sm2, sha to sm3
+ * @author marsli
  */
 @Data
-@Configuration
-@ConfigurationProperties(prefix = "sdk")
-public class EncryptTypeConfig {
-    // 0:standard, 1:guomi
-    private int encryptType;
+@EqualsAndHashCode(callSuper = true)
+public class BasePageRspVo extends BaseRspVo {
 
-    /**
-     * 覆盖EncryptType构造函数
-     * @return
-     */
-    @Bean
-    public EncryptType EncryptType() {
-        return new EncryptType(encryptType);
-    }
+	private long totalCount;
+
+	public BasePageRspVo(CodeMessageEnums cme) {
+		super(cme);
+	}
+	public BasePageRspVo(CodeMessageEnums cme, Object obj, long totalCount) {
+		super(cme.getCode(), cme.getMessage(), obj);
+		this.totalCount = totalCount;
+	}
 }
