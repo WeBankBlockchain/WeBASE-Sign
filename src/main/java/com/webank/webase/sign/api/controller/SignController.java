@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
+
 
 /**
  * Controller.
@@ -62,6 +64,10 @@ public class SignController {
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
+        String signUserId = req.getSignUserId();
+        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
+        }
         String signResult = signService.sign(req);
         // return
         RspSignVo rspSignVo = new RspSignVo();
