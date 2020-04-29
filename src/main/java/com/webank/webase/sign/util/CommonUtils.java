@@ -160,10 +160,14 @@ public class CommonUtils {
         return str.matches(regex);
     }
 
-    public static boolean checkLength_64(String input) {
-        if (input.isEmpty()) {
+    /**
+     * 0 < signUserId <= 64
+     * @param input
+     */
+    public static boolean checkLengthWithin_64(String input) {
+        if (input.isEmpty() || input.length() > publicKeyLength_64) {
             return false;
         }
-        return (input.length() <= publicKeyLength_64);
+        return true;
     }
 }
