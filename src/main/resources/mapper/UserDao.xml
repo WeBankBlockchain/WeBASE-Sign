@@ -65,7 +65,7 @@
   <select id="findUserBySignUserId" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user 
-    where status ='1' and  sign_user_id = #{signUserId}
+    where   sign_user_id = #{signUserId}
   </select>
 
   <select id="findUserByAddress" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
