@@ -35,7 +35,7 @@ public enum CodeMessageEnums {
     PARAM_ENCODED_DATA_INVALID(203009, "encoded data string must be hex string"),
 
     //business exception
-    USER_EXISTS(303001, "user of this sign user id is already exists"),
+    USER_EXISTS(303001, "user of this sign user id is already exists or already been disable"),
     USER_NOT_EXISTS(303002, "user does not exist"),
     PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
