@@ -72,13 +72,13 @@ public class UserController {
         if (StringUtils.isBlank(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
         }
-        if (!CommonUtils.isLetterDigit(signUserId)) {
+        if (!CommonUtils.isLetterDigit(signUserId) || CommonUtils.checkLength_64(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
         if (StringUtils.isBlank(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_BLANK);
         }
-        if (!CommonUtils.isLetterDigit(appId)) {
+        if (!CommonUtils.isLetterDigit(appId) || CommonUtils.checkLength_64(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
         if (encryptType != EncryptTypes.STANDARD.getValue()
