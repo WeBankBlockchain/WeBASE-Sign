@@ -28,7 +28,7 @@ public enum CodeMessageEnums {
     //param
     PARAM_EXCEPTION(203003, "param exception"),
     PARAM_SIGN_USER_ID_IS_BLANK(203004, "sign user id cannot be blank"),
-    PARAM_SIGN_USER_ID_IS_INVALID(203005, "invalid sign user id, only support letter and digit"),
+    PARAM_SIGN_USER_ID_IS_INVALID(203005, "invalid sign user id (max length of 64, only support letter and digit)"),
     PARAM_APP_ID_IS_BLANK(203006, "app id cannot be blank"),
     PARAM_APP_ID_IS_INVALID(203007, "app id invalid, only support letter and digit"),
     PARAM_ENCRYPT_TYPE_IS_INVALID(203008, "encrypt type should be 0 (ecdsa) or 1 (guomi)"),
