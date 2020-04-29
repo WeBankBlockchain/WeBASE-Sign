@@ -31,5 +31,4 @@ public class RspUserInfoVo {
     private String privateKey;
     private String description;
     private Integer encryptType;
-    private String status;
 }
