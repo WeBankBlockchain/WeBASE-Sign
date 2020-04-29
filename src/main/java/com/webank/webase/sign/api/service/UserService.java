@@ -97,7 +97,7 @@ public class UserService {
     public UserInfoPo findBySignUserId(String signUserId) throws BaseException {
         log.info("start findBySignUserId. signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
-        if (Objects.isNull(user)) {
+        if (Objects.isNull(user)|| user.getStatus().equals("0")) {
             log.warn("fail findBySignUserId, user not exists. userId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
@@ -165,7 +165,7 @@ public class UserService {
     public void deleteBySignUserId(String signUserId) throws BaseException{
         log.info("start deleteByUuid signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
-        if (Objects.isNull(user)) {
+        if (Objects.isNull(user)|| user.getStatus().equals("0")) {
             log.warn("fail deleteByUuid, user not exists. signUserId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
