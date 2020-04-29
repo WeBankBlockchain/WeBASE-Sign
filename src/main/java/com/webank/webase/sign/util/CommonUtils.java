@@ -159,4 +159,11 @@ public class CommonUtils {
         String regex = "^[a-z0-9A-Z_]+$";
         return str.matches(regex);
     }
+
+    public static boolean checkLength_64(String input) {
+        if (input.isEmpty()) {
+            return false;
+        }
+        return (input.length() <= publicKeyLength_64);
+    }
 }
