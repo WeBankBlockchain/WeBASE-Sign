@@ -17,15 +17,35 @@ package com.webank.webase.sign.pojo.po;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
- * UserInfoPo.
- * 
+ * UserInfo Plain Object of tb_user table
  */
 @Data
 public class UserInfoPo {
-    private Integer userId;
+	/**
+	 * id of table tb_user
+	 */
+	private Integer userId;
+	/**
+	 * business user id
+	 */
+    private String signUserId;
+	/**
+	 * app that user belong to
+	 */
+	private String appId;
 	private String address;
 	private String publicKey;
 	private String privateKey;
     private String description;
+	/**
+	 * 0 is standard, 1 is guomi
+	 */
+	private Integer encryptType;
+
+	private String status;
+
+	private LocalDateTime gmtModify;
 }

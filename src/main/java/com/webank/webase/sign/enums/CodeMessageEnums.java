@@ -27,17 +27,24 @@ public enum CodeMessageEnums {
 
     //param
     PARAM_EXCEPTION(203003, "param exception"),
+    PARAM_SIGN_USER_ID_IS_BLANK(203004, "sign user id cannot be blank"),
+    PARAM_SIGN_USER_ID_IS_INVALID(203005, "invalid sign user id, only support letter and digit"),
+    PARAM_APP_ID_IS_BLANK(203006, "app id cannot be blank"),
+    PARAM_APP_ID_IS_INVALID(203007, "app id invalid, only support letter and digit"),
+    PARAM_ENCRYPT_TYPE_IS_INVALID(203008, "encrypt type should be 0 (ecdsa) or 1 (guomi)"),
+    PARAM_ENCODED_DATA_INVALID(203009, "encoded data string must be hex string"),
 
     //business exception
-    USER_IS_EXISTS(303001, "user is already exists"),
-    USER_IS_NOT_EXISTS(303002, "user does not exist"),
+    USER_EXISTS(303001, "user of this sign user id is already exists "),
+    USER_DISABLE(303006, "user of this sign user id is  already been disable"),
+    USER_NOT_EXISTS(303002, "user does not exist or already been disable"),
     PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
     PRIVATEKEY_FORMAT_ERROR(303005, "privateKey format error"),
 
     //system error
     SYSTEM_ERROR(103001, "system error"),
-    PARAM_VAILD_FAIL(103001, "system error");
+    PARAM_VAILD_FAIL(103002, "param valid fail");
 
     int code;
     @Setter
