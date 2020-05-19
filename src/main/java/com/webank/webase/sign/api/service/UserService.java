@@ -188,6 +188,16 @@ public class UserService {
         return true;
     }
 
+    public Boolean deleteAllCredentialCache() {
+        log.info("delete all Credential cache");
+
+        Cache cache = cacheManager.getCache("getCredentials");
+        if(cache!=null) {
+            cache.clear();
+        }
+        return true;
+    }
+
     public UserInfoPo findLatestUpdatedUser() {
         UserInfoPo user = userDao.findLatestUpdateUser();
         return user;

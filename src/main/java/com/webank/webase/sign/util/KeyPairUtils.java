@@ -26,6 +26,7 @@ import org.fisco.bcos.web3j.crypto.gm.sm2.crypto.asymmetric.SM2KeyGenerator;
 import org.fisco.bcos.web3j.crypto.gm.sm2.crypto.asymmetric.SM2PrivateKey;
 import org.fisco.bcos.web3j.crypto.gm.sm2.crypto.asymmetric.SM2PublicKey;
 import org.fisco.bcos.web3j.crypto.gm.sm2.util.encoders.Hex;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
@@ -45,6 +46,7 @@ public class KeyPairUtils {
      * @param encryptType 1: guomi, 0: standard
      * @return Credentials
      */
+    @Cacheable(cacheNames = "getCredentials")
     public Credentials create(String privateKey, int encryptType) {
         try {
             ECKeyPair keyPair = createKeyPairByType(privateKey, encryptType);
