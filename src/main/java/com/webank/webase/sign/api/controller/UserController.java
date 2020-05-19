@@ -157,9 +157,18 @@ public class UserController {
     @ApiOperation(value = "delete all user cache",
             notes = "删除所有用户缓存信息")
     @DeleteMapping("/all")
-    public BaseRspVo deleteAllUserCache() throws BaseException {
+    public BaseRspVo deleteAllUserCache()   {
 
         userService.deleteAllUserCache();
+        return CommonUtils.buildSuccessRspVo(null);
+    }
+
+    @ApiOperation(value = "delete all Credential cache",
+            notes = "删除所有私钥缓存信息")
+    @DeleteMapping("/all-credential")
+    public BaseRspVo deleteCredentialCache()   {
+
+        userService.deleteAllCredentialCache();
         return CommonUtils.buildSuccessRspVo(null);
     }
 
