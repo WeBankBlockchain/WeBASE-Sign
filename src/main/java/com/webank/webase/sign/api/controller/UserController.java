@@ -19,6 +19,7 @@ import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.bo.UserParam;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import com.webank.webase.sign.pojo.vo.ReqNewUserVo;
 import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
@@ -30,13 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,11 +83,43 @@ public class UserController {
             throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
         }
         // new user
-        RspUserInfoVo userInfo = userService.newUser(signUserId, appId, encryptType);
+        RspUserInfoVo userInfo = userService.newUser(signUserId, appId, encryptType, null);
         userInfo.setPrivateKey("");
         return CommonUtils.buildSuccessRspVo(userInfo);
     }
 
+    @ApiOperation(value = "import new user by private key",
+            notes = "导入私钥用户(ecdsa或国密)，默认ecdas")
+    @ApiImplicitParam(name = "reqNewUser", value = "private key info",
+                     required = true, dataType = "ReqNewUserVo")
+    @PostMapping("/newUser")
+    public BaseRspVo newUser(@Valid @RequestBody ReqNewUserVo reqNewUser) throws BaseException {
+        // validate signUserId
+        String signUserId = reqNewUser.getSignUserId();
+        String appId = reqNewUser.getAppId();
+        Integer encryptType = reqNewUser.getEncryptType();
+        String privateKeyEncoded = reqNewUser.getPrivateKey();
+        if (StringUtils.isBlank(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
+        }
+        if (!CommonUtils.isLetterDigit(signUserId) || !CommonUtils.checkLengthWithin_64(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
+        }
+        if (StringUtils.isBlank(appId)) {
+            throw new BaseException(PARAM_APP_ID_IS_BLANK);
+        }
+        if (!CommonUtils.isLetterDigit(appId) || !CommonUtils.checkLengthWithin_64(appId)) {
+            throw new BaseException(PARAM_APP_ID_IS_INVALID);
+        }
+        if (encryptType != EncryptTypes.STANDARD.getValue()
+                && encryptType != EncryptTypes.GUOMI.getValue()) {
+            throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
+        }
+        // new user
+        RspUserInfoVo userInfo = userService.newUser(signUserId, appId, encryptType, privateKeyEncoded);
+        userInfo.setPrivateKey("");
+        return CommonUtils.buildSuccessRspVo(userInfo);
+    }
     /**
      * get user.
      */
@@ -149,6 +178,7 @@ public class UserController {
         if (!CommonUtils.checkLengthWithin_64(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
+        // set as 0: SUSPENDED
         userService.deleteBySignUserId(signUserId);
         return CommonUtils.buildSuccessRspVo(null);
     }
