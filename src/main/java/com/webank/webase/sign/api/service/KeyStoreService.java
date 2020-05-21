@@ -52,19 +52,19 @@ public class KeyStoreService {
      * get KeyStoreInfo by privateKey.
      * @param encryptType 1: guomi, 0: standard
      */
-    public KeyStoreInfo getKeyStoreFromPrivateKey(String privateKey, int encryptType) throws BaseException {
-        if (StringUtils.isBlank(privateKey)) {
+    public KeyStoreInfo getKeyStoreFromPrivateKey(String privateKeyEncoded, int encryptType) throws BaseException {
+        if (StringUtils.isBlank(privateKeyEncoded)) {
             log.error("fail getKeyStoreFromPrivateKey. private key is null");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_IS_NULL);
         }
 
-        if(!isValidPrivateKey(privateKey)){
+        if(!isValidPrivateKey(privateKeyEncoded)){
             log.error("fail getKeyStoreFromPrivateKey. private key format error");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_FORMAT_ERROR);
         }
 
         // support guomi. v1.3.0+: create by type
-        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKey, encryptType);
+        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKeyEncoded, encryptType);
         return keyPair2KeyStoreInfo(keyPair, encryptType);
     }
 
