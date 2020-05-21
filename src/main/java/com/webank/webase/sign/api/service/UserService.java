@@ -1,5 +1,5 @@
 /**
- * Copyright 2014-2019  the original author or authors.
+ * Copyright 2014-2020  the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,7 @@
  */
 package com.webank.webase.sign.api.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +22,8 @@ import java.util.Optional;
 import com.webank.webase.sign.pojo.bo.UserParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,8 @@ public class UserService {
     private AesUtils aesUtils;
     @Autowired
     private KeyStoreService keyStoreService;
+    @Autowired
+    private CacheManager cacheManager;
 
     /**
      * add user by encrypt type
@@ -53,7 +58,11 @@ public class UserService {
         // check user uuid exist
         UserInfoPo checkSignUserIdExists = userDao.findUserBySignUserId(signUserId);
         if (Objects.nonNull(checkSignUserIdExists)) {
-            throw new BaseException(CodeMessageEnums.USER_EXISTS);
+            if(checkSignUserIdExists.getStatus().equals("1")) {
+                throw new BaseException(CodeMessageEnums.USER_EXISTS);
+            } else {
+                throw new BaseException(CodeMessageEnums.USER_DISABLE);
+            }
         }
 
         // get keyStoreInfo
@@ -92,7 +101,7 @@ public class UserService {
     public UserInfoPo findBySignUserId(String signUserId) throws BaseException {
         log.info("start findBySignUserId. signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
-        if (Objects.isNull(user)) {
+        if (Objects.isNull(user)|| user.getStatus().equals("0")) {
             log.warn("fail findBySignUserId, user not exists. userId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
@@ -145,19 +154,52 @@ public class UserService {
         return rspUserInfoVos;
     }
 
+    public List<UserInfoPo> findUserListByTime(LocalDateTime begin ,LocalDateTime end) {
+        log.info("start findUserListByTime.");
+        List<UserInfoPo> users = userDao.findUserListByTime(begin,end);
+
+        return users;
+    }
+
 
     /**
      * delete user by signUserId
      */
-    @CacheEvict(cacheNames = "user")
+    @CacheEvict(cacheNames = "user", beforeInvocation=true )
     public void deleteBySignUserId(String signUserId) throws BaseException{
         log.info("start deleteByUuid signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
-        if (Objects.isNull(user)) {
+        if (Objects.isNull(user)|| user.getStatus().equals("0")) {
             log.warn("fail deleteByUuid, user not exists. signUserId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
         userDao.deleteUserBySignUserId(signUserId);
         log.info("end deleteByUuid.");
+    }
+
+
+    public Boolean deleteAllUserCache() {
+        log.info("delete all user cache");
+
+        Cache cache = cacheManager.getCache("user");
+        if(cache!=null) {
+            cache.clear();
+        }
+        return true;
+    }
+
+    public Boolean deleteAllCredentialCache() {
+        log.info("delete all Credential cache");
+
+        Cache cache = cacheManager.getCache("getCredentials");
+        if(cache!=null) {
+            cache.clear();
+        }
+        return true;
+    }
+
+    public UserInfoPo findLatestUpdatedUser() {
+        UserInfoPo user = userDao.findLatestUpdateUser();
+        return user;
     }
 }

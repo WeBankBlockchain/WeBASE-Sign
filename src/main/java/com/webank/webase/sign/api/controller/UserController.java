@@ -1,5 +1,5 @@
 /**
- * Copyright 2014-2019  the original author or authors.
+ * Copyright 2014-2020  the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -72,13 +72,13 @@ public class UserController {
         if (StringUtils.isBlank(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
         }
-        if (!CommonUtils.isLetterDigit(signUserId)) {
+        if (!CommonUtils.isLetterDigit(signUserId) || !CommonUtils.checkLengthWithin_64(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
         if (StringUtils.isBlank(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_BLANK);
         }
-        if (!CommonUtils.isLetterDigit(appId)) {
+        if (!CommonUtils.isLetterDigit(appId) || !CommonUtils.checkLengthWithin_64(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
         if (encryptType != EncryptTypes.STANDARD.getValue()
@@ -101,6 +101,9 @@ public class UserController {
     })
     @GetMapping("/{signUserId}/userInfo")
     public BaseRspVo getUserInfo(@PathVariable("signUserId") String signUserId) throws BaseException {
+        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
+        }
         //find user
         UserInfoPo userInfo = userService.findBySignUserId(signUserId);
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
@@ -120,7 +123,10 @@ public class UserController {
     @GetMapping("/list/{appId}/{pageNumber}/{pageSize}")
     public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId,
                                         @PathVariable("pageNumber") Integer pageNumber,
-                                        @PathVariable("pageSize") Integer pageSize) {
+                                        @PathVariable("pageSize") Integer pageSize) throws BaseException {
+        if (!CommonUtils.checkLengthWithin_64(appId)) {
+            throw new BaseException(PARAM_APP_ID_IS_INVALID);
+        }
         UserParam param = new UserParam();
         param.setAppId(appId);
         Integer start = Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize)
@@ -140,11 +146,33 @@ public class UserController {
     @DeleteMapping("")
     public BaseRspVo deleteUser(@RequestBody ReqUserInfoVo req) throws BaseException {
         String signUserId = req.getSignUserId();
-        if (StringUtils.isBlank(signUserId)) {
-            throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
+        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
         userService.deleteBySignUserId(signUserId);
         return CommonUtils.buildSuccessRspVo(null);
     }
+
+
+    @ApiOperation(value = "delete all user cache",
+            notes = "删除所有用户缓存信息")
+    @DeleteMapping("/all")
+    public BaseRspVo deleteAllUserCache()   {
+
+        userService.deleteAllUserCache();
+        return CommonUtils.buildSuccessRspVo(null);
+    }
+
+    @ApiOperation(value = "delete all Credential cache",
+            notes = "删除所有私钥缓存信息")
+    @DeleteMapping("/all-credential")
+    public BaseRspVo deleteCredentialCache()   {
+
+        userService.deleteAllCredentialCache();
+        return CommonUtils.buildSuccessRspVo(null);
+    }
+
+
+
 
 }

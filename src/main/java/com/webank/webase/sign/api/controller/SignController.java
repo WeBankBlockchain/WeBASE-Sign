@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,8 @@
  */
 package com.webank.webase.sign.api.controller;
 
-import com.webank.webase.sign.api.service.UserService;
-import com.webank.webase.sign.enums.EncryptTypes;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.webank.webase.sign.api.service.SignService;
+import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
@@ -34,6 +25,16 @@ import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 
 
 /**
@@ -63,6 +64,10 @@ public class SignController {
     public BaseRspVo signStandard(@Valid @RequestBody ReqEncodeInfoVo req, BindingResult result)
         throws BaseException {
         CommonUtils.checkParamBindResult(result);
+        String signUserId = req.getSignUserId();
+        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
+        }
         String signResult = signService.sign(req);
         // return
         RspSignVo rspSignVo = new RspSignVo();
