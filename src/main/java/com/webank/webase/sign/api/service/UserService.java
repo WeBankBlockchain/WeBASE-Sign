@@ -72,9 +72,15 @@ public class UserService {
         // get keyStoreInfo
         KeyStoreInfo keyStoreInfo;
         if (StringUtils.isNotBlank(privateKeyEncoded)) {
+            String privateKey;
             // decode base64 as raw private key
-            String privateKey = new String(CommonUtils.base64Decode(privateKeyEncoded));
-            keyStoreInfo = keyStoreService.getKeyStoreFromPrivateKey(privateKey, encryptType);
+            try {
+                privateKey = new String(CommonUtils.base64Decode(privateKeyEncoded));
+                keyStoreInfo = keyStoreService.getKeyStoreFromPrivateKey(privateKey, encryptType);
+            } catch (Exception ex) {
+                log.error("newUser privatekey encoded format error：{}", privateKeyEncoded);
+                throw new BaseException(CodeMessageEnums.PRIVATE_KEY_DECODE_FAIL);
+            }
         } else {
             keyStoreInfo = keyStoreService.newKeyByType(encryptType);
         }

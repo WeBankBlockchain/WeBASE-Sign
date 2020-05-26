@@ -20,6 +20,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
+ * import private key entity
  * @author marsli
  */
 @Data
