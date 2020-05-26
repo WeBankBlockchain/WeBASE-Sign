@@ -93,7 +93,8 @@ public class UserController {
     @ApiImplicitParam(name = "reqNewUser", value = "private key info",
                      required = true, dataType = "ReqNewUserVo")
     @PostMapping("/newUser")
-    public BaseRspVo newUser(@Valid @RequestBody ReqNewUserVo reqNewUser) throws BaseException {
+    public BaseRspVo newUserByImportPrivateKey(@Valid @RequestBody ReqNewUserVo reqNewUser)
+            throws BaseException {
         // validate signUserId
         String signUserId = reqNewUser.getSignUserId();
         String appId = reqNewUser.getAppId();
