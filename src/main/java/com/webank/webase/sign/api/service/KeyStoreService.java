@@ -46,25 +46,19 @@ public class KeyStoreService {
     private AddressUtils addressUtils;
 
     static final int PUBLIC_KEY_LENGTH_IN_HEX = 128;
-    static final int PRIVATE_KEY_LENGTH_IN_HEX = 16;
 
     /**
      * get KeyStoreInfo by privateKey.
      * @param encryptType 1: guomi, 0: standard
      */
-    public KeyStoreInfo getKeyStoreFromPrivateKey(String privateKeyEncoded, int encryptType) throws BaseException {
-        if (StringUtils.isBlank(privateKeyEncoded)) {
+    public KeyStoreInfo getKeyStoreFromPrivateKey(String privateKeyRaw, int encryptType) throws BaseException {
+        if (StringUtils.isBlank(privateKeyRaw)) {
             log.error("fail getKeyStoreFromPrivateKey. private key is null");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_IS_NULL);
         }
 
-        if(!isValidPrivateKey(privateKeyEncoded)){
-            log.error("fail getKeyStoreFromPrivateKey. private key format error");
-            throw new BaseException(CodeMessageEnums.PRIVATEKEY_FORMAT_ERROR);
-        }
-
         // support guomi. v1.3.0+: create by type
-        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKeyEncoded, encryptType);
+        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKeyRaw, encryptType);
         return keyPair2KeyStoreInfo(keyPair, encryptType);
     }
 
@@ -103,10 +97,6 @@ public class KeyStoreService {
         return keyStoreInfo;
     }
 
-    private static boolean isValidPrivateKey(String privateKey) {
-        String cleanPrivateKey = Numeric.cleanHexPrefix(privateKey);
-        return cleanPrivateKey.length() == PRIVATE_KEY_LENGTH_IN_HEX;
-    }
 
     @Cacheable(cacheNames = "getPrivatekey")
     public  Credentials getCredentioan(String privateKey) {
