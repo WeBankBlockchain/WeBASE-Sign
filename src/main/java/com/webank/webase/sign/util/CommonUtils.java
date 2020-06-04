@@ -15,6 +15,7 @@
  */
 package com.webank.webase.sign.util;
 
+import java.util.Base64;
 import java.util.stream.Collectors;
 
 import com.webank.webase.sign.pojo.vo.BasePageRspVo;
@@ -169,5 +170,18 @@ public class CommonUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * base64Decode.
+     *
+     * @param str String
+     * @return byte[]
+     */
+    public static byte[] base64Decode(String str) {
+        if (str == null) {
+            return new byte[0];
+        }
+        return Base64.getDecoder().decode(str);
     }
 }
