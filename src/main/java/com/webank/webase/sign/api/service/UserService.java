@@ -19,7 +19,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.webank.webase.sign.enums.KeyStatus;
 import com.webank.webase.sign.pojo.bo.UserParam;
+import com.webank.webase.sign.util.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -52,13 +55,14 @@ public class UserService {
     /**
      * add user by encrypt type
      */
-    public RspUserInfoVo newUser(String signUserId, String appId, int encryptType) throws BaseException {
+    public RspUserInfoVo newUser(String signUserId, String appId, int encryptType,
+                                 String privateKeyEncoded) throws BaseException {
         log.info("start addUser signUserId:{},appId:{},encryptType:{}",
                 signUserId, appId, encryptType);
         // check user uuid exist
         UserInfoPo checkSignUserIdExists = userDao.findUserBySignUserId(signUserId);
         if (Objects.nonNull(checkSignUserIdExists)) {
-            if(checkSignUserIdExists.getStatus().equals("1")) {
+            if(checkSignUserIdExists.getStatus().equals(KeyStatus.NORMAL.getValue())) {
                 throw new BaseException(CodeMessageEnums.USER_EXISTS);
             } else {
                 throw new BaseException(CodeMessageEnums.USER_DISABLE);
@@ -66,7 +70,20 @@ public class UserService {
         }
 
         // get keyStoreInfo
-        KeyStoreInfo keyStoreInfo = keyStoreService.newKeyByType(encryptType);
+        KeyStoreInfo keyStoreInfo;
+        if (StringUtils.isNotBlank(privateKeyEncoded)) {
+            String privateKey;
+            // decode base64 as raw private key
+            try {
+                privateKey = new String(CommonUtils.base64Decode(privateKeyEncoded));
+                keyStoreInfo = keyStoreService.getKeyStoreFromPrivateKey(privateKey, encryptType);
+            } catch (Exception ex) {
+                log.error("newUser privatekey encoded format error：{}", privateKeyEncoded);
+                throw new BaseException(CodeMessageEnums.PRIVATE_KEY_DECODE_FAIL);
+            }
+        } else {
+            keyStoreInfo = keyStoreService.newKeyByType(encryptType);
+        }
 
         //save user.
         UserInfoPo userInfoPo = new UserInfoPo();
@@ -101,7 +118,7 @@ public class UserService {
     public UserInfoPo findBySignUserId(String signUserId) throws BaseException {
         log.info("start findBySignUserId. signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
-        if (Objects.isNull(user)|| user.getStatus().equals("0")) {
+        if (Objects.isNull(user)|| user.getStatus().equals(KeyStatus.SUSPENDED.getValue())) {
             log.warn("fail findBySignUserId, user not exists. userId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
@@ -169,7 +186,8 @@ public class UserService {
     public void deleteBySignUserId(String signUserId) throws BaseException{
         log.info("start deleteByUuid signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
-        if (Objects.isNull(user)|| user.getStatus().equals("0")) {
+        if (Objects.isNull(user)
+                || user.getStatus().equals(KeyStatus.SUSPENDED.getValue())) {
             log.warn("fail deleteByUuid, user not exists. signUserId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
@@ -182,6 +200,16 @@ public class UserService {
         log.info("delete all user cache");
 
         Cache cache = cacheManager.getCache("user");
+        if(cache!=null) {
+            cache.clear();
+        }
+        return true;
+    }
+
+    public Boolean deleteAllCredentialCache() {
+        log.info("delete all Credential cache");
+
+        Cache cache = cacheManager.getCache("getCredentials");
         if(cache!=null) {
             cache.clear();
         }

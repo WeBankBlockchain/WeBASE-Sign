@@ -1,3 +1,20 @@
+### v1.3.1
+
+ (2020-06-01)
+ 
+**Add**
+- 新增导入私钥接口
+
+**Fix**
+- 增加私钥签名Credential缓存机制，优化签名性能
+
+**兼容性**
+- WeBASE-Front v1.3.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解，请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+
+
 ### v1.3.0
 
  (2020-04-29)
