@@ -71,7 +71,7 @@ dependencies {
     compile "org.apache.commons:commons-lang3:3.6"
     compile 'org.fisco-bcos:web3sdk:2.4.0'
     // cover fastjson
-    compile "com.alibaba:fastjson:1.2.69"
+    compile "com.alibaba:fastjson:1.2.70"
     compile 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
