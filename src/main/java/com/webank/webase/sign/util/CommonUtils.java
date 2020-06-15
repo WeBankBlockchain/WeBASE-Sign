@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.validation.BindingResult;
-import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.ParamException;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
@@ -118,10 +117,11 @@ public class CommonUtils {
      */
     public static void checkParamBindResult(BindingResult result) {
         if (result.hasErrors()) {
-            log.error("param exception. error:{}", JSON.toJSONString(result.getAllErrors()));
+            log.error("param exception. error:{}", JsonUtils.toJSONString(result.getAllErrors()));
             String errFieldStr = result.getAllErrors().stream()
-                .map(obj -> JSON.parseObject(JSON.toJSONString(obj)))
-                .map(err -> err.getString("field"))
+                // TODO check json
+                .map(obj -> JsonUtils.stringToJsonNode(JsonUtils.toJSONString(obj)))
+                .map(err -> err.get("field").asText())
                 .collect(Collectors.joining(","));
             StringUtils.removeEnd(errFieldStr, ",");
             String message = "These fields do not match:" + errFieldStr;
