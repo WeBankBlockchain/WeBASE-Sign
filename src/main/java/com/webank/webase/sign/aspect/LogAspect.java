@@ -13,6 +13,7 @@
  */
 package com.webank.webase.sign.aspect;
 
+import com.webank.webase.sign.util.JsonUtils;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
@@ -23,7 +24,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
-import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.manager.LoggerManager;
 
 @Aspect
@@ -46,7 +46,7 @@ public class LogAspect {
         Object[] args = point.getArgs();
         Logger logger = LoggerManager.getLogger(targetClass);
         logger.debug("startTime:{} methodName:{} args:{}", startTime, methodName,
-            JSON.toJSONString(args));
+            JsonUtils.toJSONString(args));
         Object result = null;
         try {
             result = point.proceed();
@@ -55,7 +55,7 @@ public class LogAspect {
             throw throwable;
         }
 
-        String resultStr = Optional.ofNullable(result).map(r -> JSON.toJSONString(r)).orElse(null);
+        String resultStr = Optional.ofNullable(result).map(JsonUtils::toJSONString).orElse(null);
         logger.debug("methodName:{} userTime:{} result:{}", methodName,
             Duration.between(startTime, Instant.now()), resultStr);
         return result;
