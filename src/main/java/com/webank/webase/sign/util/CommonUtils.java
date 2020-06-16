@@ -119,7 +119,6 @@ public class CommonUtils {
         if (result.hasErrors()) {
             log.error("param exception. error:{}", JsonUtils.toJSONString(result.getAllErrors()));
             String errFieldStr = result.getAllErrors().stream()
-                // TODO check json
                 .map(obj -> JsonUtils.stringToJsonNode(JsonUtils.toJSONString(obj)))
                 .map(err -> err.get("field").asText())
                 .collect(Collectors.joining(","));
