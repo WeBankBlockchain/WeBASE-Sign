@@ -45,8 +45,9 @@ public class LogAspect {
         String methodName = methodSignature.getName();
         Object[] args = point.getArgs();
         Logger logger = LoggerManager.getLogger(targetClass);
+        // log args of param in controller, if toJsonString(args), stack over flow
         logger.debug("startTime:{} methodName:{} args:{}", startTime, methodName,
-            JsonUtils.toJSONString(args));
+            JsonUtils.toJSONString(args[0]));
         Object result = null;
         try {
             result = point.proceed();
@@ -56,7 +57,7 @@ public class LogAspect {
         }
 
         String resultStr = Optional.ofNullable(result).map(JsonUtils::toJSONString).orElse(null);
-        logger.debug("methodName:{} userTime:{} result:{}", methodName,
+        logger.debug("methodName:{} usedTime:{} result:{}", methodName,
             Duration.between(startTime, Instant.now()), resultStr);
         return result;
     }
