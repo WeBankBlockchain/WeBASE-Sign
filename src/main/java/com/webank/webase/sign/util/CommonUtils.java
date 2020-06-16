@@ -117,7 +117,7 @@ public class CommonUtils {
      */
     public static void checkParamBindResult(BindingResult result) {
         if (result.hasErrors()) {
-//            log.error("param exception. error:{}", JsonUtils.toJSONString(result.getAllErrors()));
+            log.error("param exception. error:{}", JsonUtils.toJSONString(result.getAllErrors()));
             String errFieldStr = result.getAllErrors().stream()
                 // TODO check json
                 .map(obj -> JsonUtils.stringToJsonNode(JsonUtils.toJSONString(obj)))
