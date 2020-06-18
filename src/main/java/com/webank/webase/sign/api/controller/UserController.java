@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -93,8 +94,9 @@ public class UserController {
     @ApiImplicitParam(name = "reqNewUser", value = "private key info",
                      required = true, dataType = "ReqNewUserVo")
     @PostMapping("/newUser")
-    public BaseRspVo newUserByImportPrivateKey(@Valid @RequestBody ReqNewUserVo reqNewUser)
+    public BaseRspVo newUserByImportPrivateKey(@Valid @RequestBody ReqNewUserVo reqNewUser, BindingResult result)
             throws BaseException {
+        CommonUtils.checkParamBindResult(result);
         // validate signUserId
         String signUserId = reqNewUser.getSignUserId();
         String appId = reqNewUser.getAppId();
