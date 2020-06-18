@@ -13,8 +13,11 @@
  */
 package com.webank.webase.sign.aspect;
 
+import com.webank.webase.sign.util.JsonUtils;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,8 +26,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
-import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.manager.LoggerManager;
+import org.springframework.validation.BindingResult;
 
 @Aspect
 @Component
@@ -45,8 +48,10 @@ public class LogAspect {
         String methodName = methodSignature.getName();
         Object[] args = point.getArgs();
         Logger logger = LoggerManager.getLogger(targetClass);
+        // log args of param in controller
+        // if args contains BindingResult(recursive of request entity and itself), stack over flow
         logger.debug("startTime:{} methodName:{} args:{}", startTime, methodName,
-            JSON.toJSONString(args));
+            JsonUtils.toJSONString(this.excludeBindingResult(args)));
         Object result = null;
         try {
             result = point.proceed();
@@ -55,10 +60,19 @@ public class LogAspect {
             throw throwable;
         }
 
-        String resultStr = Optional.ofNullable(result).map(r -> JSON.toJSONString(r)).orElse(null);
-        logger.debug("methodName:{} userTime:{} result:{}", methodName,
+        String resultStr = Optional.ofNullable(result).map(JsonUtils::toJSONString).orElse(null);
+        logger.debug("methodName:{} usedTime:{} result:{}", methodName,
             Duration.between(startTime, Instant.now()), resultStr);
         return result;
     }
 
+    private List<Object> excludeBindingResult(Object[] params) {
+        List<Object> retainParams = new ArrayList<>();
+        for (int index = 0; index < params.length; index++) {
+            if (!(params[index] instanceof BindingResult)) {
+                retainParams.add(params[index]);
+            }
+        }
+        return retainParams;
+    }
 }
