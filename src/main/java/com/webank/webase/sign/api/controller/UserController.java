@@ -95,7 +95,7 @@ public class UserController {
                      required = true, dataType = "ReqNewUserVo")
     @PostMapping("/newUser")
     public BaseRspVo newUserByImportPrivateKey(@Valid @RequestBody ReqNewUserVo reqNewUser, BindingResult result)
-            throws BaseException {
+        throws BaseException {
         CommonUtils.checkParamBindResult(result);
         // validate signUserId
         String signUserId = reqNewUser.getSignUserId();
