@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,25 +46,19 @@ public class KeyStoreService {
     private AddressUtils addressUtils;
 
     static final int PUBLIC_KEY_LENGTH_IN_HEX = 128;
-    static final int PRIVATE_KEY_LENGTH_IN_HEX = 16;
 
     /**
      * get KeyStoreInfo by privateKey.
      * @param encryptType 1: guomi, 0: standard
      */
-    public KeyStoreInfo getKeyStoreFromPrivateKey(String privateKey, int encryptType) throws BaseException {
-        if (StringUtils.isBlank(privateKey)) {
+    public KeyStoreInfo getKeyStoreFromPrivateKey(String privateKeyRaw, int encryptType) throws BaseException {
+        if (StringUtils.isBlank(privateKeyRaw)) {
             log.error("fail getKeyStoreFromPrivateKey. private key is null");
             throw new BaseException(CodeMessageEnums.PRIVATEKEY_IS_NULL);
         }
 
-        if(!isValidPrivateKey(privateKey)){
-            log.error("fail getKeyStoreFromPrivateKey. private key format error");
-            throw new BaseException(CodeMessageEnums.PRIVATEKEY_FORMAT_ERROR);
-        }
-
         // support guomi. v1.3.0+: create by type
-        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKey, encryptType);
+        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKeyRaw, encryptType);
         return keyPair2KeyStoreInfo(keyPair, encryptType);
     }
 
@@ -103,10 +97,6 @@ public class KeyStoreService {
         return keyStoreInfo;
     }
 
-    private static boolean isValidPrivateKey(String privateKey) {
-        String cleanPrivateKey = Numeric.cleanHexPrefix(privateKey);
-        return cleanPrivateKey.length() == PRIVATE_KEY_LENGTH_IN_HEX;
-    }
 
     @Cacheable(cacheNames = "getPrivatekey")
     public  Credentials getCredentioan(String privateKey) {

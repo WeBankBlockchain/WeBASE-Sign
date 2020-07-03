@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-package com.webank.webase.sign.pojo.bo;
+package com.webank.webase.sign.pojo.vo;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * import private key entity
+ * @author marsli
+ */
 @Data
-@NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class UserParam extends BaseQueryParam{
-
+public class ReqNewUserVo {
+	@NotBlank
+	private String signUserId;
+	@NotBlank
 	private String appId;
-	private String encryptType;
+	private Integer encryptType;
+	/**
+	 * encoded by base64
+	 */
+	@NotBlank
+	private String privateKey;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package com.webank.webase.sign.exception;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import com.webank.webase.sign.util.JsonUtils;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
@@ -52,7 +52,7 @@ public class ExceptionsHandler {
             .map(BaseException::getCodeMessageEnums).orElse(CodeMessageEnums.SYSTEM_ERROR);
 
         BaseRspVo rep = new BaseRspVo(cme);
-        log.warn("baseException return:{}", JSON.toJSONString(rep));
+        log.warn("baseException return:{}", JsonUtils.toJSONString(rep));
         return rep;
     }
 
@@ -69,7 +69,7 @@ public class ExceptionsHandler {
             .map(ParamException::getCodeMessageEnums).orElse(CodeMessageEnums.SYSTEM_ERROR);
 
         BaseRspVo bre = new BaseRspVo(cme);
-        log.warn("param exception return:{}", JSON.toJSONString(bre));
+        log.warn("param exception return:{}", JsonUtils.toJSONString(bre));
         return bre;
     }
 
@@ -85,7 +85,7 @@ public class ExceptionsHandler {
         CodeMessageEnums cme = CodeMessageEnums.PARAM_EXCEPTION;
         cme.setMessage(ex.getMessage());
         BaseRspVo bre = new BaseRspVo(cme);
-        log.warn("typeMismatchException return:{}", JSON.toJSONString(bre));
+        log.warn("typeMismatchException return:{}", JsonUtils.toJSONString(bre));
         return bre;
     }
 
@@ -100,7 +100,7 @@ public class ExceptionsHandler {
     public BaseRspVo exceptionHandler(Exception exc) {
         log.info("catch  exception", exc);
         BaseRspVo rep = new BaseRspVo(CodeMessageEnums.SYSTEM_ERROR);
-        log.warn("exception return:{}", JSON.toJSONString(rep));
+        log.warn("exception return:{}", JsonUtils.toJSONString(rep));
         return rep;
     }
 }

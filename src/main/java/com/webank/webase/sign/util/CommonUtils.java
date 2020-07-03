@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.webank.webase.sign.util;
 
+import java.util.Base64;
 import java.util.stream.Collectors;
 
 import com.webank.webase.sign.pojo.vo.BasePageRspVo;
@@ -22,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.validation.BindingResult;
-import com.alibaba.fastjson.JSON;
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.ParamException;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
@@ -117,10 +117,10 @@ public class CommonUtils {
      */
     public static void checkParamBindResult(BindingResult result) {
         if (result.hasErrors()) {
-            log.error("param exception. error:{}", JSON.toJSONString(result.getAllErrors()));
+            log.error("param exception. error:{}", JsonUtils.toJSONString(result.getAllErrors()));
             String errFieldStr = result.getAllErrors().stream()
-                .map(obj -> JSON.parseObject(JSON.toJSONString(obj)))
-                .map(err -> err.getString("field"))
+                .map(obj -> JsonUtils.stringToJsonNode(JsonUtils.toJSONString(obj)))
+                .map(err -> err.get("field").asText())
                 .collect(Collectors.joining(","));
             StringUtils.removeEnd(errFieldStr, ",");
             String message = "These fields do not match:" + errFieldStr;
@@ -158,5 +158,29 @@ public class CommonUtils {
     public static boolean isLetterDigit(String str) {
         String regex = "^[a-z0-9A-Z_]+$";
         return str.matches(regex);
+    }
+
+    /**
+     * 0 < signUserId <= 64
+     * @param input
+     */
+    public static boolean checkLengthWithin_64(String input) {
+        if (input.isEmpty() || input.length() > publicKeyLength_64) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * base64Decode.
+     *
+     * @param str String
+     * @return byte[]
+     */
+    public static byte[] base64Decode(String str) {
+        if (str == null) {
+            return new byte[0];
+        }
+        return Base64.getDecoder().decode(str);
     }
 }

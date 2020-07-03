@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 
-package com.webank.webase.sign.pojo.bo;
+package com.webank.webase.sign.enums;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+/**
+ * @author marsli
+ */
 
-@Data
-@NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class UserParam extends BaseQueryParam{
+public enum KeyStatus {
+	/**
+	 * normal private key
+	 */
+	SUSPENDED(0),
+	/**
+	 * suspended private key
+	 */
+	NORMAL(1);
 
-	private String appId;
-	private String encryptType;
+	private int value;
+
+	KeyStatus(Integer keyStatus) {
+		this.value = keyStatus;
+	}
+
+	public int getValue() {
+		return this.value;
+	}
 }

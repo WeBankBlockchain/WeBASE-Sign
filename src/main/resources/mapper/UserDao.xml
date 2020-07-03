@@ -3,24 +3,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.webank.webase.sign.api.dao.UserDao">
   <update id="createTbUser">
-        CREATE TABLE IF NOT EXISTS tb_user (
-          user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
-          sign_user_id varchar(64) NOT NULL COMMENT '用户唯一的业务编号',
-          app_id varchar(64) NOT NULL COMMENT '用户对应的应用编号',
-          address varchar(64) NOT NULL COMMENT '用户地址',
-          public_key varchar(256) NOT NULL COMMENT '公钥',
-          private_key varchar(256) NOT NULL COMMENT '私钥',
-          description varchar(128) DEFAULT NULL COMMENT '描述',
-          encrypt_type int NOT NULL COMMENT '加密类型，1：国密；0：ECDSA',
-          gmt_create datetime DEFAULT NULL COMMENT '创建时间',
-          gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
-          status char(1)  NOT NULL DEFAULT '1' COMMENT  '状态： 1 有效 0 无效',
-
-      PRIMARY KEY (user_id),
-          UNIQUE KEY unique_address (address),
-          UNIQUE KEY unique_uuid (sign_user_id)
+    CREATE TABLE IF NOT EXISTS tb_user (
+        user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
+        sign_user_id varchar(64) NOT NULL COMMENT '用户唯一的业务编号',
+        app_id varchar(64) NOT NULL COMMENT '用户对应的应用编号',
+        address varchar(64) NOT NULL COMMENT '用户地址',
+        public_key varchar(256) NOT NULL COMMENT '公钥',
+        private_key varchar(256) NOT NULL COMMENT '私钥',
+        description varchar(128) DEFAULT NULL COMMENT '描述',
+        encrypt_type int NOT NULL COMMENT '加密类型，1：国密；0：ECDSA',
+        gmt_create datetime DEFAULT NULL COMMENT '创建时间',
+        gmt_modify datetime DEFAULT NULL COMMENT '修改时间',
+        status char(1)  NOT NULL DEFAULT '1' COMMENT  '状态： 1 有效 0 无效',
+        PRIMARY KEY (user_id),
+        UNIQUE KEY unique_uuid (sign_user_id)
     ) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
-    </update>
+  </update>
 
   <sql id="USER_COLUMN">
         user_id as userId,
@@ -65,7 +63,7 @@
   <select id="findUserBySignUserId" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
     from tb_user 
-    where status ='1' and  sign_user_id = #{signUserId}
+    where   sign_user_id = #{signUserId}
   </select>
 
   <select id="findUserByAddress" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">

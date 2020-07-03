@@ -1,5 +1,5 @@
 /**
- * Copyright 2014-2019  the original author or authors.
+ * Copyright 2014-2020  the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -28,15 +28,16 @@ public enum CodeMessageEnums {
     //param
     PARAM_EXCEPTION(203003, "param exception"),
     PARAM_SIGN_USER_ID_IS_BLANK(203004, "sign user id cannot be blank"),
-    PARAM_SIGN_USER_ID_IS_INVALID(203005, "invalid sign user id, only support letter and digit"),
+    PARAM_SIGN_USER_ID_IS_INVALID(203005, "invalid sign user id (max length of 64, only support letter and digit)"),
     PARAM_APP_ID_IS_BLANK(203006, "app id cannot be blank"),
     PARAM_APP_ID_IS_INVALID(203007, "app id invalid, only support letter and digit"),
-    PARAM_ENCRYPT_TYPE_IS_INVALID(203008, "encrypt type should be 0 (guomi) or 1 (ecdsa)"),
+    PARAM_ENCRYPT_TYPE_IS_INVALID(203008, "encrypt type should be 0 (ecdsa) or 1 (guomi)"),
     PARAM_ENCODED_DATA_INVALID(203009, "encoded data string must be hex string"),
 
     //business exception
-    USER_EXISTS(303001, "user of this sign user id is already exists"),
-    USER_NOT_EXISTS(303002, "user does not exist"),
+    USER_EXISTS(303001, "user of this sign user id is already exists "),
+    USER_DISABLE(303006, "user of this sign user id is  already been disable"),
+    USER_NOT_EXISTS(303002, "user does not exist or already been disable"),
     PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
     PRIVATEKEY_FORMAT_ERROR(303005, "privateKey format error"),
