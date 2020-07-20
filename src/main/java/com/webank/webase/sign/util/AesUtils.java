@@ -45,7 +45,7 @@ public class AesUtils {
         try {
             byte[] keyBytes = key.getBytes("UTF-8");
             SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, "AES");
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
             byte[] encrypted = cipher.doFinal(content.getBytes("utf-8"));
             return Base64.getEncoder().encodeToString(encrypted);
