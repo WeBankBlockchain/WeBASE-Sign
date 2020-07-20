@@ -28,7 +28,7 @@ import com.webank.webase.sign.constant.ConstantProperties;
 public class AesUtils {
 
     @Autowired
-    private ConstantProperties properties;
+    private ConstantProperties constants;
 
     /**
      * Encrypt by aes.
@@ -38,14 +38,14 @@ public class AesUtils {
      */
     public String aesEncrypt(String content, String key) {
         if (StringUtils.isBlank(key) || key.length() != 16) {
-            log.warn("aesEncrypt. error key,use default key:{}", properties.getAesKey());
-            key = properties.getAesKey();
+            log.warn("aesEncrypt. error key,use default key:{}", constants.getAesKey());
+            key = constants.getAesKey();
         }
 
         try {
             byte[] keyBytes = key.getBytes("UTF-8");
             SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(this.getDefaultAesCipherPattern());
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
             byte[] encrypted = cipher.doFinal(content.getBytes("utf-8"));
             return Base64.getEncoder().encodeToString(encrypted);
@@ -63,7 +63,7 @@ public class AesUtils {
             log.warn("fail aesEncrypt,content is null");
             return null;
         }
-        return aesEncrypt(content, properties.getAesKey());
+        return aesEncrypt(content, constants.getAesKey());
     }
 
     /**
@@ -74,13 +74,13 @@ public class AesUtils {
      */
     public String aesDecrypt(String content, String key) {
         if (StringUtils.isBlank(key) || key.length() != 16) {
-            log.warn("aesDecrypt. error key,use default key:{}", properties.getAesKey());
-            key = properties.getAesKey();
+            log.warn("aesDecrypt. error key,use default key:{}", constants.getAesKey());
+            key = constants.getAesKey();
         }
         try {
             byte[] keyBytes = key.getBytes("UTF-8");
             SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, "AES");
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(this.getDefaultAesCipherPattern());
             cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 
             byte[] encrypted1 = Base64.getDecoder().decode(content);
@@ -98,6 +98,18 @@ public class AesUtils {
      * Decrypt by aes.
      */
     public String aesDecrypt(String content) {
-        return aesDecrypt(content, properties.getAesKey());
+        return aesDecrypt(content, constants.getAesKey());
+    }
+
+    /**
+     * before v1.4.0, pattern default "ECB", after v1.4.0 use "CBC" as default
+     * @return
+     */
+    private String getDefaultAesCipherPattern() {
+        // CBC as default
+        String aesPattern = constants.getAesPattern();
+        String cipherPattern = "AES/" + aesPattern + "/PKCS5Padding";
+        log.info("getDefaultAesCipherPattern aes cipher pattern: {}", cipherPattern);
+        return cipherPattern;
     }
 }
