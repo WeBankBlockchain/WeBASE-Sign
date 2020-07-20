@@ -30,6 +30,8 @@ spring:
 constant: 
   # aes加密key（16位）
   aesKey: EfdsW23D23d3df43
+  # aes加密模式 v1.4.0+ 默认CBC（v1.4.0前默认为ECB）
+  aesPattern: CBC
   keepAliveRequests: 100
   syncUsrCacheTaskFixedDelay: 10000
 
