@@ -17,9 +17,9 @@
 package com.webank.webase.sign.pojo.vo;
 
 import lombok.Data;
-
-import org.hibernate.validator.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * import private key entity
  * @author marsli
