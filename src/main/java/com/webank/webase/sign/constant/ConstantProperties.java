@@ -20,13 +20,16 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
 
+/**
+ *  constant configuration from file
+ */
 @Data
 @Configuration
 @ConfigurationProperties(prefix = ConstantProperties.CONSTANT_PREFIX)
 public class ConstantProperties {
-    // constant configuration from file
     public static final String CONSTANT_PREFIX = "constant";
     private String aesKey;
+    private String aesPattern;
     private int keepAliveRequests;
     private int syncUsrCacheTaskFixedDelay;
 }

@@ -18,6 +18,7 @@ package com.webank.webase.sign.pojo.vo;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * import private key entity
@@ -33,6 +34,6 @@ public class ReqNewUserVo {
 	/**
 	 * encoded by base64
 	 */
-	@NotBlank
+	@NotNull
 	private String privateKey;
 }

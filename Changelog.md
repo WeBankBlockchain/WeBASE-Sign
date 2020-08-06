@@ -1,3 +1,17 @@
+### v1.4.0(2020-08-06)
+
+**Add**
+- 增加返回 Version 版本接口；
+
+
+**兼容性**
+- WeBASE-Front v1.4.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+
+
+
 ### v1.3.2(2020-06-17)
 
 **Fix**

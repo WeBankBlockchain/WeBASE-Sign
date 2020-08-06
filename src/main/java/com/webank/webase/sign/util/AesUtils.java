@@ -16,88 +16,141 @@ package com.webank.webase.sign.util;
 
 import java.util.Base64;
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.webank.webase.sign.constant.ConstantProperties;
 
-@Log4j2
+@Slf4j
 @Component
 public class AesUtils {
 
     @Autowired
-    private ConstantProperties properties;
+    private ConstantProperties constants;
+
+
+    private static final String KEY_ALGORITHM = "AES";
+    private static final String DEFAULT_IV = "abcdefgh12345678";
+    private static final String CBC_PATTERN = "CBC";
 
     /**
-     * Encrypt by aes.
+     * AES 加密操作
      *
-     * @param content info
-     * @param key key
+     * @param content 待加密内容
+     * @return 加密数据
      */
-    public String aesEncrypt(String content, String key) {
-        if (StringUtils.isBlank(key) || key.length() != 16) {
-            log.warn("aesEncrypt. error key,use default key:{}", properties.getAesKey());
-            key = properties.getAesKey();
-        }
+    public  String aesEncrypt(String content) {
+        return  aesEncrypt( content,  constants.getAesKey(),null);
+    }
 
+    /**
+     * AES 加密操作
+     *
+     * @param content 待加密内容
+     * @param password 加密密码
+     * @param iv 使用CBC模式，需要一个向量iv，可增加加密算法的强度
+     * @return 加密数据
+     */
+    public  String aesEncrypt(String content, String password, String iv) {
+        if(StringUtils.isBlank(iv)) {
+            iv = DEFAULT_IV;
+        }
         try {
-            byte[] keyBytes = key.getBytes("UTF-8");
-            SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, "AES");
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-            byte[] encrypted = cipher.doFinal(content.getBytes("utf-8"));
-            return Base64.getEncoder().encodeToString(encrypted);
+            //创建密码器
+            Cipher cipher = Cipher.getInstance(this.getDefaultAesCipherPattern());
+
+            //密码key(超过16字节即128bit的key，需要替换jre中的local_policy.jar和US_export_policy.jar，否则报错：Illegal key size)
+            SecretKeySpec keySpec = new SecretKeySpec(password.getBytes("utf-8"), KEY_ALGORITHM);
+
+            //向量iv
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes("utf-8"));
+
+            //初始化为加密模式的密码器
+            if (CBC_PATTERN.equals(constants.getAesPattern())) {
+                cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
+            } else {
+                cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+            }
+
+            //加密
+            byte[] byteContent = content.getBytes("utf-8");
+            byte[] result = cipher.doFinal(byteContent);
+
+            return Base64.getEncoder().encodeToString(result);
         } catch (Exception ex) {
-            log.warn("fail aesEncrypt", ex);
+            log.error(ex.getMessage(),ex);
             return null;
         }
     }
 
-    /**
-     * Encrypt by aes.
-     */
-    public String aesEncrypt(String content) {
-        if (StringUtils.isBlank(content)) {
-            log.warn("fail aesEncrypt,content is null");
-            return null;
-        }
-        return aesEncrypt(content, properties.getAesKey());
-    }
 
     /**
-     * Decrypt by aes.
+     * AES 解密操作
      *
-     * @param content info
-     * @param key key
+     * @param content 密文
+     * @return 明文
      */
-    public String aesDecrypt(String content, String key) {
-        if (StringUtils.isBlank(key) || key.length() != 16) {
-            log.warn("aesDecrypt. error key,use default key:{}", properties.getAesKey());
-            key = properties.getAesKey();
-        }
-        try {
-            byte[] keyBytes = key.getBytes("UTF-8");
-            SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, "AES");
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+    public  String aesDecrypt(String content) {
+        return aesDecrypt(content,  constants.getAesKey(),null);
+    }
 
+
+    /**
+     * AES 解密操作
+     *
+     * @param content 密文
+     * @param password 密码
+     * @param iv 使用CBC模式，需要一个向量iv，可增加加密算法的强度
+     * @return 明文
+     */
+    public  String aesDecrypt(String content, String password,String iv) {
+        if(StringUtils.isBlank(iv)) {
+            iv = DEFAULT_IV;
+        }
+
+        try {
+            //创建密码器
+            Cipher cipher = Cipher.getInstance(this.getDefaultAesCipherPattern());
+
+            //密码key
+            SecretKeySpec keySpec = new SecretKeySpec(password.getBytes("utf-8"),KEY_ALGORITHM);
+
+            //向量iv
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes("utf-8"));
+
+            //初始化为解密模式的密码器
+            if (CBC_PATTERN.equals(constants.getAesPattern())) {
+                cipher.init(Cipher.DECRYPT_MODE,keySpec,ivParameterSpec);
+            } else {
+                cipher.init(Cipher.DECRYPT_MODE, keySpec);
+            }
+            //执行操作
             byte[] encrypted1 = Base64.getDecoder().decode(content);
-            byte[] original = cipher.doFinal(encrypted1);
+            byte[] result = cipher.doFinal(encrypted1);
 
-            return new String(original, "UTF-8");
-
+            return new String(result,"utf-8");
         } catch (Exception ex) {
-            log.warn("fail aesDecrypt", ex);
-            return null;
+            log.error(ex.getMessage(),ex);
         }
+
+        return null;
     }
 
     /**
-     * Decrypt by aes.
+     * before v1.4.0, pattern default "ECB", after v1.4.0 use "CBC" as default
+     * @return
      */
-    public String aesDecrypt(String content) {
-        return aesDecrypt(content, properties.getAesKey());
+    private String getDefaultAesCipherPattern() {
+        // CBC as default
+        String aesPattern = constants.getAesPattern();
+        String cipherPattern = "AES/" + aesPattern + "/PKCS5Padding";
+        log.info("getDefaultAesCipherPattern aes cipher pattern: {}", cipherPattern);
+        return cipherPattern;
     }
+
+
+
 }
