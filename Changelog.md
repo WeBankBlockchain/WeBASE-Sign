@@ -3,6 +3,9 @@
 **Add**
 - 增加返回 Version 版本接口；
 
+**Fix**
+- 默认Aes加密模式由ECB改为更安全的CBC，同时支持在配置选择CBC与ECB
+
 
 **兼容性**
 - WeBASE-Front v1.4.0+
