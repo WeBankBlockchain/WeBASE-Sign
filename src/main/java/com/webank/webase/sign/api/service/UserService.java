@@ -62,7 +62,7 @@ public class UserService {
         // check user uuid exist
         UserInfoPo checkSignUserIdExists = userDao.findUserBySignUserId(signUserId);
         if (Objects.nonNull(checkSignUserIdExists)) {
-            if(Integer.parseInt(checkSignUserIdExists.getStatus()) == KeyStatus.NORMAL.getValue()) {
+            if(checkSignUserIdExists.getStatus().equals(KeyStatus.NORMAL.getValue())) {
                 throw new BaseException(CodeMessageEnums.USER_EXISTS);
             } else {
                 throw new BaseException(CodeMessageEnums.USER_DISABLE);
@@ -118,7 +118,7 @@ public class UserService {
     public UserInfoPo findBySignUserId(String signUserId) throws BaseException {
         log.info("start findBySignUserId. signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
-        if (Objects.isNull(user)|| Integer.parseInt(user.getStatus()) == KeyStatus.SUSPENDED.getValue()) {
+        if (Objects.isNull(user)|| user.getStatus().equals(KeyStatus.SUSPENDED.getValue())) {
             log.warn("fail findBySignUserId, user not exists. userId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
@@ -187,7 +187,7 @@ public class UserService {
         log.info("start deleteByUuid signUserId:{}", signUserId);
         UserInfoPo user = userDao.findUserBySignUserId(signUserId);
         if (Objects.isNull(user)
-                || Integer.parseInt(user.getStatus()) == KeyStatus.SUSPENDED.getValue()) {
+                || user.getStatus().equals(KeyStatus.SUSPENDED.getValue())) {
             log.warn("fail deleteByUuid, user not exists. signUserId:{}", signUserId);
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
