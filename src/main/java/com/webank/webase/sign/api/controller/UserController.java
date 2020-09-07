@@ -13,6 +13,11 @@
  */
 package com.webank.webase.sign.api.controller;
 
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ENCRYPT_TYPE_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.exception.BaseException;
@@ -27,22 +32,23 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_INVALID;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ENCRYPT_TYPE_IS_INVALID;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller.
@@ -161,16 +167,20 @@ public class UserController {
         }
         UserParam param = new UserParam();
         param.setAppId(appId);
-        Integer start = Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize)
-                .orElse(null);
-        param.setStart(start);
-        param.setPageSize(pageSize);
-        //find user
-        List<RspUserInfoVo> userList = userService.findUserListByAppId(param);
-        if (!userList.isEmpty()) {
-            userList.forEach(user -> user.setPrivateKey(""));
+        int count = userService.countOfUser(param);
+        List<RspUserInfoVo> userList = new ArrayList<>();
+        if (count > 0) {
+            Integer start = Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize)
+                    .orElse(null);
+            param.setStart(start);
+            param.setPageSize(pageSize);
+            //find user
+            userList = userService.findUserListByAppId(param);
+            if (!userList.isEmpty()) {
+                userList.forEach(user -> user.setPrivateKey(""));
+            }
         }
-        return CommonUtils.buildSuccessPageRspVo(userList, userList.size());
+        return CommonUtils.buildSuccessPageRspVo(userList, count);
     }
 
     @ApiOperation(value = "delete user by address",
