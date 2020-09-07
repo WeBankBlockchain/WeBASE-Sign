@@ -36,7 +36,7 @@ public enum KeyStatus {
 		this.value = keyStatus;
 	}
 
-	public int getValue() {
-		return this.value;
+	public String getValue() {
+		return String.valueOf(this.value);
 	}
 }
