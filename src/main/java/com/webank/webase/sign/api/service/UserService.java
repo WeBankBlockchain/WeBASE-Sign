@@ -140,6 +140,14 @@ public class UserService {
         log.info("end findUserByAddress. address:{}", address);
         return user;
     }
+    
+    /**
+     * count of user.
+     */
+    public int countOfUser(UserParam param) {
+        Integer count = userDao.countOfUser(param);
+        return count == null ? 0 : count;
+    }
 
     /**
      * query user list.
