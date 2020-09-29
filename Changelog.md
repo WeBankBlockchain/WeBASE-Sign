@@ -1,3 +1,20 @@
+
+### v1.4.1(2020-09-29)
+
+
+**Fix**
+- 更新gradlew版本
+- 修复用户KeyStatus状态判断问题
+- 修复用户分页的用户总数问题
+
+
+**兼容性**
+- WeBASE-Front v1.4.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+
+
 ### v1.4.0(2020-08-06)
 
 **Add**
