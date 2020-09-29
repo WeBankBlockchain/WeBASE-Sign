@@ -39,6 +39,9 @@ public interface UserDao {
     UserInfoPo findUserByAddress(@Param("address") String address);
 
     UserInfoPo findLatestUpdateUser();
+    
+    Integer countOfUser(UserParam userParam);
+    
     /**
      * select by encryptType
      */
