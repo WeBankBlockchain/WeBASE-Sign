@@ -33,8 +33,9 @@ public class SynUsrTask {
         log.debug("start syncUsrCacheTask task");
 
         UserInfoPo user = userService.findLatestUpdatedUser();
-        if (user == null)
+        if (user == null) {
             return;
+        }
 
         log.debug("latest delete userId :" + user.getSignUserId());
         LocalDateTime dbLatestUpdateTime = user.getGmtModify();

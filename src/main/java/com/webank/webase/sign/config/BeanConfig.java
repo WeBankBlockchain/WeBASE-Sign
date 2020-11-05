@@ -16,9 +16,8 @@
 
 package com.webank.webase.sign.config;
 
-import org.fisco.bcos.web3j.crypto.ECDSASign;
-import org.fisco.bcos.web3j.crypto.SHA3Digest;
-import org.fisco.bcos.web3j.crypto.gm.sm3.SM3Digest;
+import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.model.CryptoType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,18 +28,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfig {
 
-	@Bean
-	public ECDSASign getECDSASign() {
-		return new ECDSASign();
+	@Bean(name = "ecdsa")
+	public CryptoSuite getECDSASuite() {
+		return new CryptoSuite(CryptoType.ECDSA_TYPE);
 	}
 
-	@Bean
-	public SM3Digest getSM3Digest() {
-		return new SM3Digest();
+	@Bean(name = "sm")
+	public CryptoSuite getGuomiSuite() {
+		return new CryptoSuite(CryptoType.SM_TYPE);
 	}
 
-	@Bean
-	public SHA3Digest getSHA3Digest() {
-		return new SHA3Digest();
-	}
 }
