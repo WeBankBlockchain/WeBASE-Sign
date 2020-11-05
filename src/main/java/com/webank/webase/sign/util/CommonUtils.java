@@ -16,10 +16,17 @@
 package com.webank.webase.sign.util;
 
 import java.util.Base64;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.webank.webase.sign.pojo.vo.BasePageRspVo;
 import org.apache.commons.lang3.StringUtils;
+import org.fisco.bcos.sdk.crypto.signature.ECDSASignatureResult;
+import org.fisco.bcos.sdk.crypto.signature.SM2SignatureResult;
+import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
+import org.fisco.bcos.sdk.model.CryptoType;
+import org.fisco.bcos.sdk.rlp.RlpString;
+import org.fisco.bcos.sdk.rlp.RlpType;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.springframework.validation.BindingResult;
@@ -35,42 +42,52 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonUtils {
 
     public static final int publicKeyLength_64 = 64;
+    private static final byte SM_DEFAULT_V_VALUE = 0;
 
-    /**
-     * stringToSignatureData.
-     * 19/12/24 support guomi： add byte[] pub in signatureData
-     * @param signatureData signatureData
-     * @return
-     */
-//    public static SignatureData stringToSignatureData(String signatureData) {
-//        byte[] byteArr = Numeric.hexStringToByteArray(signatureData);
-//        byte[] signR = new byte[32];
-//        System.arraycopy(byteArr, 1, signR, 0, signR.length);
-//        byte[] signS = new byte[32];
-//        System.arraycopy(byteArr, 1 + signR.length, signS, 0, signS.length);
-//        if (EncryptType.encryptType == 1) {
-//            byte[] pub = new byte[64];
-//            System.arraycopy(byteArr, 1 + signR.length + signS.length, pub, 0, pub.length);
-//            return new SignatureData(byteArr[0], signR, signS, pub);
-//        } else {
-//            return new SignatureData(byteArr[0], signR, signS);
-//        }
-//    }
+    /* add in v1.4.2 */
+    public static String signatureResultToStringByType(SignatureResult signatureResult, int encryptType) {
+        byte[] byteArr;
+        if (encryptType == CryptoType.SM_TYPE) {
+            byteArr = sigResult2ByteArrGuomi((SM2SignatureResult) signatureResult);
+        } else {
+            byteArr = sigResult2ByteArrECDSA((ECDSASignatureResult) signatureResult);
+        }
+        return Numeric.toHexString(byteArr, 0, byteArr.length, false);
+    }
 
-    /**
-     * signatureDataToString.
-     * 19/12/24 support guomi： add byte[] pub in signatureData
-     * @param signatureData signatureData
-     */
-//    public static String signatureDataToString(SignatureData signatureData) {
-//        byte[] byteArr;
-//        if(EncryptType.encryptType == 1) {
-//            byteArr = sigData2ByteArrGuomi(signatureData);
-//        } else {
-//            byteArr = sigData2ByteArrECDSA(signatureData);
-//        }
-//        return Numeric.toHexString(byteArr, 0, byteArr.length, false);
-//    }
+    private static byte[] sigResult2ByteArrGuomi(SM2SignatureResult signatureResult) {
+        List<RlpType> sigRlpList = signatureResult.encode();
+        byte[] pubValue = ((RlpString) sigRlpList.get(0)).getBytes();
+
+        byte[] targetByteArr;
+        targetByteArr = new byte[1 + signatureResult.getR().length + signatureResult.getS().length + publicKeyLength_64];
+        // set V as default 00
+        targetByteArr[0] = SM_DEFAULT_V_VALUE;
+        System.arraycopy(signatureResult.getR(), 0, targetByteArr, 1, signatureResult.getR().length);
+        System.arraycopy(signatureResult.getS(), 0, targetByteArr, signatureResult.getR().length + 1,
+            signatureResult.getS().length);
+        System.arraycopy(pubValue, 0, targetByteArr,
+            signatureResult.getS().length + signatureResult.getR().length + 1,
+            pubValue.length);
+        return targetByteArr;
+    }
+
+    private static byte[] sigResult2ByteArrECDSA(ECDSASignatureResult signatureResult) {
+        List<RlpType> sigRlpList = signatureResult.encode();
+        byte[] vValueArray = ((RlpString) sigRlpList.get(0)).getBytes();
+        byte vValue = vValueArray[0];
+
+        byte[] targetByteArr;
+        targetByteArr = new byte[1 + signatureResult.getR().length + signatureResult.getS().length];
+        targetByteArr[0] = vValue;
+        System.arraycopy(signatureResult.getR(), 0, targetByteArr, 1, signatureResult.getR().length);
+        System.arraycopy(signatureResult.getS(), 0, targetByteArr, signatureResult.getR().length + 1,
+            signatureResult.getS().length);
+        return targetByteArr;
+    }
+    /* add in v1.4.2 */
+
+
 
     /**
      * signatureDataToString by type
@@ -80,7 +97,7 @@ public class CommonUtils {
      */
     public static String signatureDataToStringByType(SignatureData signatureData, int encryptType) {
         byte[] byteArr;
-        if(encryptType == 1) {
+        if (encryptType == 1) {
             byteArr = sigData2ByteArrGuomi(signatureData);
         } else {
             byteArr = sigData2ByteArrECDSA(signatureData);
