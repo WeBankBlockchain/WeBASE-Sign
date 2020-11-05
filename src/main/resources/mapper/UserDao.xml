@@ -72,6 +72,13 @@
     where status ='1' and address = #{address}
   </select>
 
+  <select id="countOfUser" resultType="java.lang.Integer">
+    select count(1) from tb_user where 1=1
+    <if test="appId != null">
+      and app_id = #{appId}
+    </if>
+  </select>
+    
   <select id="findUserList" parameterType="com.webank.webase.sign.pojo.bo.UserParam"
           resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
