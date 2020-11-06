@@ -30,9 +30,9 @@ import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 import org.fisco.bcos.sdk.model.CryptoType;
+import org.fisco.bcos.sdk.utils.ByteUtils;
 import org.fisco.bcos.sdk.utils.Hex;
-import org.fisco.bcos.web3j.crypto.gm.sm2.util.encoders.DecoderException;
-import org.fisco.bcos.web3j.utils.ByteUtil;
+import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -79,7 +79,7 @@ public class SignService {
         // make sure hex
         byte[] encodedData;
         try {
-            encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+            encodedData = ByteUtils.hexStringToBytes(req.getEncodedDataStr());
         } catch (DecoderException e) {
             log.error("hexStringToBytes error: ", e);
             throw new BaseException(CodeMessageEnums.PARAM_ENCODED_DATA_INVALID);
