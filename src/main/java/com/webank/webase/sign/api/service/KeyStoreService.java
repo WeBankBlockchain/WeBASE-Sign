@@ -16,21 +16,18 @@
 package com.webank.webase.sign.api.service;
 
 import com.webank.webase.sign.enums.CodeMessageEnums;
-import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
-import com.webank.webase.sign.util.AddressUtils;
-import com.webank.webase.sign.util.KeyPairUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.fisco.bcos.web3j.crypto.Credentials;
-import org.fisco.bcos.web3j.crypto.ECKeyPair;
-
-import org.fisco.bcos.web3j.crypto.gm.GenCredential;
-import org.fisco.bcos.web3j.utils.Numeric;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 import com.webank.webase.sign.exception.BaseException;
+import com.webank.webase.sign.pojo.bo.KeyStoreInfo;
 import com.webank.webase.sign.util.AesUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.model.CryptoType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 /**
  * KeyStoreService.
@@ -41,16 +38,18 @@ public class KeyStoreService {
     @Autowired
     private AesUtils aesUtils;
     @Autowired
-    private KeyPairUtils keyPairUtils;
+    @Qualifier(value = "sm")
+    private CryptoSuite smCryptoSuite;
     @Autowired
-    private AddressUtils addressUtils;
-
-    static final int PUBLIC_KEY_LENGTH_IN_HEX = 128;
+    @Qualifier(value = "ecdsa")
+    private CryptoSuite ecdsaCryptoSuite;
 
     /**
      * get KeyStoreInfo by privateKey.
+     * @param privateKeyRaw hex format
      * @param encryptType 1: guomi, 0: standard
      */
+    @Cacheable(cacheNames = "getCredentials")
     public KeyStoreInfo getKeyStoreFromPrivateKey(String privateKeyRaw, int encryptType) throws BaseException {
         if (StringUtils.isBlank(privateKeyRaw)) {
             log.error("fail getKeyStoreFromPrivateKey. private key is null");
@@ -58,10 +57,9 @@ public class KeyStoreService {
         }
 
         // support guomi. v1.3.0+: create by type
-        ECKeyPair keyPair = keyPairUtils.createKeyPairByType(privateKeyRaw, encryptType);
-        return keyPair2KeyStoreInfo(keyPair, encryptType);
+        CryptoKeyPair cryptoKeyPair = getKeyPairByType(privateKeyRaw, encryptType);
+        return keyPair2KeyStoreInfo(cryptoKeyPair);
     }
-
 
     /**
      * get Key by encrypt type
@@ -70,8 +68,8 @@ public class KeyStoreService {
     public KeyStoreInfo newKeyByType(int encryptType) throws BaseException {
         try {
             // support guomi
-            ECKeyPair keyPair = keyPairUtils.createKeyPairByType(encryptType);
-            return keyPair2KeyStoreInfo(keyPair, encryptType);
+            CryptoKeyPair keyPair = getKeyPairRandom(encryptType);
+            return keyPair2KeyStoreInfo(keyPair);
         } catch (Exception e) {
             log.error("createEcKeyPair fail.", e);
             throw new BaseException(CodeMessageEnums.SYSTEM_ERROR);
@@ -81,14 +79,11 @@ public class KeyStoreService {
 
     /**
      * keyPair to keyStoreInfo.
-     * 1.3.0 use AddressUtil to get address instead of using Keys.java
-     * @param encryptType 1: guomi, 0: standard
      */
-    private KeyStoreInfo keyPair2KeyStoreInfo(ECKeyPair keyPair, int encryptType) {
-        String publicKey = Numeric
-                .toHexStringWithPrefixZeroPadded(keyPair.getPublicKey(), PUBLIC_KEY_LENGTH_IN_HEX);
-        String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
-        String address = "0x" + addressUtils.getAddressByType(keyPair.getPublicKey(), encryptType);
+    private KeyStoreInfo keyPair2KeyStoreInfo(CryptoKeyPair cryptoKeyPair) {
+        String publicKey = cryptoKeyPair.getHexPublicKey();
+        String privateKey = cryptoKeyPair.getHexPrivateKey();
+        String address = cryptoKeyPair.getAddress();
         log.debug("publicKey:{} privateKey:{} address:{}", publicKey, privateKey, address);
         KeyStoreInfo keyStoreInfo = new KeyStoreInfo();
         keyStoreInfo.setPublicKey(publicKey);
@@ -97,10 +92,20 @@ public class KeyStoreService {
         return keyStoreInfo;
     }
 
+    public CryptoKeyPair getKeyPairByType(String privateKeyRaw, int encryptType) {
+        if (encryptType == CryptoType.SM_TYPE) {
+            return smCryptoSuite.createKeyPair(privateKeyRaw);
+        } else {
+            return ecdsaCryptoSuite.createKeyPair(privateKeyRaw);
+        }
+    }
 
-    @Cacheable(cacheNames = "getPrivatekey")
-    public  Credentials getCredentioan(String privateKey) {
-        return   GenCredential.create(privateKey);
+    public CryptoKeyPair getKeyPairRandom(int encryptType) {
+        if (encryptType == CryptoType.SM_TYPE) {
+            return smCryptoSuite.createKeyPair();
+        } else {
+            return ecdsaCryptoSuite.createKeyPair();
+        }
     }
 
 }

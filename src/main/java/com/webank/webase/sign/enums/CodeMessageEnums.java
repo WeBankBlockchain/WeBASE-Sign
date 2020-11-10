@@ -18,6 +18,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * A-BB-CCC A:error level. <br/>
+ * 1:system exception <br/>
+ * 2:business exception <br/>
+ * B:project number <br/>
+ * WeBASE-Sign:03 <br/>
+ * C: error code <br/>
+ */
 @Getter
 @ToString
 @AllArgsConstructor
