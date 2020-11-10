@@ -14,6 +14,7 @@
 
 package com.webank.webase.sign.util;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -116,10 +117,11 @@ public class AesUtils {
             Cipher cipher = Cipher.getInstance(this.getDefaultAesCipherPattern());
 
             //密码key
-            SecretKeySpec keySpec = new SecretKeySpec(password.getBytes("utf-8"),KEY_ALGORITHM);
+            SecretKeySpec keySpec = new SecretKeySpec(password.getBytes(StandardCharsets.UTF_8),KEY_ALGORITHM);
 
             //向量iv
-            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes("utf-8"));
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes(
+                StandardCharsets.UTF_8));
 
             //初始化为解密模式的密码器
             if (CBC_PATTERN.equals(constants.getAesPattern())) {
@@ -131,7 +133,7 @@ public class AesUtils {
             byte[] encrypted1 = Base64.getDecoder().decode(content);
             byte[] result = cipher.doFinal(encrypted1);
 
-            return new String(result,"utf-8");
+            return new String(result, StandardCharsets.UTF_8);
         } catch (Exception ex) {
             log.error(ex.getMessage(),ex);
         }

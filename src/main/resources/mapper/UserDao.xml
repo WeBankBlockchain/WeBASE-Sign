@@ -126,7 +126,7 @@
     UPDATE
     tb_user
     SET
-    status = '0' and
+    status = '0',
     gmt_modify = NOW()
     where  sign_user_id = #{signUserId}
   </update>
