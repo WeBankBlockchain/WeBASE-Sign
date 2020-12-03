@@ -16,24 +16,26 @@
 package com.webank.webase.sign.api.service;
 
 
-import com.webank.webase.sign.util.KeyPairUtils;
-import com.webank.webase.sign.util.SignUtils;
-import org.fisco.bcos.web3j.crypto.Credentials;
-import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
-import org.fisco.bcos.web3j.crypto.gm.sm2.util.encoders.DecoderException;
-import org.fisco.bcos.web3j.utils.ByteUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.webank.webase.sign.constant.ConstantProperties;
 import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
 import com.webank.webase.sign.util.CommonUtils;
-import lombok.extern.slf4j.Slf4j;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
+import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
+import org.fisco.bcos.sdk.model.CryptoType;
+import org.fisco.bcos.sdk.utils.ByteUtils;
+import org.fisco.bcos.sdk.utils.Hex;
+import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 /**
  * SignService.
@@ -47,10 +49,13 @@ public class SignService {
     @Autowired
     ConstantProperties properties;
     @Autowired
-    SignUtils signUtils;
+    private KeyStoreService keyStoreService;
     @Autowired
-    private KeyPairUtils keyPairUtils;
-
+    @Qualifier(value = "sm")
+    private CryptoSuite smCryptoSuite;
+    @Autowired
+    @Qualifier(value = "ecdsa")
+    private CryptoSuite ecdsaCryptoSuite;
 
     /**
      * add sign.
@@ -70,10 +75,11 @@ public class SignService {
         }
         int encryptType = userRow.getEncryptType();
         // signature
-        Credentials credentials = keyPairUtils.create(userRow.getPrivateKey(), encryptType);
+        CryptoKeyPair cryptoKeyPair = keyStoreService.getKeyPairByType(userRow.getPrivateKey(), encryptType);
+        // make sure hex
         byte[] encodedData;
         try {
-            encodedData = ByteUtil.hexStringToBytes(req.getEncodedDataStr());
+            encodedData = ByteUtils.hexStringToBytes(req.getEncodedDataStr());
         } catch (DecoderException e) {
             log.error("hexStringToBytes error: ", e);
             throw new BaseException(CodeMessageEnums.PARAM_ENCODED_DATA_INVALID);
@@ -82,12 +88,24 @@ public class SignService {
         Instant startTime = Instant.now();
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
         // sign message by type
-        SignatureData signatureData = signUtils.signMessageByType(
-                encodedData, credentials.getEcKeyPair(), encryptType);
+        SignatureResult signatureResult = signMessageByType(
+                encodedData, cryptoKeyPair, encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
-        String signDataStr = CommonUtils.signatureDataToStringByType(signatureData, encryptType);
+        String signDataStr = CommonUtils.signatureResultToStringByType(signatureResult, encryptType);
         log.info("end sign. signUserId:{}", signUserId);
         return signDataStr;
     }
 
+    public SignatureResult signMessageByType(byte[] message, CryptoKeyPair cryptoKeyPair,
+        int encryptType) {
+        if (encryptType == CryptoType.SM_TYPE) {
+            byte[] messageHash = smCryptoSuite.hash(message);
+            log.debug("userRow.messageHash：{},hex:{}", messageHash, Hex.toHexString(messageHash));
+            return smCryptoSuite.sign(Hex.toHexString(messageHash), cryptoKeyPair);
+        } else {
+            byte[] messageHash = ecdsaCryptoSuite.hash(message);
+            log.debug("userRow.messageHash：{},hex:{}", messageHash, Hex.toHexString(messageHash));
+            return ecdsaCryptoSuite.sign(Hex.toHexString(messageHash), cryptoKeyPair);
+        }
+    }
 }

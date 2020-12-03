@@ -24,19 +24,19 @@ public enum KeyStatus {
 	/**
 	 * normal private key
 	 */
-	SUSPENDED(0),
+	SUSPENDED("0"),
 	/**
 	 * suspended private key
 	 */
-	NORMAL(1);
+	NORMAL("1");
 
-	private int value;
+	private String status;
 
-	KeyStatus(Integer keyStatus) {
-		this.value = keyStatus;
+	KeyStatus(String keyStatus) {
+		this.status = keyStatus;
 	}
 
 	public String getValue() {
-		return String.valueOf(this.value);
+		return this.status;
 	}
 }
