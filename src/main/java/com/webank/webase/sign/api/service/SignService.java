@@ -21,6 +21,7 @@ import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
+import com.webank.webase.sign.pojo.vo.ReqHashSignVo;
 import com.webank.webase.sign.util.CommonUtils;
 import java.time.Duration;
 import java.time.Instant;
@@ -106,6 +107,45 @@ public class SignService {
             byte[] messageHash = ecdsaCryptoSuite.hash(message);
             log.debug("userRow.messageHash：{},hex:{}", messageHash, Hex.toHexString(messageHash));
             return ecdsaCryptoSuite.sign(Hex.toHexString(messageHash), cryptoKeyPair);
+        }
+    }
+
+    /**
+     * add signHash.
+     * @param req parameter
+     */
+    public String signMessageHash(ReqHashSignVo req) throws BaseException {
+        String signUserId = req.getSignUserId();
+        log.info("start sign. signUserId:{}", signUserId);
+        Instant startTimeDB = Instant.now();
+        // check exist
+        UserInfoPo userRow = userService.findBySignUserId(signUserId);
+        log.debug("end query db time: {}", Duration.between(startTimeDB, Instant.now()).toMillis());
+        // check user name not exist.
+        if (Objects.isNull(userRow)) {
+            log.warn("fail sign, user not exists. signUserId:{}", signUserId);
+            throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
+        }
+        int encryptType = userRow.getEncryptType();
+        // signature
+        CryptoKeyPair cryptoKeyPair = keyStoreService.getKeyPairByType(userRow.getPrivateKey(), encryptType);
+
+        Instant startTime = Instant.now();
+        log.info("start sign. startTime:{}", startTime.toEpochMilli());
+        SignatureResult signatureResult = signMessageHashByType(
+                req.getMessageHash(), cryptoKeyPair, encryptType);
+        log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
+        String signDataStr = CommonUtils.signatureResultToStringByType(signatureResult, encryptType);
+        log.info("end sign. signUserId:{}", signUserId);
+        return signDataStr;
+    }
+
+    public SignatureResult signMessageHashByType(String messageHash, CryptoKeyPair cryptoKeyPair,
+                                                 int encryptType) {
+        if (encryptType == CryptoType.SM_TYPE) {
+            return smCryptoSuite.sign(messageHash, cryptoKeyPair);
+        } else {
+            return ecdsaCryptoSuite.sign(messageHash, cryptoKeyPair);
         }
     }
 }
