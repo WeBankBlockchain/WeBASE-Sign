@@ -21,7 +21,7 @@ import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
-import com.webank.webase.sign.pojo.vo.ReqHashSignVo;
+import com.webank.webase.sign.pojo.vo.ReqSignMessageHashVo;
 import com.webank.webase.sign.util.CommonUtils;
 import java.time.Duration;
 import java.time.Instant;
@@ -114,7 +114,7 @@ public class SignService {
      * add signHash.
      * @param req parameter
      */
-    public String signMessageHash(ReqHashSignVo req) throws BaseException {
+    public String signMessageHash(ReqSignMessageHashVo req) throws BaseException {
         String signUserId = req.getSignUserId();
         log.info("start sign. signUserId:{}", signUserId);
         Instant startTimeDB = Instant.now();

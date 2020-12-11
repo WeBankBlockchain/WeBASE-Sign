@@ -20,7 +20,7 @@ import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
-import com.webank.webase.sign.pojo.vo.ReqHashSignVo;
+import com.webank.webase.sign.pojo.vo.ReqSignMessageHashVo;
 import com.webank.webase.sign.pojo.vo.RspSignVo;
 import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
@@ -87,7 +87,7 @@ public class SignController {
     @ApiImplicitParam(name = "req", value = "MessageHash", required = true,
             dataType = "ReqHashSignVo")
     @PostMapping("")
-    public BaseRspVo signMessageHash(@Valid @RequestBody ReqHashSignVo req, BindingResult result)
+    public BaseRspVo signMessageHash(@Valid @RequestBody ReqSignMessageHashVo req, BindingResult result)
             throws BaseException {
         CommonUtils.checkParamBindResult(result);
         String signUserId = req.getSignUserId();

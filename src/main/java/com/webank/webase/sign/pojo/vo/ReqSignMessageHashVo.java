@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * ReqHashSignVo.
  */
 @Data
-public class ReqHashSignVo {
+public class ReqSignMessageHashVo {
     @NotBlank(message = "signUserId cannot be empty")
     private String signUserId;
     @NotBlank(message = "hashStr cannot be empty")
