@@ -75,29 +75,4 @@ public class SignController {
         rspSignVo.setSignDataStr(signResult);
         return CommonUtils.buildSuccessRspVo(rspSignVo);
     }
-
-    /**
-     * sign MessageHash by ecdsa or guomi encryption
-     *
-     * @param req parameter
-     * @param result checkResult
-     */
-    @ApiOperation(value = "sign MessageHash by ecdsa(default) or guomi",
-            notes = "获取ECDSA或国密SM2 hash的签名数据，默认ECDSA")
-    @ApiImplicitParam(name = "req", value = "MessageHash", required = true,
-            dataType = "ReqHashSignVo")
-    @PostMapping("")
-    public BaseRspVo signMessageHash(@Valid @RequestBody ReqSignMessageHashVo req, BindingResult result)
-            throws BaseException {
-        CommonUtils.checkParamBindResult(result);
-        String signUserId = req.getSignUserId();
-        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
-            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
-        }
-        String signResult = signService.signMessageHash(req);
-        // return
-        RspSignVo rspSignVo = new RspSignVo();
-        rspSignVo.setSignDataStr(signResult);
-        return CommonUtils.buildSuccessRspVo(rspSignVo);
-    }
 }
