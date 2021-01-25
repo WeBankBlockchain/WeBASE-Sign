@@ -1,11 +1,11 @@
 /**
  * Copyright 2014-2020  the original author or authors.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -13,11 +13,6 @@
  */
 package com.webank.webase.sign.api.controller;
 
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_INVALID;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ENCRYPT_TYPE_IS_INVALID;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
-import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 import com.webank.webase.sign.api.service.UserService;
 import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.exception.BaseException;
@@ -32,23 +27,19 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.webank.webase.sign.enums.CodeMessageEnums.*;
 
 /**
  * Controller.
@@ -71,7 +62,7 @@ public class UserController {
     public BaseRspVo newUser(@RequestParam String signUserId,
                              @RequestParam String appId,
                              @RequestParam(required = false, defaultValue = "0") Integer encryptType)
-        throws BaseException {
+            throws BaseException {
         // validate signUserId
         if (StringUtils.isBlank(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
@@ -98,10 +89,10 @@ public class UserController {
     @ApiOperation(value = "import new user by private key",
             notes = "导入私钥用户(ecdsa或国密)，默认ecdas")
     @ApiImplicitParam(name = "reqNewUser", value = "private key info",
-                     required = true, dataType = "ReqNewUserVo")
+            required = true, dataType = "ReqNewUserVo")
     @PostMapping("/newUser")
     public BaseRspVo newUserByImportPrivateKey(@Valid @RequestBody ReqNewUserVo reqNewUser, BindingResult result)
-        throws BaseException {
+            throws BaseException {
         CommonUtils.checkParamBindResult(result);
         // validate signUserId
         String signUserId = reqNewUser.getSignUserId();
@@ -129,6 +120,7 @@ public class UserController {
         userInfo.setPrivateKey("");
         return CommonUtils.buildSuccessRspVo(userInfo);
     }
+
     /**
      * get user.
      */
@@ -161,12 +153,17 @@ public class UserController {
     @GetMapping("/list/{appId}/{pageNumber}/{pageSize}")
     public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId,
                                         @PathVariable("pageNumber") Integer pageNumber,
-                                        @PathVariable("pageSize") Integer pageSize) throws BaseException {
+                                        @PathVariable("pageSize") Integer pageSize,
+                                        @RequestParam(value = "signUserIdList", required = false, defaultValue = "") List<String> signUserIdList) throws BaseException {
         if (!CommonUtils.checkLengthWithin_64(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
+        //param
         UserParam param = new UserParam();
         param.setAppId(appId);
+        param.setSignUserIdList(signUserIdList);
+
+
         int count = userService.countOfUser(param);
         List<RspUserInfoVo> userList = new ArrayList<>();
         if (count > 0) {
@@ -200,7 +197,7 @@ public class UserController {
     @ApiOperation(value = "delete all user cache",
             notes = "删除所有用户缓存信息")
     @DeleteMapping("/all")
-    public BaseRspVo deleteAllUserCache()   {
+    public BaseRspVo deleteAllUserCache() {
 
         userService.deleteAllUserCache();
         return CommonUtils.buildSuccessRspVo(null);
@@ -209,13 +206,11 @@ public class UserController {
     @ApiOperation(value = "delete all Credential cache",
             notes = "删除所有私钥缓存信息")
     @DeleteMapping("/all-credential")
-    public BaseRspVo deleteCredentialCache()   {
+    public BaseRspVo deleteCredentialCache() {
 
         userService.deleteAllCredentialCache();
         return CommonUtils.buildSuccessRspVo(null);
     }
-
-
 
 
 }

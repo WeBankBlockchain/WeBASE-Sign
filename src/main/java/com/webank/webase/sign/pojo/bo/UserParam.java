@@ -21,6 +21,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @ToString(callSuper = true)
@@ -28,5 +30,6 @@ import lombok.ToString;
 public class UserParam extends BaseQueryParam{
 
 	private String appId;
+	private List<String> signUserIdList;
 	private String encryptType;
 }
