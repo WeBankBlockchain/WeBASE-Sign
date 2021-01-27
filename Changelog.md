@@ -1,3 +1,16 @@
+### v1.4.3(2021-1-29)
+
+**Add**
+- 增加数据签名接口
+
+**Fix**
+- 数据库密码支持特殊字符
+
+**兼容性**
+- WeBASE-Front v1.4.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
 
 ### v1.4.2(2020-11-19)
 
