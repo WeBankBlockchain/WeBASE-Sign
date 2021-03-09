@@ -27,7 +27,7 @@ public class RspUserInfoVo {
     private String appId;
     private String address;
     private String publicKey;
-    // not return privateKey
+    // privateKey Base64 encoded
     private String privateKey;
     private String description;
     private Integer encryptType;
