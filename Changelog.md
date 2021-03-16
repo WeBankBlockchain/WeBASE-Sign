@@ -1,7 +1,7 @@
 ### v1.5.0(2021-03-31)
 
 **Add**
-- 增加配置项`supportPrivateKeyTransfer: true`，接口支持私钥传输，配置项为`false`时不支持
+- 增加配置项`supportPrivateKeyTransfer: true`，接口支持私钥传输（aes加密后的私钥），配置项为`false`时不支持
 
 **Fix**
 - jar包升级：mysql-connector-java:8.0.22、bcprov-jdk15on:1.67
