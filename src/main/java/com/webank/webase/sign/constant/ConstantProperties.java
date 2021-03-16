@@ -32,4 +32,5 @@ public class ConstantProperties {
     private String aesPattern;
     private int keepAliveRequests;
     private int syncUsrCacheTaskFixedDelay;
+    private boolean supportPrivateKeyTransfer = true;
 }

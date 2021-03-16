@@ -34,6 +34,8 @@ constant:
   aesPattern: CBC
   keepAliveRequests: 100
   syncUsrCacheTaskFixedDelay: 10000
+  # 返回值是否支持私钥传输
+  supportPrivateKeyTransfer: true
 
 mybatis: 
   mapper-locations: classpath:mapper/*.xml
