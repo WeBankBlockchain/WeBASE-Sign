@@ -1,5 +1,5 @@
 /**
- * Copyright 2014-2020  the original author or authors.
+ * Copyright 2014-2021  the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -49,6 +49,7 @@ public enum CodeMessageEnums {
     PRIVATEKEY_IS_NULL(303003, "privateKey is null"),
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
     PRIVATEKEY_FORMAT_ERROR(303005, "privateKey format error"),
+    PRIVATEKEY_NOT_SUPPORT_TRANSFER(303006, "privateKey not support transfer"),
 
     //system error
     SYSTEM_ERROR(103001, "system error"),

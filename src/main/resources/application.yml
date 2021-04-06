@@ -1,5 +1,5 @@
 # server version
-version: v1.4.3
+version: v1.5.0
 
 server:
   # 本工程服务端口，端口被占用则修改
@@ -34,6 +34,8 @@ constant:
   aesPattern: CBC
   keepAliveRequests: 100
   syncUsrCacheTaskFixedDelay: 10000
+  # 返回值是否支持私钥传输
+  supportPrivateKeyTransfer: true
 
 mybatis: 
   mapper-locations: classpath:mapper/*.xml

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 the original author or authors.
+ * Copyright 2014-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,9 +40,17 @@ import org.springframework.validation.BindingResult;
 public class CommonUtils {
 
     public static final int publicKeyLength_64 = 64;
+    /**
+     * in sm2, v is not used, so used meaningless zero
+     */
     private static final byte SM_DEFAULT_V_VALUE = 0;
 
-    /* add in v1.4.2 */
+    /**
+     * byte array: [v + r + s + pub]
+     * @param signatureResult
+     * @param encryptType
+     * @return
+     */
     public static String signatureResultToStringByType(SignatureResult signatureResult, int encryptType) {
         byte[] byteArr;
         if (encryptType == CryptoType.SM_TYPE) {
@@ -54,9 +62,6 @@ public class CommonUtils {
     }
 
     private static byte[] sigResult2ByteArrGuomi(SM2SignatureResult signatureResult) {
-        List<RlpType> sigRlpList = signatureResult.encode();
-        byte[] pubValue = ((RlpString) sigRlpList.get(0)).getBytes();
-
         byte[] targetByteArr;
         targetByteArr = new byte[1 + signatureResult.getR().length + signatureResult.getS().length + publicKeyLength_64];
         // set V as default 00
@@ -64,26 +69,21 @@ public class CommonUtils {
         System.arraycopy(signatureResult.getR(), 0, targetByteArr, 1, signatureResult.getR().length);
         System.arraycopy(signatureResult.getS(), 0, targetByteArr, signatureResult.getR().length + 1,
             signatureResult.getS().length);
-        System.arraycopy(pubValue, 0, targetByteArr,
+        System.arraycopy(signatureResult.getPub(), 0, targetByteArr,
             signatureResult.getS().length + signatureResult.getR().length + 1,
-            pubValue.length);
+            signatureResult.getPub().length);
         return targetByteArr;
     }
 
     private static byte[] sigResult2ByteArrECDSA(ECDSASignatureResult signatureResult) {
-        List<RlpType> sigRlpList = signatureResult.encode();
-        byte[] vValueArray = ((RlpString) sigRlpList.get(0)).getBytes();
-        byte vValue = vValueArray[0];
-
         byte[] targetByteArr;
         targetByteArr = new byte[1 + signatureResult.getR().length + signatureResult.getS().length];
-        targetByteArr[0] = vValue;
+        targetByteArr[0] = signatureResult.getV();
         System.arraycopy(signatureResult.getR(), 0, targetByteArr, 1, signatureResult.getR().length);
         System.arraycopy(signatureResult.getS(), 0, targetByteArr, signatureResult.getR().length + 1,
             signatureResult.getS().length);
         return targetByteArr;
     }
-    /* add in v1.4.2 */
 
     /**
      * check param valid result.

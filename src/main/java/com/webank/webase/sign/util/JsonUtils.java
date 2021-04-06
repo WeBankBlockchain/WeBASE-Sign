@@ -243,4 +243,8 @@ public class JsonUtils {
             return null;
         }
     }
+    
+    public void unload() {
+        OBJECT_MAPPER.remove();
+    }
 }
