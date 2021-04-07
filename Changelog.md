@@ -5,6 +5,7 @@
 
 **Fix**
 - jar包升级：mysql-connector-java:8.0.22、bcprov-jdk15on:1.67
+- 修复ECDSA签名结果序列化bug
 
 **兼容性**
 - WeBASE-Front v1.5.0+
