@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 the original author or authors.
+ * Copyright 2014-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,9 @@ import lombok.Data;
 @ConfigurationProperties(prefix = ConstantProperties.CONSTANT_PREFIX)
 public class ConstantProperties {
     public static final String CONSTANT_PREFIX = "constant";
-    private String aesKey;
-    private String aesPattern;
-    private int keepAliveRequests;
-    private int syncUsrCacheTaskFixedDelay;
+    private String aesKey = "EfdsW23D23d3df43";
+    private String aesPattern = "CBC";
+    private int keepAliveRequests = 100;
+    private int syncUsrCacheTaskFixedDelay = 10000;
+    private boolean supportPrivateKeyTransfer = true;
 }

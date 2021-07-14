@@ -1,11 +1,11 @@
 /**
- * Copyright 2014-2020  the original author or authors.
- * <p>
+ * Copyright 2014-2021 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * <p>
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -13,7 +13,14 @@
  */
 package com.webank.webase.sign.api.controller;
 
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_BLANK;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_APP_ID_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ENCRYPT_TYPE_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_BLANK;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PRIVATEKEY_NOT_SUPPORT_TRANSFER;
 import com.webank.webase.sign.api.service.UserService;
+import com.webank.webase.sign.constant.ConstantProperties;
 import com.webank.webase.sign.enums.EncryptTypes;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.bo.UserParam;
@@ -22,24 +29,29 @@ import com.webank.webase.sign.pojo.vo.BaseRspVo;
 import com.webank.webase.sign.pojo.vo.ReqNewUserVo;
 import com.webank.webase.sign.pojo.vo.ReqUserInfoVo;
 import com.webank.webase.sign.pojo.vo.RspUserInfoVo;
+import com.webank.webase.sign.util.AesUtils;
 import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static com.webank.webase.sign.enums.CodeMessageEnums.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller.
@@ -52,6 +64,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AesUtils aesUtils;
+    @Autowired
+    ConstantProperties properties;
 
     /**
      * new user from ecdsa or guomi
@@ -59,15 +75,16 @@ public class UserController {
     @ApiOperation(value = "new user from ecdsa/guomi, default ecdsa",
             notes = "新建公私钥用户(ecdsa或国密)，默认ecdas")
     @GetMapping("/newUser")
-    public BaseRspVo newUser(@RequestParam String signUserId,
-                             @RequestParam String appId,
-                             @RequestParam(required = false, defaultValue = "0") Integer encryptType)
+    public BaseRspVo newUser(@RequestParam String signUserId, @RequestParam String appId,
+            @RequestParam(required = false, defaultValue = "0") Integer encryptType,
+            @RequestParam(required = false, defaultValue = "false") boolean returnPrivateKey)
             throws BaseException {
         // validate signUserId
         if (StringUtils.isBlank(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
         }
-        if (!CommonUtils.isLetterDigit(signUserId) || !CommonUtils.checkLengthWithin_64(signUserId)) {
+        if (!CommonUtils.isLetterDigit(signUserId)
+                || !CommonUtils.checkLengthWithin_64(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
         if (StringUtils.isBlank(appId)) {
@@ -80,19 +97,23 @@ public class UserController {
                 && encryptType != EncryptTypes.GUOMI.getValue()) {
             throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
         }
+        if (returnPrivateKey == true && !properties.isSupportPrivateKeyTransfer()) {
+            throw new BaseException(PRIVATEKEY_NOT_SUPPORT_TRANSFER);
+        }
         // new user
         RspUserInfoVo userInfo = userService.newUser(signUserId, appId, encryptType, null);
-        userInfo.setPrivateKey("");
+        if (returnPrivateKey == false) {
+            userInfo.setPrivateKey("");
+        }
         return CommonUtils.buildSuccessRspVo(userInfo);
     }
 
-    @ApiOperation(value = "import new user by private key",
-            notes = "导入私钥用户(ecdsa或国密)，默认ecdas")
-    @ApiImplicitParam(name = "reqNewUser", value = "private key info",
-            required = true, dataType = "ReqNewUserVo")
+    @ApiOperation(value = "import new user by private key", notes = "导入私钥用户(ecdsa或国密)，默认ecdas")
+    @ApiImplicitParam(name = "reqNewUser", value = "private key info", required = true,
+            dataType = "ReqNewUserVo")
     @PostMapping("/newUser")
-    public BaseRspVo newUserByImportPrivateKey(@Valid @RequestBody ReqNewUserVo reqNewUser, BindingResult result)
-            throws BaseException {
+    public BaseRspVo newUserByImportPrivateKey(@Valid @RequestBody ReqNewUserVo reqNewUser,
+            BindingResult result) throws BaseException {
         CommonUtils.checkParamBindResult(result);
         // validate signUserId
         String signUserId = reqNewUser.getSignUserId();
@@ -102,7 +123,8 @@ public class UserController {
         if (StringUtils.isBlank(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_BLANK);
         }
-        if (!CommonUtils.isLetterDigit(signUserId) || !CommonUtils.checkLengthWithin_64(signUserId)) {
+        if (!CommonUtils.isLetterDigit(signUserId)
+                || !CommonUtils.checkLengthWithin_64(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
         if (StringUtils.isBlank(appId)) {
@@ -116,7 +138,8 @@ public class UserController {
             throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
         }
         // new user
-        RspUserInfoVo userInfo = userService.newUser(signUserId, appId, encryptType, privateKeyEncoded);
+        RspUserInfoVo userInfo =
+                userService.newUser(signUserId, appId, encryptType, privateKeyEncoded);
         userInfo.setPrivateKey("");
         return CommonUtils.buildSuccessRspVo(userInfo);
     }
@@ -125,20 +148,27 @@ public class UserController {
      * get user.
      */
     @ApiOperation(value = "check user info exist", notes = "check user info exist")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "signUserId", value = "business id of user in system",
-                    required = true, dataType = "String"),
-    })
+    @ApiImplicitParams({@ApiImplicitParam(name = "signUserId",
+            value = "business id of user in system", required = true, dataType = "String"),})
     @GetMapping("/{signUserId}/userInfo")
-    public BaseRspVo getUserInfo(@PathVariable("signUserId") String signUserId) throws BaseException {
+    public BaseRspVo getUserInfo(@PathVariable("signUserId") String signUserId,
+            @RequestParam(required = false, defaultValue = "false") boolean returnPrivateKey)
+            throws BaseException {
         if (!CommonUtils.checkLengthWithin_64(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
-        //find user
+        if (returnPrivateKey == true && !properties.isSupportPrivateKeyTransfer()) {
+            throw new BaseException(PRIVATEKEY_NOT_SUPPORT_TRANSFER);
+        }
+        // find user
         UserInfoPo userInfo = userService.findBySignUserId(signUserId);
         RspUserInfoVo rspUserInfoVo = new RspUserInfoVo();
         Optional.ofNullable(userInfo).ifPresent(u -> BeanUtils.copyProperties(u, rspUserInfoVo));
-        rspUserInfoVo.setPrivateKey("");
+        if (returnPrivateKey == false) {
+            rspUserInfoVo.setPrivateKey("");
+        } else {
+            rspUserInfoVo.setPrivateKey(aesUtils.aesEncrypt(userInfo.getPrivateKey()));
+        }
         return CommonUtils.buildSuccessRspVo(rspUserInfoVo);
     }
 
@@ -146,42 +176,39 @@ public class UserController {
      * get user list by app id
      */
     @ApiOperation(value = "get user list by app id", notes = "根据appId获取user列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "appId", value = "app id that users belong to",
-                    required = true, dataType = "String"),
-    })
+    @ApiImplicitParams({@ApiImplicitParam(name = "appId", value = "app id that users belong to",
+            required = true, dataType = "String"),})
     @GetMapping("/list/{appId}/{pageNumber}/{pageSize}")
     public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId,
-                                        @PathVariable("pageNumber") Integer pageNumber,
-                                        @PathVariable("pageSize") Integer pageSize,
-                                        @RequestParam(value = "signUserIdList", required = false, defaultValue = "") List<String> signUserIdList) throws BaseException {
+            @PathVariable("pageNumber") Integer pageNumber,
+            @PathVariable("pageSize") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "false") boolean returnPrivateKey)
+            throws BaseException {
         if (!CommonUtils.checkLengthWithin_64(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
-        //param
+        if (returnPrivateKey == true && !properties.isSupportPrivateKeyTransfer()) {
+            throw new BaseException(PRIVATEKEY_NOT_SUPPORT_TRANSFER);
+        }
         UserParam param = new UserParam();
         param.setAppId(appId);
-        param.setSignUserIdList(signUserIdList);
-
-
         int count = userService.countOfUser(param);
         List<RspUserInfoVo> userList = new ArrayList<>();
         if (count > 0) {
-            Integer start = Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize)
-                    .orElse(null);
+            Integer start =
+                    Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize).orElse(null);
             param.setStart(start);
             param.setPageSize(pageSize);
-            //find user
+            // find user
             userList = userService.findUserListByAppId(param);
-            if (!userList.isEmpty()) {
+            if (!userList.isEmpty() && returnPrivateKey == false) {
                 userList.forEach(user -> user.setPrivateKey(""));
             }
         }
         return CommonUtils.buildSuccessPageRspVo(userList, count);
     }
 
-    @ApiOperation(value = "delete user by address",
-            notes = "通过地址删除私钥")
+    @ApiOperation(value = "delete user by address", notes = "通过地址删除私钥")
     @DeleteMapping("")
     public BaseRspVo deleteUser(@RequestBody ReqUserInfoVo req) throws BaseException {
         String signUserId = req.getSignUserId();
@@ -194,8 +221,7 @@ public class UserController {
     }
 
 
-    @ApiOperation(value = "delete all user cache",
-            notes = "删除所有用户缓存信息")
+    @ApiOperation(value = "delete all user cache", notes = "删除所有用户缓存信息")
     @DeleteMapping("/all")
     public BaseRspVo deleteAllUserCache() {
 
@@ -203,14 +229,12 @@ public class UserController {
         return CommonUtils.buildSuccessRspVo(null);
     }
 
-    @ApiOperation(value = "delete all Credential cache",
-            notes = "删除所有私钥缓存信息")
+    @ApiOperation(value = "delete all Credential cache", notes = "删除所有私钥缓存信息")
     @DeleteMapping("/all-credential")
     public BaseRspVo deleteCredentialCache() {
 
         userService.deleteAllCredentialCache();
         return CommonUtils.buildSuccessRspVo(null);
     }
-
 
 }

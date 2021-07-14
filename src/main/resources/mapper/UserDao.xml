@@ -62,7 +62,7 @@
 
   <select id="findUserBySignUserId" resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>
-    from tb_user
+    from tb_user 
     where   sign_user_id = #{signUserId}
   </select>
 
@@ -77,14 +77,8 @@
     <if test="appId != null">
       and app_id = #{appId}
     </if>
-    <if test="signUserIdList != null">
-        and sign_user_id in
-        <foreach item="item" collection="signUserIdList" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </if>
   </select>
-
+    
   <select id="findUserList" parameterType="com.webank.webase.sign.pojo.bo.UserParam"
           resultType="com.webank.webase.sign.pojo.po.UserInfoPo">
     select <include refid="USER_COLUMN"/>

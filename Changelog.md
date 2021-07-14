@@ -1,3 +1,32 @@
+### v1.5.0(2021-03-31)
+
+**Add**
+- 增加配置项`supportPrivateKeyTransfer: true`，接口支持私钥传输（aes加密后的私钥），配置项为`false`时不支持
+
+**Fix**
+- jar包升级：mysql-connector-java:8.0.22、bcprov-jdk15on:1.67
+- 修复ECDSA签名结果序列化bug
+
+**兼容性**
+- WeBASE-Front v1.5.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+
+### v1.4.3(2021-01-27)
+
+**Add**
+- 增加数据签名接口
+
+**Fix**
+- 数据库密码支持特殊字符
+
+**兼容性**
+- WeBASE-Front v1.4.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+
 
 ### v1.4.2(2020-11-19)
 
@@ -59,7 +88,7 @@
 ### v1.3.1
 
  (2020-06-01)
- 
+
 **Add**
 - 新增导入私钥接口
 
@@ -76,7 +105,7 @@
 ### v1.3.0
 
  (2020-04-29)
- 
+
 **Add**
 - 同时支持ECDSA与国密私钥与签名与私钥创建(移除yaml配置文件中的`encryptType`)，可通过`encryptType`字段指定
 - 修改用户entity的`int userId`为`String signUserId`，新增`String appId`

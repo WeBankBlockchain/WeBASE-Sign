@@ -1,5 +1,5 @@
 /**
- * Copyright 2014-2020 the original author or authors.
+ * Copyright 2014-2021 the original author or authors.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @ToString(callSuper = true)
@@ -30,6 +28,5 @@ import java.util.List;
 public class UserParam extends BaseQueryParam{
 
 	private String appId;
-	private List<String> signUserIdList;
 	private String encryptType;
 }
