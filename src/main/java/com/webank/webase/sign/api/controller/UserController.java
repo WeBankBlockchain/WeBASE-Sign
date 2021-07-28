@@ -161,12 +161,15 @@ public class UserController {
     @GetMapping("/list/{appId}/{pageNumber}/{pageSize}")
     public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId,
                                         @PathVariable("pageNumber") Integer pageNumber,
-                                        @PathVariable("pageSize") Integer pageSize) throws BaseException {
+                                        @PathVariable("pageSize") Integer pageSize,
+                                        @RequestParam(value = "signUserIdList", required = false, defaultValue = "") List<String> signUserIdList) throws BaseException {
         if (!CommonUtils.checkLengthWithin_64(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
         UserParam param = new UserParam();
         param.setAppId(appId);
+        param.setSignUserIdList(signUserIdList);
+
         int count = userService.countOfUser(param);
         List<RspUserInfoVo> userList = new ArrayList<>();
         if (count > 0) {
