@@ -77,6 +77,12 @@
     <if test="appId != null">
       and app_id = #{appId}
     </if>
+    <if test="signUserIdList != null and signUserIdList.size()>0">
+      and sign_user_id in
+      <foreach item="item" collection="signUserIdList" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+    </if>
   </select>
     
   <select id="findUserList" parameterType="com.webank.webase.sign.pojo.bo.UserParam"
@@ -105,6 +111,12 @@
     select <include refid="USER_COLUMN"/>
     from tb_user
     where status ='1' and app_id = #{appId}
+      <if test="signUserIdList != null and signUserIdList.size()>0">
+          and sign_user_id in
+          <foreach item="item" collection="signUserIdList" open="(" separator="," close=")">
+              #{item}
+          </foreach>
+      </if>
     order by user_id desc
     <if test="start != null and pageSize != null">
       limit #{start},#{pageSize}

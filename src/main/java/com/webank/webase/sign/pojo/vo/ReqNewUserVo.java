@@ -34,6 +34,6 @@ public class ReqNewUserVo {
 	/**
 	 * encoded by base64
 	 */
-	@NotNull
+//	@NotNull
 	private String privateKey;
 }
