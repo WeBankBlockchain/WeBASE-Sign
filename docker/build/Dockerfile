@@ -14,7 +14,7 @@ COPY conf_template        /dist/conf
 COPY apps                 /dist/apps
 
 WORKDIR /dist
-EXPOSE 5002
+EXPOSE 5004
 
 ENV CLASSPATH "/dist/conf/:/dist/apps/*:/dist/lib/*"
 
