@@ -6,9 +6,6 @@ RUN apt-get update \
     && apt-get -y install openjdk-8-jre \
     && rm -rf /var/lib/apt/lists/*
 
-#COPY --from=builder /code/dist/lib                  /dist/lib
-#COPY --from=builder /code/dist/conf_template        /dist/conf
-#COPY --from=builder /code/dist/apps                 /dist/apps
 COPY lib                  /dist/lib
 COPY conf_template        /dist/conf
 COPY apps                 /dist/apps
