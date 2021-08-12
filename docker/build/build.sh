@@ -93,7 +93,7 @@ fi
 image_repository="${image_organization}/${image_name}"
 
 ## compile project
-cd "${__root}" && chomd +x ./gradlew && ./gradlew clean build -x test
+cd "${__root}" && chmod +x ./gradlew && ./gradlew clean build -x test
 
 ## docker build
 cd "${__root}"/dist
