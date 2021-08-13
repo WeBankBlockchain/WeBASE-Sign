@@ -33,6 +33,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -162,7 +163,8 @@ public class UserController {
     public BaseRspVo getUserListByAppId(@PathVariable("appId") String appId,
                                         @PathVariable("pageNumber") Integer pageNumber,
                                         @PathVariable("pageSize") Integer pageSize,
-                                        @RequestParam(value = "signUserIdList", required = false, defaultValue = "") List<String> signUserIdList) throws BaseException {
+                                        @RequestParam(value = "signUserIdList", required = false, defaultValue = "")
+                                            List<String> signUserIdList) throws BaseException {
         if (!CommonUtils.checkLengthWithin_64(appId)) {
             throw new BaseException(PARAM_APP_ID_IS_INVALID);
         }
@@ -173,10 +175,14 @@ public class UserController {
         int count = userService.countOfUser(param);
         List<RspUserInfoVo> userList = new ArrayList<>();
         if (count > 0) {
-            Integer start = Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize)
+            // if signUerIdList is not null or not empty, it means request for target specific user list
+            // no need to paging (paging in chain-manager)
+            if (param.getSignUserIdList() == null || param.getSignUserIdList().isEmpty()) {
+                Integer start = Optional.ofNullable(pageNumber).map(page -> (page - 1) * pageSize)
                     .orElse(null);
-            param.setStart(start);
-            param.setPageSize(pageSize);
+                param.setStart(start);
+                param.setPageSize(pageSize);
+            }
             //find user
             userList = userService.findUserListByAppId(param);
             if (!userList.isEmpty()) {
