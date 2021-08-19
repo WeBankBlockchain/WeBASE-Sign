@@ -117,7 +117,7 @@
               #{item}
           </foreach>
       </if>
-    order by user_id desc
+    order by gmt_modify desc
     <if test="start != null and pageSize != null">
       limit #{start},#{pageSize}
     </if>
