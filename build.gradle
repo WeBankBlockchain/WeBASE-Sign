@@ -30,7 +30,7 @@ List springboot =[
     "org.springframework.boot:spring-boot-starter-cache:$spring_boot_version"
 ]
 // cover old version
-def spring_version="4.3.27.RELEASE"
+def spring_version="4.3.29.RELEASE"
 List spring =[
     "org.springframework:spring-jdbc:$spring_version",
     "org.springframework:spring-web:$spring_version",
@@ -63,7 +63,7 @@ List jaxb = [
      "javax.activation:activation:1.1.1"
 ]
 
-def jackson_version = "2.11.0"
+def jackson_version = "2.11.4"
 List jackson = [
     "com.fasterxml.jackson.core:jackson-databind:$jackson_version",
     "com.fasterxml.jackson.core:jackson-annotations:$jackson_version",
