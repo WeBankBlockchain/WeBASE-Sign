@@ -36,7 +36,7 @@ __root=$(realpath -s "${__root}")
 
 
 ########################### properties config ##########################
-image_organization=webase
+image_organization=webasepro
 image_name="webase-sign"
 docker_push="no"
 latest_tag=latest
@@ -54,7 +54,7 @@ Usage:
     -t          New tag for image, required.
 
     -p          Push image to docker hub, default no.
-    -i          Default organization, default webase.
+    -i          Default organization, default webasepro.
     -h          Show help info.
 USAGE
     exit 1
