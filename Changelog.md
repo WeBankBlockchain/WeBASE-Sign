@@ -1,3 +1,15 @@
+
+### v1.5.3(2021-09-27)
+
+**Add**
+- 新增私钥托管与签名服务Docker镜像，`webasepro/webase-sign:v1.5.3`
+
+**兼容性**
+- WeBASE-Front v1.5.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+
 ### v1.5.0(2021-03-31)
 
 **Add**
