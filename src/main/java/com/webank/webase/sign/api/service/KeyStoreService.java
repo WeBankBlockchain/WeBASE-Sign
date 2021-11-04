@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.crypto.keypair.ECDSAKeyPair;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -102,9 +103,9 @@ public class KeyStoreService {
 
     public CryptoKeyPair getKeyPairRandom(int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            return smCryptoSuite.createKeyPair();
+            return smCryptoSuite.getKeyPairFactory().generateKeyPair();
         } else {
-            return ecdsaCryptoSuite.createKeyPair();
+            return ecdsaCryptoSuite.getKeyPairFactory().generateKeyPair();
         }
     }
 
