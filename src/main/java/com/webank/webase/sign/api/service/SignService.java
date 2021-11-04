@@ -35,7 +35,6 @@ import org.fisco.bcos.sdk.utils.ByteUtils;
 import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,12 +50,6 @@ public class SignService {
     ConstantProperties properties;
     @Autowired
     private KeyStoreService keyStoreService;
-    @Autowired
-    @Qualifier(value = "sm")
-    private CryptoSuite smCryptoSuite;
-    @Autowired
-    @Qualifier(value = "ecdsa")
-    private CryptoSuite ecdsaCryptoSuite;
 
     /**
      * add sign.
@@ -100,13 +93,13 @@ public class SignService {
     public SignatureResult signMessageByType(byte[] message, CryptoKeyPair cryptoKeyPair,
         int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            byte[] messageHash = smCryptoSuite.hash(message);
+            byte[] messageHash = new CryptoSuite(CryptoType.SM_TYPE).hash(message);
             log.debug("userRow.messageHash：{},hex:{}", messageHash, Hex.toHexString(messageHash));
-            return smCryptoSuite.sign(Hex.toHexString(messageHash), cryptoKeyPair);
+            return new CryptoSuite(CryptoType.SM_TYPE).sign(Hex.toHexString(messageHash), cryptoKeyPair);
         } else {
-            byte[] messageHash = ecdsaCryptoSuite.hash(message);
+            byte[] messageHash = new CryptoSuite(CryptoType.ECDSA_TYPE).hash(message);
             log.debug("userRow.messageHash：{},hex:{}", messageHash, Hex.toHexString(messageHash));
-            return ecdsaCryptoSuite.sign(Hex.toHexString(messageHash), cryptoKeyPair);
+            return new CryptoSuite(CryptoType.ECDSA_TYPE).sign(Hex.toHexString(messageHash), cryptoKeyPair);
         }
     }
 
@@ -143,9 +136,9 @@ public class SignService {
     public SignatureResult signMessageHashByType(String messageHash, CryptoKeyPair cryptoKeyPair,
                                                  int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            return smCryptoSuite.sign(messageHash, cryptoKeyPair);
+            return new CryptoSuite(CryptoType.SM_TYPE).sign(messageHash, cryptoKeyPair);
         } else {
-            return ecdsaCryptoSuite.sign(messageHash, cryptoKeyPair);
+            return new CryptoSuite(CryptoType.ECDSA_TYPE).sign(messageHash, cryptoKeyPair);
         }
     }
 }

@@ -23,10 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.crypto.keypair.ECDSAKeyPair;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +36,6 @@ import org.springframework.stereotype.Service;
 public class KeyStoreService {
     @Autowired
     private AesUtils aesUtils;
-    @Autowired
-    @Qualifier(value = "sm")
-    private CryptoSuite smCryptoSuite;
-    @Autowired
-    @Qualifier(value = "ecdsa")
-    private CryptoSuite ecdsaCryptoSuite;
 
     /**
      * get KeyStoreInfo by privateKey.
@@ -95,17 +87,17 @@ public class KeyStoreService {
 
     public CryptoKeyPair getKeyPairByType(String privateKeyRaw, int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            return smCryptoSuite.createKeyPair(privateKeyRaw);
+            return new CryptoSuite(CryptoType.SM_TYPE).createKeyPair(privateKeyRaw);
         } else {
-            return ecdsaCryptoSuite.createKeyPair(privateKeyRaw);
+            return new CryptoSuite(CryptoType.ECDSA_TYPE).createKeyPair(privateKeyRaw);
         }
     }
 
     public CryptoKeyPair getKeyPairRandom(int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            return smCryptoSuite.getKeyPairFactory().generateKeyPair();
+            return new CryptoSuite(CryptoType.SM_TYPE).getKeyPairFactory().generateKeyPair();
         } else {
-            return ecdsaCryptoSuite.getKeyPairFactory().generateKeyPair();
+            return new CryptoSuite(CryptoType.ECDSA_TYPE).getKeyPairFactory().generateKeyPair();
         }
     }
 
