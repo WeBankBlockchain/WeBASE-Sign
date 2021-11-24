@@ -94,17 +94,17 @@ public class KeyStoreService {
 
     public CryptoKeyPair getKeyPairByType(String privateKeyRaw, int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            return smCryptoSuite.createKeyPair(privateKeyRaw);
+            return smCryptoSuite.getCryptoKeyPair().createKeyPair(privateKeyRaw);
         } else {
-            return ecdsaCryptoSuite.createKeyPair(privateKeyRaw);
+            return ecdsaCryptoSuite.getCryptoKeyPair().createKeyPair(privateKeyRaw);
         }
     }
 
     public CryptoKeyPair getKeyPairRandom(int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            return smCryptoSuite.createKeyPair();
+            return smCryptoSuite.getCryptoKeyPair().generateKeyPair();
         } else {
-            return ecdsaCryptoSuite.createKeyPair();
+            return ecdsaCryptoSuite.getCryptoKeyPair().generateKeyPair();
         }
     }
 
