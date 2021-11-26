@@ -15,23 +15,20 @@
  */
 package com.webank.webase.sign.util;
 
-import com.webank.webase.sign.enums.CodeMessageEnums;
-import com.webank.webase.sign.exception.ParamException;
-import com.webank.webase.sign.pojo.vo.BasePageRspVo;
-import com.webank.webase.sign.pojo.vo.BaseRspVo;
 import java.util.Base64;
-import java.util.List;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.sdk.crypto.signature.ECDSASignatureResult;
 import org.fisco.bcos.sdk.crypto.signature.SM2SignatureResult;
 import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 import org.fisco.bcos.sdk.model.CryptoType;
-import org.fisco.bcos.sdk.rlp.RlpString;
-import org.fisco.bcos.sdk.rlp.RlpType;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.springframework.validation.BindingResult;
+import com.webank.webase.sign.enums.CodeMessageEnums;
+import com.webank.webase.sign.exception.ParamException;
+import com.webank.webase.sign.pojo.vo.BasePageRspVo;
+import com.webank.webase.sign.pojo.vo.BaseRspVo;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * CommonUtils.

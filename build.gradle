@@ -85,11 +85,12 @@ List tomcat = [
 
 dependencies {
     compile springboot,spring,swagger,mysql,log4j,jaxb,jackson,tomcat
-    compile 'org.fisco-bcos.java-sdk:sdk-crypto:2.7.0-SNAPSHOT'
+    compile 'org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.1.0-SNAPSHOT'
     compile 'org.slf4j:jcl-over-slf4j:1.7.30'
     compile 'org.apache.commons:commons-lang3:3.6'
     compile 'org.projectlombok:lombok:1.18.2'
     compile "org.bouncycastle:bcprov-jdk15on:1.67"
+    compile "javax.servlet:javax.servlet-api:4.0.1"
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
 
