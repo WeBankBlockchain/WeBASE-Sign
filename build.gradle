@@ -12,12 +12,14 @@ targetCompatibility = 1.8
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-
-    maven { url 'https://dl.bintray.com/ethereum/maven/'}
-    mavenLocal()
+    maven {
+        url "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url 'https://dl.bintray.com/ethereum/maven/' }
+    maven { url 'http://repo.typesafe.com/typesafe/maven-releases/' }
+    mavenLocal()
 }
 
 def spring_boot_version="1.5.22.RELEASE"
