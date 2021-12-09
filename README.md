@@ -6,7 +6,7 @@
 [![GitHub (pre-)release](https://img.shields.io/github/release/WeBankBlockchain/WeBASE-Sign/all.svg)](https://github.com/WeBankBlockchain/WeBASE-Sign/releases)
 
 ## 简介
-本工程为签名服务子系统。功能：管理公私钥、对数据进行签名。 详细介绍请查看[WeBASE-Sign在线文档](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE-Sign/index.html)
+本工程为签名服务子系统。功能：管理公私钥、对数据进行签名。 详细介绍请查看[WeBASE-Sign在线文档](https://webasedoc.readthedocs.io/zh_CN/lab/docs/WeBASE-Sign/index.html)
 
 ## 贡献说明
 请阅读我们的贡献文档，了解如何贡献代码，并提交你的贡献。
