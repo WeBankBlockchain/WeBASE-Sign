@@ -68,7 +68,7 @@ public class SignService {
         Instant startTimeDB = Instant.now();
         // check exist
         UserInfoPo userRow = userService.findBySignUserId(signUserId);
-       log.debug("end query db time: {}", Duration.between(startTimeDB, Instant.now()).toMillis());
+        log.debug("end query db time: {}", Duration.between(startTimeDB, Instant.now()).toMillis());
         // check user name not exist.
         if (Objects.isNull(userRow)) {
             log.warn("fail sign, user not exists. signUserId:{}", signUserId);
@@ -90,7 +90,7 @@ public class SignService {
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
         // sign message by type
         SignatureResult signatureResult = signMessageByType(
-                encodedData, cryptoKeyPair, encryptType);
+            encodedData, cryptoKeyPair, encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureResultToStringByType(signatureResult, encryptType);
         log.info("end sign. signUserId:{}", signUserId);
@@ -133,7 +133,7 @@ public class SignService {
         Instant startTime = Instant.now();
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
         SignatureResult signatureResult = signMessageHashByType(
-                req.getMessageHash(), cryptoKeyPair, encryptType);
+            req.getMessageHash(), cryptoKeyPair, encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureResultToStringByType(signatureResult, encryptType);
         log.info("end sign. signUserId:{}", signUserId);
@@ -141,7 +141,7 @@ public class SignService {
     }
 
     public SignatureResult signMessageHashByType(String messageHash, CryptoKeyPair cryptoKeyPair,
-                                                 int encryptType) {
+        int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
             return smCryptoSuite.sign(messageHash, cryptoKeyPair);
         } else {

@@ -1,10 +1,11 @@
 # server version
-version: lab-rc1
+version: lab-rc2
 
 server:
   # 本工程服务端口，端口被占用则修改
   port: 5004
-  context-path: /WeBASE-Sign
+  servlet:
+    context-path: /WeBASE-Sign
   tomcat:
     max-threads: 200       #default 200
     max-connections: 10000  #default 10000
