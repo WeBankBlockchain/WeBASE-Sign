@@ -65,7 +65,7 @@ List jaxb = [
      "javax.activation:activation:1.1.1"
 ]
 
-def jackson_version = "2.11.4"
+def jackson_version = "2.13.2.1"
 List jackson = [
     "com.fasterxml.jackson.core:jackson-databind:$jackson_version",
     "com.fasterxml.jackson.core:jackson-annotations:$jackson_version",
@@ -87,7 +87,7 @@ List tomcat = [
 
 dependencies {
     compile springboot,spring,swagger,mysql,log4j,jaxb,jackson,tomcat
-    compile 'org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-rc1'
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-rc2-bugfix-SNAPSHOT')
     compile 'org.slf4j:jcl-over-slf4j:1.7.30'
     compile 'org.apache.commons:commons-lang3:3.6'
     compile 'org.projectlombok:lombok:1.18.2'
