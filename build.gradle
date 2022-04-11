@@ -96,7 +96,6 @@ dependencies {
     compile 'com.google.guava:guava:29.0-jre'
     compile 'org.yaml:snakeyaml:1.30'
     compile 'javax.validation:validation-api:2.0.1.Final'
-
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
 
