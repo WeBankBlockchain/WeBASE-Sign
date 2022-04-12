@@ -64,9 +64,9 @@ List jaxb = [
      "javax.activation:activation:1.1.1"
 ]
 
-def jackson_version = "2.13.2.1"
+def jackson_version = "2.13.2"
 List jackson = [
-    "com.fasterxml.jackson.core:jackson-databind:$jackson_version",
+    "com.fasterxml.jackson.core:jackson-databind:2.13.2.1",
     "com.fasterxml.jackson.core:jackson-annotations:$jackson_version",
     "com.fasterxml.jackson.core:jackson-core:$jackson_version",
     "com.fasterxml.jackson.module:jackson-module-parameter-names:$jackson_version",
