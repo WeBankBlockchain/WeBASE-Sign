@@ -34,6 +34,7 @@ constant:
   # aes加密模式 v1.4.0+ 默认CBC（v1.4.0前默认为ECB）
   aesPattern: CBC
   keepAliveRequests: 100
+  KeepAliveTimeout: 30000
   syncUsrCacheTaskFixedDelay: 10000
   # 返回值是否支持私钥传输
   supportPrivateKeyTransfer: true
