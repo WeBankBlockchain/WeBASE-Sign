@@ -31,8 +31,8 @@ import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 import org.fisco.bcos.sdk.model.CryptoType;
-import org.fisco.bcos.sdk.utils.ByteUtils;
 import org.fisco.bcos.sdk.utils.Hex;
+import org.fisco.bcos.sdk.utils.Numeric;
 import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -80,7 +80,7 @@ public class SignService {
         // make sure hex
         byte[] encodedData;
         try {
-            encodedData = ByteUtils.hexStringToBytes(req.getEncodedDataStr());
+            encodedData = Numeric.hexStringToByteArray(req.getEncodedDataStr());
         } catch (DecoderException e) {
             log.error("hexStringToBytes error: ", e);
             throw new BaseException(CodeMessageEnums.PARAM_ENCODED_DATA_INVALID);
@@ -89,8 +89,7 @@ public class SignService {
         Instant startTime = Instant.now();
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
         // sign message by type
-        SignatureResult signatureResult = signMessageByType(
-            encodedData, cryptoKeyPair, encryptType);
+        SignatureResult signatureResult = signMessageByType(encodedData, cryptoKeyPair, encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureResultToStringByType(signatureResult, encryptType);
         log.info("end sign. signUserId:{}", signUserId);

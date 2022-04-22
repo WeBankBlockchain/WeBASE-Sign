@@ -122,7 +122,7 @@ public class UserService {
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
         Optional.ofNullable(user)
-                .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
+            .ifPresent(u -> u.setPrivateKey(aesUtils.aesDecrypt(u.getPrivateKey())));
         log.info("end findBySignUserId. userId:{}", signUserId);
         return user;
     }
