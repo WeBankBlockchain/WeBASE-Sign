@@ -31,6 +31,7 @@ public class ConstantProperties {
     private String aesKey = "EfdsW23D23d3df43";
     private String aesPattern = "CBC";
     private int keepAliveRequests = 100;
+    private int KeepAliveTimeout = 30000;
     private int syncUsrCacheTaskFixedDelay = 10000;
     private boolean supportPrivateKeyTransfer = true;
 }

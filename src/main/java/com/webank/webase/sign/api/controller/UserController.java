@@ -157,7 +157,7 @@ public class UserController {
         if (!CommonUtils.checkLengthWithin_64(signUserId)) {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
-        if (returnPrivateKey == true && !properties.isSupportPrivateKeyTransfer()) {
+        if (returnPrivateKey && !properties.isSupportPrivateKeyTransfer()) {
             throw new BaseException(PRIVATEKEY_NOT_SUPPORT_TRANSFER);
         }
         // find user
