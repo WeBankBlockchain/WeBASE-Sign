@@ -72,6 +72,8 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.6'
     compile 'org.projectlombok:lombok:1.18.2'
     compile "org.bouncycastle:bcprov-jdk15on:1.67"
+    compile 'javax.validation:validation-api:2.0.1.Final'
+
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
 
