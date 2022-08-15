@@ -31,7 +31,7 @@ List springboot =[
     "org.springframework.boot:spring-boot-starter-cache:$spring_boot_version"
 ]
 // cover old version
-def spring_version="5.2.19.RELEASE"
+def spring_version="5.2.22.RELEASE"
 List spring =[
     "org.springframework:spring-jdbc:$spring_version",
     "org.springframework:spring-web:$spring_version",
@@ -49,7 +49,7 @@ List mysql = [
     'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1'
 ]
 
-def log4j_version="2.17.1"
+def log4j_version="2.18.0"
 List log4j = [
     "org.apache.logging.log4j:log4j-api:$log4j_version",
     "org.apache.logging.log4j:log4j-core:$log4j_version",
@@ -64,7 +64,7 @@ List jaxb = [
      "javax.activation:activation:1.1.1"
 ]
 
-def jackson_version = "2.13.2"
+def jackson_version = "2.13.3"
 List jackson = [
     "com.fasterxml.jackson.core:jackson-databind:2.13.2.1",
     "com.fasterxml.jackson.core:jackson-annotations:$jackson_version",
@@ -74,19 +74,10 @@ List jackson = [
     "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version",
 ]
 
-// cover old version
-def tomcat_version = "8.5.56"
-List tomcat = [
-    "org.apache.tomcat.embed:tomcat-embed-core:$tomcat_version",
-    "org.apache.tomcat.embed:tomcat-embed-el:$tomcat_version",
-    "org.apache.tomcat.embed:tomcat-embed-websocket:$tomcat_version",
-    "org.apache.tomcat:tomcat-jdbc:$tomcat_version",
-    "org.apache.tomcat:tomcat-juli:$tomcat_version"
-]
 
 dependencies {
-    compile springboot,spring,swagger,mysql,log4j,jaxb,jackson,tomcat
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-rc2-bugfix-SNAPSHOT') {
+    compile springboot,spring,swagger,mysql,log4j,jaxb,jackson
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-SNAPSHOT') {
         exclude group: 'javax.servlet', module: 'javax.servlet-api'
     }
     compile 'org.slf4j:jcl-over-slf4j:1.7.30'
