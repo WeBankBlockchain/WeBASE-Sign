@@ -44,3 +44,5 @@ mybatis:
 
 logging: 
   config: classpath:log4j2.xml
+  level:
+    com.webank.webase.sign: info
