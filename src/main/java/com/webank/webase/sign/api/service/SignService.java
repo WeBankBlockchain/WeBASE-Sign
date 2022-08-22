@@ -21,6 +21,7 @@ import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
+import com.webank.webase.sign.pojo.vo.ReqSignHashVo;
 import com.webank.webase.sign.pojo.vo.ReqSignMessageHashVo;
 import com.webank.webase.sign.util.CommonUtils;
 import java.time.Duration;
@@ -113,7 +114,7 @@ public class SignService {
      * add signHash.
      * @param req parameter
      */
-    public String signMessageHash(ReqSignMessageHashVo req) throws BaseException {
+    public String signMessageHash(ReqSignHashVo req) throws BaseException {
         String signUserId = req.getSignUserId();
         log.info("start sign. signUserId:{}", signUserId);
         Instant startTimeDB = Instant.now();
@@ -126,6 +127,9 @@ public class SignService {
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
         int encryptType = userRow.getEncryptType();
+        if (encryptType != req.getEncryptType()) {
+            throw new BaseException(CodeMessageEnums.PARAM_HASH_ENCRYPT_TYPE_NOT_MATCH);
+        }
         // signature
         CryptoKeyPair cryptoKeyPair = keyStoreService.getKeyPairByType(userRow.getPrivateKey(), encryptType);
 
