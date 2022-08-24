@@ -1,5 +1,5 @@
 # server version
-version: lab-rc2
+version: v3.0.0
 
 server:
   # 本工程服务端口，端口被占用则修改
@@ -44,3 +44,5 @@ mybatis:
 
 logging: 
   config: classpath:log4j2.xml
+  level:
+    com.webank.webase.sign: info

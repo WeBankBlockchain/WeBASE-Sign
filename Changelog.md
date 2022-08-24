@@ -1,3 +1,17 @@
+
+### v3.0.0(2022-08-24)
+
+**Add**
+- 切换至fisco-bcos-java-sdk 3.0.0正式版
+
+
+**兼容性**
+- 支持FISCO-BCOS v3.0.0 及以上版本
+- WeBASE-Front lab-rc1及以上版本
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/lab/)。
+
+
 ### lab-rc2(2022-03-30)
 
 **Add**

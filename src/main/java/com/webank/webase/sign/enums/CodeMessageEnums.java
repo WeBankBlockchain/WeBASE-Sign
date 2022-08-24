@@ -41,6 +41,7 @@ public enum CodeMessageEnums {
     PARAM_APP_ID_IS_INVALID(203007, "app id invalid, only support letter and digit"),
     PARAM_ENCRYPT_TYPE_IS_INVALID(203008, "encrypt type should be 0 (ecdsa) or 1 (guomi)"),
     PARAM_ENCODED_DATA_INVALID(203009, "encoded data string must be hex string"),
+    PARAM_HASH_LENGTH_INVALID(203010, "hash's length must be 64 or 66"),
 
     //business exception
     USER_EXISTS(303001, "user of this sign user id is already exists "),
@@ -50,6 +51,7 @@ public enum CodeMessageEnums {
     PRIVATE_KEY_DECODE_FAIL(303004, "privateKey decode fail"),
     PRIVATEKEY_FORMAT_ERROR(303005, "privateKey format error"),
     PRIVATEKEY_NOT_SUPPORT_TRANSFER(303006, "privateKey not support transfer"),
+    PARAM_HASH_ENCRYPT_TYPE_NOT_MATCH(303007, "hash's encrypt type not match with signUserId"),
 
     //system error
     SYSTEM_ERROR(103001, "system error"),
