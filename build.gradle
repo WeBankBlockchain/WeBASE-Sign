@@ -79,9 +79,7 @@ List jackson = [
 
 dependencies {
     compile springboot,spring,swagger,mysql,log4j,jaxb,jackson
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-SNAPSHOT') {
-        exclude group: 'javax.servlet', module: 'javax.servlet-api'
-    }
+    compile 'org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0'
     compile 'org.slf4j:jcl-over-slf4j:1.7.30'
     compile 'org.apache.commons:commons-lang3:3.6'
     compile 'org.projectlombok:lombok:1.18.2'
