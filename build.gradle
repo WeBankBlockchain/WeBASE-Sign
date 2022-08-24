@@ -28,7 +28,9 @@ List springboot =[
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
 	"org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version",
 	"org.springframework.boot:spring-boot-starter-aop:$spring_boot_version",
-    "org.springframework.boot:spring-boot-starter-cache:$spring_boot_version"
+    "org.springframework.boot:spring-boot-starter-cache:$spring_boot_version",
+    "org.springframework.boot:spring-boot-starter-validation:$spring_boot_version"
+
 ]
 // cover old version
 def spring_version="5.2.22.RELEASE"
@@ -77,16 +79,13 @@ List jackson = [
 
 dependencies {
     compile springboot,spring,swagger,mysql,log4j,jaxb,jackson
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-SNAPSHOT') {
-        exclude group: 'javax.servlet', module: 'javax.servlet-api'
-    }
+    compile 'org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0'
     compile 'org.slf4j:jcl-over-slf4j:1.7.30'
     compile 'org.apache.commons:commons-lang3:3.6'
     compile 'org.projectlombok:lombok:1.18.2'
-    compile "org.bouncycastle:bcprov-jdk15on:1.67"
-    compile "javax.servlet:javax.servlet-api:4.0.1"
+    compile "org.bouncycastle:bcprov-jdk15on:1.69"
     // cover low version
-    compile 'com.google.guava:guava:29.0-jre'
+    compile 'com.google.guava:guava:30.0-jre'
     compile 'org.yaml:snakeyaml:1.30'
     compile 'javax.validation:validation-api:2.0.1.Final'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
