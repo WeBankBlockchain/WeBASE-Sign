@@ -21,19 +21,18 @@ import com.webank.webase.sign.enums.CodeMessageEnums;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.po.UserInfoPo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
-import com.webank.webase.sign.pojo.vo.ReqSignMessageHashVo;
+import com.webank.webase.sign.pojo.vo.ReqSignHashVo;
 import com.webank.webase.sign.util.CommonUtils;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.fisco.bcos.sdk.crypto.CryptoSuite;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
-import org.fisco.bcos.sdk.model.CryptoType;
-import org.fisco.bcos.sdk.utils.Hex;
-import org.fisco.bcos.sdk.utils.Numeric;
-import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
+import org.fisco.bcos.sdk.v3.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.v3.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.v3.crypto.signature.SignatureResult;
+import org.fisco.bcos.sdk.v3.model.CryptoType;
+import org.fisco.bcos.sdk.v3.utils.Hex;
+import org.fisco.bcos.sdk.v3.utils.exceptions.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -78,34 +77,32 @@ public class SignService {
         // signature
         CryptoKeyPair cryptoKeyPair = keyStoreService.getKeyPairByType(userRow.getPrivateKey(), encryptType);
         // make sure hex
-        byte[] encodedData;
         try {
-            encodedData = Numeric.hexStringToByteArray(req.getEncodedDataStr());
+            Hex.decode(req.getEncodedDataStr());
         } catch (DecoderException e) {
             log.error("hexStringToBytes error: ", e);
             throw new BaseException(CodeMessageEnums.PARAM_ENCODED_DATA_INVALID);
-
         }
         Instant startTime = Instant.now();
         log.info("start sign. startTime:{}", startTime.toEpochMilli());
         // sign message by type
-        SignatureResult signatureResult = signMessageByType(encodedData, cryptoKeyPair, encryptType);
+        SignatureResult signatureResult = signMessageByType(req.getEncodedDataStr(), cryptoKeyPair, encryptType);
         log.info("end sign duration:{}", Duration.between(startTime, Instant.now()).toMillis());
         String signDataStr = CommonUtils.signatureResultToStringByType(signatureResult, encryptType);
         log.info("end sign. signUserId:{}", signUserId);
         return signDataStr;
     }
 
-    public SignatureResult signMessageByType(byte[] message, CryptoKeyPair cryptoKeyPair,
+    public SignatureResult signMessageByType(String messageStr, CryptoKeyPair cryptoKeyPair,
         int encryptType) {
         if (encryptType == CryptoType.SM_TYPE) {
-            byte[] messageHash = smCryptoSuite.hash(message);
-            log.debug("userRow.messageHash：{},hex:{}", messageHash, Hex.toHexString(messageHash));
-            return smCryptoSuite.sign(Hex.toHexString(messageHash), cryptoKeyPair);
+            String messageHash = smCryptoSuite.hash(messageStr);
+            log.debug("userRow.messageHash：{}", messageHash);
+            return smCryptoSuite.sign(messageHash, cryptoKeyPair);
         } else {
-            byte[] messageHash = ecdsaCryptoSuite.hash(message);
-            log.debug("userRow.messageHash：{},hex:{}", messageHash, Hex.toHexString(messageHash));
-            return ecdsaCryptoSuite.sign(Hex.toHexString(messageHash), cryptoKeyPair);
+            String messageHash = ecdsaCryptoSuite.hash(messageStr);
+            log.debug("userRow.messageHash:{}", messageHash);
+            return ecdsaCryptoSuite.sign(messageHash, cryptoKeyPair);
         }
     }
 
@@ -113,7 +110,7 @@ public class SignService {
      * add signHash.
      * @param req parameter
      */
-    public String signMessageHash(ReqSignMessageHashVo req) throws BaseException {
+    public String signMessageHash(ReqSignHashVo req) throws BaseException {
         String signUserId = req.getSignUserId();
         log.info("start sign. signUserId:{}", signUserId);
         Instant startTimeDB = Instant.now();
@@ -126,6 +123,9 @@ public class SignService {
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
         int encryptType = userRow.getEncryptType();
+        if (encryptType != req.getEncryptType()) {
+            throw new BaseException(CodeMessageEnums.PARAM_HASH_ENCRYPT_TYPE_NOT_MATCH);
+        }
         // signature
         CryptoKeyPair cryptoKeyPair = keyStoreService.getKeyPairByType(userRow.getPrivateKey(), encryptType);
 
