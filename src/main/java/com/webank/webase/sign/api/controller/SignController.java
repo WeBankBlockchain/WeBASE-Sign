@@ -84,36 +84,36 @@ public class SignController {
     }
 
 
-//    /**
-//     * add sign by ecdsa or guomi encryption
-//     *
-//     * @param req parameter
-//     * @param result checkResult
-//     */
-//    @ApiOperation(value = "add sign by ecdsa(default) or guomi by hash",
-//        notes = "获取ECDSA或国密SM2签名数据")
-//    @ApiImplicitParam(name = "req", value = "hash to sign", required = true,
-//        dataType = "ReqSignHashVo")
-//    @PostMapping("/hash")
-//    public BaseRspVo signHash(@Valid @RequestBody ReqSignHashVo req, BindingResult result)
-//        throws BaseException {
-//        CommonUtils.checkParamBindResult(result);
-//        String signUserId = req.getSignUserId();
-//        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
-//            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
-//        }
+    /**
+     * add sign by ecdsa or guomi encryption
+     *
+     * @param req parameter
+     * @param result checkResult
+     */
+    @ApiOperation(value = "add sign by ecdsa(default) or guomi by hash",
+        notes = "获取ECDSA或国密SM2签名数据")
+    @ApiImplicitParam(name = "req", value = "hash to sign", required = true,
+        dataType = "ReqSignHashVo")
+    @PostMapping("/hash")
+    public BaseRspVo signHash(@Valid @RequestBody ReqSignHashVo req, BindingResult result)
+        throws BaseException {
+        CommonUtils.checkParamBindResult(result);
+        String signUserId = req.getSignUserId();
+        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
+        }
 //        Integer encrtypType = req.getEncryptType();
 //        if (CryptoType.ECDSA_TYPE != encrtypType && CryptoType.SM_TYPE != encrtypType) {
 //            throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
 //        }
-//        String messageHash = req.getMessageHash();
-//        if (messageHash.length() != HASH_LENGTH_PREFIX && messageHash.length() != HASH_LENGTH_NO_PREFIX ) {
-//            throw new BaseException(PARAM_HASH_LENGTH_INVALID);
-//        }
-//        String signResult = signService.signMessageHash(req);
-//        // return
-//        RspSignVo rspSignVo = new RspSignVo();
-//        rspSignVo.setSignDataStr(signResult);
-//        return CommonUtils.buildSuccessRspVo(rspSignVo);
-//    }
+        String messageHash = req.getMessageHash();
+        if (messageHash.length() != HASH_LENGTH_PREFIX && messageHash.length() != HASH_LENGTH_NO_PREFIX ) {
+            throw new BaseException(PARAM_HASH_LENGTH_INVALID);
+        }
+        String signResult = signService.signMessageHash(req);
+        // return
+        RspSignVo rspSignVo = new RspSignVo();
+        rspSignVo.setSignDataStr(signResult);
+        return CommonUtils.buildSuccessRspVo(rspSignVo);
+    }
 }
