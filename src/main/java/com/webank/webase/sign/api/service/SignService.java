@@ -123,9 +123,6 @@ public class SignService {
             throw new BaseException(CodeMessageEnums.USER_NOT_EXISTS);
         }
         int encryptType = userRow.getEncryptType();
-        if (encryptType != req.getEncryptType()) {
-            throw new BaseException(CodeMessageEnums.PARAM_HASH_ENCRYPT_TYPE_NOT_MATCH);
-        }
         // signature
         CryptoKeyPair cryptoKeyPair = keyStoreService.getKeyPairByType(userRow.getPrivateKey(), encryptType);
 
