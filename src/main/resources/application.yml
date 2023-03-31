@@ -1,5 +1,5 @@
 # server version
-version: v3.0.0
+version: v3.0.2
 
 server:
   # 本工程服务端口，端口被占用则修改
