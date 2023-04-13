@@ -28,9 +28,5 @@ public class ReqSignHashVo {
     private String signUserId;
     @NotBlank(message = "hashStr cannot be empty")
     private String messageHash;
-    /**
-     * 0:ecdsa, 1:sm
-     */
-    @NotNull
-    private Integer encryptType;
+
 }
