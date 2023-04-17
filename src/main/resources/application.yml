@@ -27,6 +27,9 @@ spring:
       maximum-pool-size: 20
       max-lifetime: 1800000
       minimum-idle: 5
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 constant: 
   # aes加密key（16位）
