@@ -36,7 +36,7 @@ repositories {
     mavenCentral()
 }
 
-def spring_boot_version="2.5.12"
+def spring_boot_version="2.7.10"
 List springboot =[ 
 	"org.springframework.boot:spring-boot-starter-web:$spring_boot_version",
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
@@ -90,7 +90,7 @@ dependencies {
     compile 'org.slf4j:jcl-over-slf4j:1.7.30'
     compile 'org.apache.commons:commons-lang3:3.6'
     compile "org.bouncycastle:bcprov-jdk15on:1.69"
-    compile 'org.yaml:snakeyaml:1.31'
+    compile 'org.yaml:snakeyaml:2.0'
 
     compile 'org.projectlombok:lombok:1.18.6'
     annotationProcessor 'org.projectlombok:lombok:1.18.6'
