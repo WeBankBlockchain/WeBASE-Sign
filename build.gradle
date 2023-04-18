@@ -37,7 +37,7 @@ repositories {
     mavenLocal()
 }
 
-def spring_boot_version="2.5.12"
+def spring_boot_version="2.7.10"
 List springboot =[ 
 	"org.springframework.boot:spring-boot-starter-web:$spring_boot_version",
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
@@ -96,7 +96,7 @@ dependencies {
     compile "org.bouncycastle:bcprov-jdk15on:1.69"
     // cover low version
     compile 'com.google.guava:guava:30.0-jre'
-    compile 'org.yaml:snakeyaml:1.31'
+    compile 'org.yaml:snakeyaml:2.0'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.6'
     compile 'org.projectlombok:lombok:1.18.6'
