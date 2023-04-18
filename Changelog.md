@@ -1,3 +1,14 @@
+### v1.5.5(2023-04-17)
+
+**Fix**
+- 升级依赖包
+
+**兼容性**
+- WeBASE-Front v1.5.0+
+- WeBASE-Transaction v1.3.0+
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+
 
 ### v1.5.3(2021-09-27)
 
