@@ -1,14 +1,54 @@
-### v1.5.5(2023-04-17)
+
+### v3.0.2(2023-03-31)
+
+**Add**
+- 新增`/sign/hash`对交易体哈希进行签名接口
 
 **Fix**
-- 升级依赖包
+- 更新FISCO-BCOS java-sdk版本，修复创建私钥的内存泄漏问题
+
 
 **兼容性**
-- WeBASE-Front v1.5.0+
-- WeBASE-Transaction v1.3.0+
+- 支持FISCO-BCOS v3.0.0 及以上版本
+- WeBASE-Front v3.0.0及以上版本
 
-详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/latest/)。
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/lab/)。
 
+### v3.0.0(2022-08-24)
+
+**Add**
+- 切换至fisco-bcos-java-sdk 3.0.0正式版
+
+
+**兼容性**
+- 支持FISCO-BCOS v3.0.0 及以上版本
+- WeBASE-Front lab-rc1及以上版本
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/lab/)。
+
+
+### lab-rc2(2022-03-30)
+
+**Add**
+- 升级springboot 1.x到2.x
+
+
+**兼容性**
+- 支持FISCO-BCOS v3.0.0 及以上版本
+- WeBASE-Front lab-rc1及以上版本
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/lab/)。
+
+
+### lab-rc1(2021-12-09)
+
+**Add**
+- 适配兼容FISCO BCOS v3.0.0
+
+
+**兼容性**
+- 支持FISCO-BCOS v3.0.0 及以上版本
+- WeBASE-Front lab-rc1
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/lab/)。
 
 ### v1.5.3(2021-09-27)
 

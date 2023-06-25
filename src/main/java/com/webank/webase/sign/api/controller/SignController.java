@@ -17,15 +17,18 @@ package com.webank.webase.sign.api.controller;
 
 import com.webank.webase.sign.api.service.SignService;
 import com.webank.webase.sign.api.service.UserService;
+import com.webank.webase.sign.constant.ConstantProperties;
 import com.webank.webase.sign.exception.BaseException;
 import com.webank.webase.sign.pojo.vo.BaseRspVo;
 import com.webank.webase.sign.pojo.vo.ReqEncodeInfoVo;
+import com.webank.webase.sign.pojo.vo.ReqSignHashVo;
 import com.webank.webase.sign.pojo.vo.ReqSignMessageHashVo;
 import com.webank.webase.sign.pojo.vo.RspSignVo;
 import com.webank.webase.sign.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.fisco.bcos.sdk.v3.model.CryptoType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_ENCRYPT_TYPE_IS_INVALID;
+import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_HASH_LENGTH_INVALID;
 import static com.webank.webase.sign.enums.CodeMessageEnums.PARAM_SIGN_USER_ID_IS_INVALID;
 
 
@@ -50,6 +55,8 @@ public class SignController {
     SignService signService;
     @Autowired
     UserService userService;
+    private static final int HASH_LENGTH_PREFIX = 66;
+    private static final int HASH_LENGTH_NO_PREFIX = 64;
 
     /**
      * add sign by ecdsa or guomi encryption
@@ -70,6 +77,40 @@ public class SignController {
             throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
         }
         String signResult = signService.sign(req);
+        // return
+        RspSignVo rspSignVo = new RspSignVo();
+        rspSignVo.setSignDataStr(signResult);
+        return CommonUtils.buildSuccessRspVo(rspSignVo);
+    }
+
+
+    /**
+     * add sign by ecdsa or guomi encryption
+     *
+     * @param req parameter
+     * @param result checkResult
+     */
+    @ApiOperation(value = "add sign by ecdsa(default) or guomi by hash",
+        notes = "获取ECDSA或国密SM2签名数据")
+    @ApiImplicitParam(name = "req", value = "hash to sign", required = true,
+        dataType = "ReqSignHashVo")
+    @PostMapping("/hash")
+    public BaseRspVo signHash(@Valid @RequestBody ReqSignHashVo req, BindingResult result)
+        throws BaseException {
+        CommonUtils.checkParamBindResult(result);
+        String signUserId = req.getSignUserId();
+        if (!CommonUtils.checkLengthWithin_64(signUserId)) {
+            throw new BaseException(PARAM_SIGN_USER_ID_IS_INVALID);
+        }
+//        Integer encrtypType = req.getEncryptType();
+//        if (CryptoType.ECDSA_TYPE != encrtypType && CryptoType.SM_TYPE != encrtypType) {
+//            throw new BaseException(PARAM_ENCRYPT_TYPE_IS_INVALID);
+//        }
+        String messageHash = req.getMessageHash();
+        if (messageHash.length() != HASH_LENGTH_PREFIX && messageHash.length() != HASH_LENGTH_NO_PREFIX ) {
+            throw new BaseException(PARAM_HASH_LENGTH_INVALID);
+        }
+        String signResult = signService.signMessageHash(req);
         // return
         RspSignVo rspSignVo = new RspSignVo();
         rspSignVo.setSignDataStr(signResult);

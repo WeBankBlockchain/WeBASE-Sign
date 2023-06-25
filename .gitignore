@@ -33,6 +33,7 @@ gradle.properties
 /out
 /log
 /dist
+/bin
 
 application-test.yml
 

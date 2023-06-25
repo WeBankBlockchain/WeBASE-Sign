@@ -1,5 +1,5 @@
 # server version
-version: v1.5.3
+version: v3.0.2
 
 server:
   # 本工程服务端口，端口被占用则修改
@@ -27,7 +27,6 @@ spring:
       maximum-pool-size: 20
       max-lifetime: 1800000
       minimum-idle: 5
-  # fix swagger
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -38,6 +37,7 @@ constant:
   # aes加密模式 v1.4.0+ 默认CBC（v1.4.0前默认为ECB）
   aesPattern: CBC
   keepAliveRequests: 100
+  KeepAliveTimeout: 30000
   syncUsrCacheTaskFixedDelay: 10000
   # 返回值是否支持私钥传输
   supportPrivateKeyTransfer: true
@@ -47,3 +47,5 @@ mybatis:
 
 logging: 
   config: classpath:log4j2.xml
+  level:
+    com.webank.webase.sign: info

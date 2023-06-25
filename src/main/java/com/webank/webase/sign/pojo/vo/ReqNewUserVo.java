@@ -16,8 +16,8 @@
 
 package com.webank.webase.sign.pojo.vo;
 
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import javax.validation.constraints.NotBlank;
 
 /**
  * import private key entity
