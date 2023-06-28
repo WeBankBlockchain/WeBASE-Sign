@@ -35,6 +35,7 @@ repositories {
     maven { url 'https://dl.bintray.com/ethereum/maven/' }
     maven { url 'http://repo.typesafe.com/typesafe/maven-releases/' }
     mavenLocal()
+    mavenCentral()
 }
 
 def spring_boot_version="2.7.10"
@@ -86,20 +87,18 @@ List jackson = [
 
 dependencies {
     compile springboot,swagger,mysql,log4j,jaxb,jackson
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.3.0-SNAPSHOT') {
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.3.0') {
         // 不需要连接节点，因此去除
         exclude group: "org.fisco-bcos", module: 'netty-sm-ssl-context'
         exclude group: "org.slf4j"
     }
     compile 'org.slf4j:jcl-over-slf4j:1.7.30'
     compile 'org.apache.commons:commons-lang3:3.6'
-    compile "org.bouncycastle:bcprov-jdk15on:1.69"
-    // cover low version
-    compile 'com.google.guava:guava:30.0-jre'
-    compile 'org.yaml:snakeyaml:2.0'
+    compile 'org.projectlombok:lombok:1.18.2'
+    compile "org.bouncycastle:bcprov-jdk15on:1.67"
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    compile 'com.dameng:DmJdbcDriver18:8.1.1.193'
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.6'
-    compile 'org.projectlombok:lombok:1.18.6'
 }
 
 configurations {
