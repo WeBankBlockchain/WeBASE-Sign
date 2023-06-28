@@ -97,6 +97,8 @@ dependencies {
     compile 'org.projectlombok:lombok:1.18.2'
     compile "org.bouncycastle:bcprov-jdk15on:1.67"
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    compile 'com.dameng:DmJdbcDriver18:8.1.1.193'
+
 }
 
 configurations {
