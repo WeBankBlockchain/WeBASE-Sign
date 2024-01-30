@@ -37,7 +37,7 @@ repositories {
     mavenLocal()
 }
 
-def spring_boot_version="2.7.10"
+def spring_boot_version="2.7.17"
 List springboot =[ 
 	"org.springframework.boot:spring-boot-starter-web:$spring_boot_version",
 	"org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version",
@@ -86,7 +86,7 @@ List jackson = [
 
 dependencies {
     compile springboot,swagger,mysql,log4j,jaxb,jackson
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.3.0-SNAPSHOT') {
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.3.0') {
         // 不需要连接节点，因此去除
         exclude group: "org.fisco-bcos", module: 'netty-sm-ssl-context'
         exclude group: "org.slf4j"
