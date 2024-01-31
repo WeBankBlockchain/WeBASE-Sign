@@ -1,4 +1,16 @@
 
+### v3.1.1(2024-01-30)
+
+**Fix**
+- 更新springboot等依赖包
+
+
+**兼容性**
+- 支持FISCO-BCOS v3.0.0 及以上版本
+- WeBASE-Front v3.0.0及以上版本
+
+详细了解,请阅读[**技术文档**](https://webasedoc.readthedocs.io/zh_CN/lab/)。
+
 ### v3.0.2(2023-03-31)
 
 **Add**
